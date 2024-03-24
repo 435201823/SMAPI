@@ -1555,7 +1555,7 @@ namespace StardewModdingAPI.Framework
 
                 if (installedNames.Any())
                 {
-                    this.Monitor.Log("console.check-for-software-conflicts-found", new { software = string.Join(" and ", installedNames) }, LogLevel.Warn);
+                    this.Monitor.LogTra("console.check-for-software-conflicts-found", new { software = string.Join(" and ", installedNames) }, LogLevel.Warn);
                 }
                     
                 else
@@ -1601,7 +1601,7 @@ namespace StardewModdingAPI.Framework
                         // log message
                         if (updateFound != null)
                         {
-                            this.Monitor.Log("console.update-smapi-tip", new { updateFound, updateUrl }, LogLevel.Alert);
+                            this.Monitor.LogTra("console.update-smapi-tip", new { updateFound, updateUrl }, LogLevel.Alert);
                         }
                         else
                             this.Monitor.Log("   SMAPI okay.");

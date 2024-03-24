@@ -99,7 +99,7 @@ namespace StardewModdingAPI.Framework
         }
 
         /// <inheritdoc />
-        public void Log(string key, object? tokens, LogLevel level = LogLevel.Trace)
+        public void LogTra(string key, object? tokens, LogLevel level = LogLevel.Trace)
         {
             this.LogImpl(this.Source, key, tokens, (ConsoleLogLevel)level);
         }
