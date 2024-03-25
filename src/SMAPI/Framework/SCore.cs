@@ -1038,7 +1038,7 @@ namespace StardewModdingAPI.Framework
                                         continue;
 
                                     if (verbose)
-                                        this.Monitor.Log($"Events: player skill '{skill}' changed from {value.Old} to {value.New}.");
+                                        this.Monitor.LogTra("console.player-skill-change", new { New = value.New, Old = value.Old, skill });
 
                                     if (raiseLevelChanged)
                                         events.LevelChanged.Raise(new LevelChangedEventArgs(player, skill, value.Old, value.New));
@@ -1049,7 +1049,7 @@ namespace StardewModdingAPI.Framework
                             if (playerState.Inventory.IsChanged)
                             {
                                 if (verbose)
-                                    this.Monitor.Log("Events: player inventory changed.");
+                                    this.Monitor.LogTra("console.player-inventory-changed", null);
 
                                 if (events.InventoryChanged.HasListeners)
                                 {
@@ -1117,7 +1117,7 @@ namespace StardewModdingAPI.Framework
             catch (Exception ex)
             {
                 // log error
-                this.Monitor.Log($"An error occurred in the overridden update loop: {ex.GetLogSummary()}", LogLevel.Error);
+                this.Monitor.LogTra("console.error-in-overridden-update-loop", new { LogSummary = ex.GetLogSummary() }, LogLevel.Error);
 
                 // exit if irrecoverable
                 if (!this.UpdateCrashTimer.Decrement())

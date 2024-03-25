@@ -68,6 +68,8 @@
     "console.location-list-changed": "Context: location list changed (added {{addedText}}; removed {{removedText}}).",
     "console.time-changed": "Context: time changed to {{Time}}.",
     "console.set-play-location": "Context: set location to {{Location}}.",
+    "console.player-skill-change": "Events: player skill '{{skill}}' changed from {{Old}} to {{New}}.",
+    "console.player-inventory-changed": "Events: player inventory changed.",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }
