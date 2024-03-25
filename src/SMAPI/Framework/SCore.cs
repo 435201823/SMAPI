@@ -674,7 +674,7 @@ namespace StardewModdingAPI.Framework
                 bool saveParsed = false;
                 if (Game1.currentLoader != null)
                 {
-                    this.Monitor.Log("Game loader synchronizing...");
+                    this.Monitor.LogTra("console.game-loader-synchronizing", null);
                     Game1.game1.UpdateTitleScreen(Game1.currentGameTime); // run game logic to change music on load, etc
                     // ReSharper disable once ConstantConditionalAccessQualifier -- may become null within the loop
                     while (Game1.currentLoader?.MoveNext() == true)
@@ -705,7 +705,7 @@ namespace StardewModdingAPI.Framework
                     }
 
                     Game1.currentLoader = null;
-                    this.Monitor.Log("Game loader done.");
+                    this.Monitor.LogTra("console.game-loader-done", null);
                 }
 
                 // While a background task is in progress, the game may make changes to the game
@@ -737,7 +737,7 @@ namespace StardewModdingAPI.Framework
                     if (!Context.IsWorldReady && !instance.IsBetweenCreateEvents)
                     {
                         instance.IsBetweenCreateEvents = true;
-                        this.Monitor.Log("Context: before save creation.");
+                        this.Monitor.LogTra("console.context-before-save-creation", null);
                         events.SaveCreating.RaiseEmpty();
                     }
 
@@ -745,7 +745,7 @@ namespace StardewModdingAPI.Framework
                     if (Context.IsWorldReady && !instance.IsBetweenSaveEvents)
                     {
                         instance.IsBetweenSaveEvents = true;
-                        this.Monitor.Log("Context: before save.");
+                        this.Monitor.LogTra("console.context-before-save", null);
                         events.Saving.RaiseEmpty();
                     }
 
@@ -792,7 +792,7 @@ namespace StardewModdingAPI.Framework
                     {
                         // raise after-create
                         instance.IsBetweenCreateEvents = false;
-                        this.Monitor.Log($"Context: after save creation, starting {Game1.currentSeason} {Game1.dayOfMonth} Y{Game1.year}.");
+                        this.Monitor.LogTra("console.context-after-save-creation", new { GameYear = Game1.year, GameCurrentSeasion = Game1.currentSeason, GameDayOfMonth = Game1.dayOfMonth });
                         this.OnLoadStageChanged(LoadStage.CreatedSaveFile);
                         events.SaveCreated.RaiseEmpty();
                     }
