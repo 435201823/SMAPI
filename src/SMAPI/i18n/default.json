@@ -11,6 +11,8 @@
     "console.mod-load-asset": "{{ModDisplayName}} loaded asset '{{InfoName}}'{{BehalfOfLabel}}.",
     "console.mod-edit-behalf": "{{ModDisplayName}} edited {{InfoName}}{{BehalfOfLabel}}.",
     "console.fix-broken-map-replacement": "Fixed broken map replacement: {{ModDisplayName}} loaded '{{InfoName}}' without a required tilesheet (id: {{VanillaSheetId}}, source: {{VanillaSheetImageSource}}).",
+    "console.type-help-for-help": "Type 'help' for help, or 'help <cmd>' for a command's usage",
+    "console.game-has-ended": "Game has ended. Press any key to exit.",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }

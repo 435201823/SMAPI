@@ -98,7 +98,7 @@ namespace StardewModdingAPI.Framework.Logging
         public void RunConsoleInputLoop(CommandManager commandManager, Action reloadTranslations, Action<string> handleInput, Func<bool> continueWhile)
         {
             // prepare console
-            this.Monitor.Log("Type 'help' for help, or 'help <cmd>' for a command's usage", LogLevel.Info);
+            this.Monitor.LogTra("console.type-help-for-help", null, LogLevel.Info);
             commandManager
                 .Add(new HelpCommand(commandManager), this.Monitor)
                 .Add(new HarmonySummaryCommand(), this.Monitor)
@@ -129,7 +129,7 @@ namespace StardewModdingAPI.Framework.Logging
         /// <summary>Show a 'press any key to exit' message, and exit when they press a key.</summary>
         public void PressAnyKeyToExit()
         {
-            this.Monitor.Log("Game has ended. Press any key to exit.", LogLevel.Info);
+            this.Monitor.LogTra("console.game-has-ended", null, LogLevel.Info);
             this.PressAnyKeyToExit(showMessage: false);
         }
 
@@ -138,7 +138,7 @@ namespace StardewModdingAPI.Framework.Logging
         public void PressAnyKeyToExit(bool showMessage)
         {
             if (showMessage)
-                this.Monitor.Log("Game has ended. Press any key to exit.");
+                this.Monitor.LogTra("console.game-has-ended", null);
             Thread.Sleep(100);
             Console.ReadKey();
             Environment.Exit(0);
