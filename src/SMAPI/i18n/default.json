@@ -86,6 +86,8 @@
     "console.could-not-check-for-updates": "Couldn't check for updates. This won't affect your game, but you won't be notified of SMAPI or mod updates if this keeps happening.",
     "console.loading-mods": "Loading mods...",
     "console.launching-mods": "Launching mods...",
+    "console.mod-api-non-public": "{{ModDisplayName}} provides an API instance with a non-public type. This isn't currently supported, so the API won't be available to other mods.",
+    "console.found-mod-api": "   Found mod-provided API ({{ApiName}}).",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }

@@ -1796,11 +1796,11 @@ namespace StardewModdingAPI.Framework
                         if (api != null && !api.GetType().IsPublic)
                         {
                             api = null;
-                            this.Monitor.Log($"{metadata.DisplayName} provides an API instance with a non-public type. This isn't currently supported, so the API won't be available to other mods.", LogLevel.Warn);
+                            this.Monitor.LogTra("console.mod-api-non-public", new { ModDisplayName = metadata.DisplayName }, LogLevel.Warn);
                         }
 
                         if (api != null)
-                            this.Monitor.Log($"   Found mod-provided API ({api.GetType().FullName}).");
+                            this.Monitor.LogTra("console.found-mod-api", new { ApiName = api.GetType().FullName });
                         metadata.SetApi(api);
                     }
                     catch (Exception ex)
