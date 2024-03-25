@@ -1609,13 +1609,13 @@ namespace StardewModdingAPI.Framework
                         // show errors
                         if (updateInfo.Errors.Any())
                         {
-                            this.Monitor.Log("Couldn't check for a new version of SMAPI. This won't affect your game, but you may not be notified of new versions if this keeps happening.", LogLevel.Warn);
+                            this.Monitor.LogTra("console.could-not-check-new-smapi-version", null, LogLevel.Warn);
                             this.Monitor.Log($"Error: {string.Join("\n", updateInfo.Errors)}");
                         }
                     }
                     catch (Exception ex)
                     {
-                        this.Monitor.Log("Couldn't check for a new version of SMAPI. This won't affect your game, but you won't be notified of new versions if this keeps happening.", LogLevel.Warn);
+                        this.Monitor.LogTra("console.could-not-check-new-smapi-version-and-would-not-notified", null, LogLevel.Warn);
                         this.Monitor.Log(ex is WebException && ex.InnerException == null
                             ? $"Error: {ex.Message}"
                             : $"Error: {ex.GetLogSummary()}"
