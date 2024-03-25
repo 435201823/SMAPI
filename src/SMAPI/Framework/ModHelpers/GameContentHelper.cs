@@ -99,7 +99,7 @@ namespace StardewModdingAPI.Framework.ModHelpers
         /// <inheritdoc />
         public bool InvalidateCache(IAssetName assetName)
         {
-            this.Monitor.LogTra("console.requested-cache-invalidation-for-asset", new { assetName });
+            this.Monitor.LogTra("console.game-content-helper.requested-cache-invalidation-for-asset", new { assetName });
             return this.ContentCore.InvalidateCache(asset => asset.Name.IsEquivalentTo(assetName)).Any();
         }
 
@@ -114,7 +114,7 @@ namespace StardewModdingAPI.Framework.ModHelpers
         /// <inheritdoc />
         public bool InvalidateCache(Func<IAssetInfo, bool> predicate)
         {
-            this.Monitor.LogTra("console.requested-cache-invalidation-for-all-assets", null);
+            this.Monitor.LogTra("console.game-content-helper.requested-cache-invalidation-for-all-assets", null);
             return this.ContentCore.InvalidateCache(predicate).Any();
         }
 

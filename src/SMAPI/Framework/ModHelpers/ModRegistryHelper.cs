@@ -64,7 +64,7 @@ namespace StardewModdingAPI.Framework.ModHelpers
             // validate ready
             if (!this.Registry.AreAllModsInitialized)
             {
-                this.Monitor.LogTra("console.access-mod-provided-api", null, LogLevel.Error);
+                this.Monitor.LogTra("console.mod-registry-helper.access-mod-provided-api", null, LogLevel.Error);
                 return null;
             }
 
@@ -89,12 +89,12 @@ namespace StardewModdingAPI.Framework.ModHelpers
                         if (api != null && !api.GetType().IsPublic)
                         {
                             api = null;
-                            this.Monitor.LogTra("console.mod-api-non-public-type", new { ModDisplayName = mod.DisplayName }, LogLevel.Warn);
+                            this.Monitor.LogTra("console.mod-registry-helper.mod-api-non-public-type", new { ModDisplayName = mod.DisplayName }, LogLevel.Warn);
                         }
                     }
                     catch (Exception ex)
                     {
-                        this.Monitor.LogTra("console.failed-loading-api-from-mod", new { LogSummary = ex.GetLogSummary(), ModDisplayName = mod.DisplayName }, LogLevel.Error);
+                        this.Monitor.LogTra("console.mod-registry-helper.failed-loading-api-from-mod", new { LogSummary = ex.GetLogSummary(), ModDisplayName = mod.DisplayName }, LogLevel.Error);
                         api = null;
                     }
                 }
@@ -102,7 +102,7 @@ namespace StardewModdingAPI.Framework.ModHelpers
                 // cache & log API access
                 this.AccessedModApis[mod.Manifest.UniqueID] = api;
                 if (api != null)
-                    this.Monitor.LogTra("console.access-mod-aapi", new { ModDisplayName = mod.DisplayName, ApiName = api.GetType().FullName });
+                    this.Monitor.LogTra("console.mod-registry-helper.access-mod-api", new { ModDisplayName = mod.DisplayName, ApiName = api.GetType().FullName });
             }
 
             return api;
@@ -120,12 +120,12 @@ namespace StardewModdingAPI.Framework.ModHelpers
             // validate mapping
             if (!typeof(TInterface).IsInterface)
             {
-                this.Monitor.LogTra("console.mod-api-tried-to-map-type", new { ClassName = typeof(TInterface).FullName }, LogLevel.Error);
+                this.Monitor.LogTra("console.mod-registry-helper.mod-api-tried-to-map-type", new { ClassName = typeof(TInterface).FullName }, LogLevel.Error);
                 return null;
             }
             if (!typeof(TInterface).IsPublic)
             {
-                this.Monitor.LogTra("console.mod-api-tried-to-map-interface", new { InterfaceName = typeof(TInterface).FullName }, LogLevel.Error);
+                this.Monitor.LogTra("console.mod-registry-helper.mod-api-tried-to-map-interface", new { InterfaceName = typeof(TInterface).FullName }, LogLevel.Error);
                 return null;
             }
 

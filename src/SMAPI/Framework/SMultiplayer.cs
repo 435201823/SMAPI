@@ -110,7 +110,7 @@ namespace StardewModdingAPI.Framework
                 hookClient.OnSendingMessage = this.OnClientSendingMessage;
             }
             else
-                this.Monitor.LogTra("console.multiplayer-client-type-not-implement", new { TypeQualifiedName = client.GetType().AssemblyQualifiedName, HookName = nameof(IHookableClient) });
+                this.Monitor.LogTra("console.s-multiplayer.multiplayer-client-type-not-implement", new { TypeQualifiedName = client.GetType().AssemblyQualifiedName, HookName = nameof(IHookableClient) });
 
             return client;
         }
@@ -124,7 +124,7 @@ namespace StardewModdingAPI.Framework
             if (server is IHookableServer hookServer)
                 hookServer.OnProcessingMessage = this.OnServerProcessingMessage;
             else
-                this.Monitor.LogTra("console.multiplayer-server-type-not-implement", new { TypeQualifiedName = server.GetType().AssemblyQualifiedName, HookName = nameof(IHookableServer) });
+                this.Monitor.LogTra("console.s-multiplayer.multiplayer-server-type-not-implement", new { TypeQualifiedName = server.GetType().AssemblyQualifiedName, HookName = nameof(IHookableServer) });
 
             return server;
         }
@@ -136,7 +136,7 @@ namespace StardewModdingAPI.Framework
         protected void OnClientSendingMessage(OutgoingMessage message, Action<OutgoingMessage> sendMessage, Action resume)
         {
             if (this.LogNetworkTraffic)
-                this.Monitor.LogTra("console.client-send-message", new { MessageFarmerID = message.FarmerID, SendMessageType = (MessageType)message.MessageType });
+                this.Monitor.LogTra("console.s-multiplayer.client-send-message", new { MessageFarmerID = message.FarmerID, SendMessageType = (MessageType)message.MessageType });
 
             switch (message.MessageType)
             {
@@ -160,7 +160,7 @@ namespace StardewModdingAPI.Framework
         public void OnServerProcessingMessage(IncomingMessage message, Action<OutgoingMessage> sendMessage, Action resume)
         {
             if (this.LogNetworkTraffic)
-                this.Monitor.LogTra("console.server-recv-message", new { MessageFarmerID = message.FarmerID, RecvMessageType = (MessageType)message.MessageType });
+                this.Monitor.LogTra("console.s-multiplayer.server-recv-message", new { MessageFarmerID = message.FarmerID, RecvMessageType = (MessageType)message.MessageType });
 
             switch (message.MessageType)
             {
@@ -220,7 +220,7 @@ namespace StardewModdingAPI.Framework
                     // store peer if new
                     if (!this.Peers.ContainsKey(message.FarmerID))
                     {
-                        this.Monitor.LogTra("console.received-connection", new { FarmerPlayerId = message.FarmerID });
+                        this.Monitor.LogTra("console.s-multiplayer.received-connection", new { FarmerPlayerId = message.FarmerID });
                         MultiplayerPeer peer = new(
                             playerID: message.FarmerID,
                             screenID: this.GetScreenId(message.FarmerID),
@@ -258,7 +258,7 @@ namespace StardewModdingAPI.Framework
         public void OnClientProcessingMessage(IncomingMessage message, Action<OutgoingMessage> sendMessage, Action resume)
         {
             if (this.LogNetworkTraffic)
-                this.Monitor.LogTra("console.client-recv-message", new { FarmerPlayerId = message.FarmerID, RecvMessageType = (MessageType)message.MessageType });
+                this.Monitor.LogTra("console.s-multiplayer.client-recv-message", new { FarmerPlayerId = message.FarmerID, RecvMessageType = (MessageType)message.MessageType });
 
             switch (message.MessageType)
             {
@@ -345,7 +345,7 @@ namespace StardewModdingAPI.Framework
             {
                 if (this.Peers.TryGetValue(playerID, out MultiplayerPeer? peer))
                 {
-                    this.Monitor.LogTra("console.player-quit", new { playerID });
+                    this.Monitor.LogTra("console.s-multiplayer.player-quit", new { playerID });
                     this.Peers.Remove(playerID);
 
                     if (this.EventManager.PeerDisconnected.HasListeners)
@@ -414,7 +414,7 @@ namespace StardewModdingAPI.Framework
             if (sendToSelf)
             {
                 if (this.LogNetworkTraffic)
-                    this.Monitor.LogTra("console.broadcasting-message-to-self", new { messageType, data });
+                    this.Monitor.LogTra("console.s-multiplayer.broadcasting-message-to-self", new { messageType, data });
 
                 this.OnModMessageReceived(model);
             }
@@ -427,7 +427,7 @@ namespace StardewModdingAPI.Framework
                     foreach (MultiplayerPeer peer in sendToPeers)
                     {
                         if (this.LogNetworkTraffic)
-                            this.Monitor.LogTra("console.broadcasting-message-to-player", new { PeerPlayerId = peer.PlayerID, messageType, data });
+                            this.Monitor.LogTra("console.s-multiplayer.broadcasting-message-to-player", new { PeerPlayerId = peer.PlayerID, messageType, data });
 
                         peer.SendMessage(new OutgoingMessage((byte)MessageType.ModMessage, peer.PlayerID, data));
                     }
@@ -435,7 +435,7 @@ namespace StardewModdingAPI.Framework
                 else if (this.HostPeer?.HasSmapi == true)
                 {
                     if (this.LogNetworkTraffic)
-                        this.Monitor.LogTra("console.broadcasting-message-to-host", new { messageType, data, HostPeerPlayerId = this.HostPeer.PlayerID });
+                        this.Monitor.LogTra("console.s-multiplayer.broadcasting-message-to-host", new { messageType, data, HostPeerPlayerId = this.HostPeer.PlayerID });
 
                     this.HostPeer.SendMessage(new OutgoingMessage((byte)MessageType.ModMessage, this.HostPeer.PlayerID, data));
                 }
@@ -482,7 +482,7 @@ namespace StardewModdingAPI.Framework
             // read message JSON
             string json = message.Reader.ReadString();
             if (this.LogNetworkTraffic)
-                this.Monitor.LogTra("console.received-message-json", new { json });
+                this.Monitor.LogTra("console.s-multiplayer.received-message-json", new { json });
 
             // deserialize model
             ModMessageModel? model;
@@ -491,13 +491,13 @@ namespace StardewModdingAPI.Framework
                 model = this.JsonHelper.Deserialize<ModMessageModel>(json);
                 if (model is null)
                 {
-                    this.Monitor.LogTra("console.received-invalid-mod-message", new { MessageFarmerId = message.FarmerID, json });
+                    this.Monitor.LogTra("console.s-multiplayer.received-invalid-mod-message", new { MessageFarmerId = message.FarmerID, json });
                     return;
                 }
             }
             catch (Exception ex)
             {
-                this.Monitor.LogTra("console.received-invalid-mod-message-with-error", new { LogSummary = ex.GetLogSummary(), MessageFarmerId = message.FarmerID, json });
+                this.Monitor.LogTra("console.s-multiplayer.received-invalid-mod-message-with-error", new { LogSummary = ex.GetLogSummary(), MessageFarmerId = message.FarmerID, json });
                 return;
             }
 

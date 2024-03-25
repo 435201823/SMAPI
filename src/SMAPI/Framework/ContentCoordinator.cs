@@ -475,7 +475,7 @@ namespace StardewModdingAPI.Framework
                 this.Monitor.Log(report.ToString().TrimEnd());
             }
             else
-                this.Monitor.LogTra("console.invalidated-cache", null);
+                this.Monitor.LogTra("console.content-coordinator.invalidated-cache", null);
 
             return invalidatedAssets.Keys;
         }
