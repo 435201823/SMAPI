@@ -220,7 +220,7 @@ namespace StardewModdingAPI.Framework
                     // store peer if new
                     if (!this.Peers.ContainsKey(message.FarmerID))
                     {
-                        this.Monitor.Log($"Received connection for vanilla player {message.FarmerID}.");
+                        this.Monitor.LogTra("console.received-connection", new { FarmerPlayerId = message.FarmerID });
                         MultiplayerPeer peer = new(
                             playerID: message.FarmerID,
                             screenID: this.GetScreenId(message.FarmerID),
@@ -258,7 +258,7 @@ namespace StardewModdingAPI.Framework
         public void OnClientProcessingMessage(IncomingMessage message, Action<OutgoingMessage> sendMessage, Action resume)
         {
             if (this.LogNetworkTraffic)
-                this.Monitor.Log($"CLIENT RECV {(MessageType)message.MessageType} {message.FarmerID}");
+                this.Monitor.LogTra("console.client-recv-message", new { FarmerPlayerId = message.FarmerID, RecvMessageType = (MessageType)message.MessageType });
 
             switch (message.MessageType)
             {

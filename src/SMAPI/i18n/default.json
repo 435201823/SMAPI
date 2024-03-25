@@ -104,6 +104,8 @@
     "console.multiplayer-server-type-not-implement": "Multiplayer server type '{{TypeQualifiedName}}' doesn't implement {{HookName}}, so SMAPI is unable to hook into it. This may cause mod issues in multiplayer.",
     "console.client-send-message": "CLIENT SEND {{SendMessageType}} {{MessageFarmerID}}",
     "console.server-recv-message": "SERVER RECV {{RecvMessageType}} {{MessageFarmerID}}",
+    "console.received-connection": "Received connection for vanilla player {{FarmerPlayerId}}.",
+    "console.client-recv-message": "CLIENT RECV {{RecvMessageType}} {{FarmerPlayerId}}",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }
