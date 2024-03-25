@@ -337,7 +337,7 @@ namespace StardewModdingAPI.Framework.ContentManagers
                     if (loadedMap.GetTileSheet(vanillaSheet.Id) == null)
                     {
                         mod.Monitor!.LogOnce("SMAPI fixed maps loaded by this mod to prevent errors. See the log file for details.", LogLevel.Warn);
-                        this.Monitor.Log($"Fixed broken map replacement: {mod.DisplayName} loaded '{info.Name}' without a required tilesheet (id: {vanillaSheet.Id}, source: {vanillaSheet.ImageSource}).");
+                        this.Monitor.LogTra("console.fix-broken-map-replacement", new { ModDisplayName = mod.DisplayName, VanillaSheetImageSource = vanillaSheet.ImageSource, InfoName = info.Name, VanillaSheetId = vanillaSheet.Id });
 
                         loadedMap.AddTileSheet(new TileSheet(vanillaSheet.Id, loadedMap, vanillaSheet.ImageSource, vanillaSheet.SheetSize, vanillaSheet.TileSize));
                     }
