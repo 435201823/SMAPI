@@ -574,7 +574,7 @@ namespace StardewModdingAPI.Framework
                         }
                         catch (Exception ex)
                         {
-                            this.Monitor.Log($"Failed parsing that command:\n{ex.GetLogSummary()}", LogLevel.Error);
+                            this.Monitor.LogTra("console.failed-parsing-command", new { LogSummary = ex.GetLogSummary() }, LogLevel.Error);
                             continue;
                         }
 
@@ -597,7 +597,7 @@ namespace StardewModdingAPI.Framework
             catch (Exception ex)
             {
                 // log error
-                this.Monitor.Log($"An error occurred in the overridden update loop: {ex.GetLogSummary()}", LogLevel.Error);
+                this.Monitor.LogTra("console.error-in-overridden-update-loop", new { LogSummary = ex.GetLogSummary() }, LogLevel.Error);
 
                 // exit if irrecoverable
                 if (!this.UpdateCrashTimer.Decrement())
@@ -649,7 +649,7 @@ namespace StardewModdingAPI.Framework
                             if (command.Mod != null)
                                 command.Mod.LogAsMod($"Mod failed handling that command:\n{ex.GetLogSummary()}", LogLevel.Error);
                             else
-                                this.Monitor.Log($"Failed handling that command:\n{ex.GetLogSummary()}", LogLevel.Error);
+                                this.Monitor.LogTra("console.failed-handling-command", new { LogSummary = ex.GetLogSummary() }, LogLevel.Error);
                         }
                     }
                     commandQueue.Clear();

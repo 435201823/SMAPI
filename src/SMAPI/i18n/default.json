@@ -50,6 +50,9 @@
     "console.skip-mod-with-dot": "  Skipped {{ModPath}} (folder name starts with a dot).",
     "console.shutting-by-aborting-update": "SMAPI shutting down: aborting update.",
     "console.unknown-command": "Unknown command '{{CommandName}}'; type 'help' for a list of available commands.",
+    "console.failed-parsing-command": "Failed parsing that command:\n{{LogSummary}}",
+    "console.error-in-overridden-update-loop": "An error occurred in the overridden update loop: {{LogSummary}}",
+    "console.failed-handling-command": "Failed handling that command:\n{{LogSummary}}",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }
