@@ -26,6 +26,9 @@
     "console.disabled-update-checks": "You disabled update checks, so you won't be notified of new SMAPI or mod updates. Running an old version of SMAPI is not recommended. You can undo this by reinstalling SMAPI.",
     "console.disabled-rewriting-broken-mods": "You disabled rewriting broken mods, so many older mods may fail to load. You can undo this by reinstalling SMAPI.",
     "console.received-no-terminal-argument": "Writing to the terminal is disabled because the --no-terminal argument was received. This usually means launching the terminal failed.",
+    "console.load-content-packs-connt": "Loaded {{ContentPacksLength}} content packs:",
+    "console.skiped-mods": "   Skipped mods",
+    "console.mods-could-not-added": "      These mods could not be added to your game.",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }

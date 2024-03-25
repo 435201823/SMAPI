@@ -283,7 +283,7 @@ namespace StardewModdingAPI.Framework.Logging
             {
                 string? GetModDisplayName(string id) => loadedMods.FirstOrDefault(p => p.HasID(id))?.DisplayName;
 
-                this.Monitor.Log($"Loaded {loadedContentPacks.Length} content packs:", LogLevel.Info);
+                this.Monitor.LogTra("console.load-content-packs-connt", new { ContentPacksLength = loadedContentPacks.Length }, LogLevel.Info);
                 foreach (IModMetadata metadata in loadedContentPacks.OrderBy(p => p.DisplayName))
                 {
                     IManifest manifest = metadata.Manifest;
@@ -337,9 +337,9 @@ namespace StardewModdingAPI.Framework.Logging
             {
                 var loggedDuplicateIds = new HashSet<string>();
 
-                this.Monitor.Log("   Skipped mods", LogLevel.Error);
+                this.Monitor.LogTra("console.skiped-mods", null, LogLevel.Error);
                 this.Monitor.Log("   " + "".PadRight(50, '-'), LogLevel.Error);
-                this.Monitor.Log("      These mods could not be added to your game.", LogLevel.Error);
+                this.Monitor.LogTra("console.mods-could-not-added", null, LogLevel.Error);
                 this.Monitor.Newline();
                 foreach (var list in this.GroupFailedModsByPriority(skippedMods))
                 {
