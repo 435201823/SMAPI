@@ -222,7 +222,7 @@ namespace StardewModdingAPI.Framework
 #else
             if (Constants.Platform == Platform.Windows)
             {
-                this.Monitor.LogTra("console.running-error-platform-but-windows-version", new { Platform = Constants.Platform }, LogLevel.Error);
+                this.Monitor.LogTra("console.score.running-error-platform-but-windows-version", new { Platform = Constants.Platform }, LogLevel.Error);
                 this.LogManager.PressAnyKeyToExit();
             }
 #endif
