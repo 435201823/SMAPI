@@ -539,7 +539,7 @@ namespace StardewModdingAPI.Framework
                 // Abort if SMAPI is exiting.
                 if (this.IsExiting)
                 {
-                    this.Monitor.Log("SMAPI shutting down: aborting update.");
+                    this.Monitor.LogTra("console.shutting-by-aborting-update", null);
                     return;
                 }
 
@@ -568,7 +568,7 @@ namespace StardewModdingAPI.Framework
                         {
                             if (!this.CommandManager.TryParse(rawInput, out name, out args, out command, out screenId))
                             {
-                                this.Monitor.Log($"Unknown command '{(!string.IsNullOrWhiteSpace(name) ? name : rawInput)}'; type 'help' for a list of available commands.", LogLevel.Error);
+                                this.Monitor.LogTra("console.unknown-command", new { CommandName = (!string.IsNullOrWhiteSpace(name) ? name : rawInput) }, LogLevel.Error);
                                 continue;
                             }
                         }
