@@ -22,6 +22,9 @@
     "console.delete-carsh-data-continue-playing": "Press any key to delete the crash data and continue playing.",
     "console.mods-go-here": "Mods go here: {{modsPath}}",
     "console.using-custom-mod-path-argument": "(Using custom --mods-path argument.)",
+    "console.enabled-developer-mode": "You enabled developer mode, so the console will be much more verbose. You can disable it by installing the non-developer version of SMAPI.",
+    "console.disabled-update-checks": "You disabled update checks, so you won't be notified of new SMAPI or mod updates. Running an old version of SMAPI is not recommended. You can undo this by reinstalling SMAPI.",
+    "console.disabled-rewriting-broken-mods": "You disabled rewriting broken mods, so many older mods may fail to load. You can undo this by reinstalling SMAPI.",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }
