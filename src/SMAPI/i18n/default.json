@@ -94,6 +94,12 @@
     "console.load-mod-entry-not-null": "   {{ModDisplayName}} (from {{relativePath}}{{DirectorySeparatorChar}}{{ModEntryDll}})...",
     "console.load-mod-entry-null": "   {{ModDisplayName}} (from {{relativePath}})...",
     "console.load-mod-fail": "      Failed: {{ErrorDetail}}",
+    "console.error-when-draw-loop": "An error occurred in the game's draw loop: {{LogSummary}}",
+    "console.recover-sprite-from-error": "Recovering sprite batch from error...",
+    "console.could-not-recover-game-draw": "Could not recover game draw state: {{LogSummary}}",
+    "console.synchronizing-task": "Synchronizing '{{id}}' task...",
+    "console.synchronizing-task-complete": "   task complete.",
+    "console.draw-menu-crashed": "The {{MenuChainLabel}} menu crashed while drawing itself. SMAPI will force it to exit to avoid crashing the game.\n{{LogSummary}}",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }
