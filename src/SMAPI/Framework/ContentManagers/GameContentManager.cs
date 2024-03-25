@@ -116,8 +116,8 @@ namespace StardewModdingAPI.Framework.ContentManagers
             T data;
             if (this.AssetsBeingLoaded.Contains(assetName.Name))
             {
-                this.Monitor.Log($"Broke loop while loading asset '{assetName}'.", LogLevel.Warn);
-                this.Monitor.Log($"Bypassing mod loaders for this asset. Stack trace:\n{Environment.StackTrace}");
+                this.Monitor.LogTra("console.game-content-manager.broke-loop-loaded-asset", new { assetName }, LogLevel.Warn);
+                this.Monitor.LogTra("console.game-content-manager.bypass-mod-asset-loader", new { Environment.StackTrace });
                 data = this.RawLoad<T>(assetName, useCache);
             }
             else
@@ -181,7 +181,7 @@ namespace StardewModdingAPI.Framework.ContentManagers
             try
             {
                 data = (T)loader.GetData(info);
-                this.Monitor.Log($"{mod.DisplayName} loaded asset '{info.Name}'{this.GetOnBehalfOfLabel(loader.OnBehalfOf)}.");
+                this.Monitor.LogTra("console.game-content-manager.mod-load-asset", new { ModDisplayName = mod.DisplayName, InfoName = info.Name, BehalfOfLabel = this.GetOnBehalfOfLabel(loader.OnBehalfOf) });
             }
             catch (Exception ex)
             {
@@ -238,7 +238,7 @@ namespace StardewModdingAPI.Framework.ContentManagers
                 try
                 {
                     editor.ApplyEdit(asset);
-                    this.Monitor.Log($"{mod.DisplayName} edited {info.Name}{this.GetOnBehalfOfLabel(editor.OnBehalfOf)}.");
+                    this.Monitor.LogTra("console.game-content-manager.mod-edit-behalf", new { ModDisplayName = mod.DisplayName, InfoName = info.Name, BehalfOfLabel = this.GetOnBehalfOfLabel(editor.OnBehalfOf) });
                 }
                 catch (Exception ex)
                 {
@@ -337,7 +337,7 @@ namespace StardewModdingAPI.Framework.ContentManagers
                     if (loadedMap.GetTileSheet(vanillaSheet.Id) == null)
                     {
                         mod.Monitor!.LogOnce("SMAPI fixed maps loaded by this mod to prevent errors. See the log file for details.", LogLevel.Warn);
-                        this.Monitor.Log($"Fixed broken map replacement: {mod.DisplayName} loaded '{info.Name}' without a required tilesheet (id: {vanillaSheet.Id}, source: {vanillaSheet.ImageSource}).");
+                        this.Monitor.LogTra("console.game-content-manager.fix-broken-map-replacement", new { ModDisplayName = mod.DisplayName, VanillaSheetImageSource = vanillaSheet.ImageSource, InfoName = info.Name, VanillaSheetId = vanillaSheet.Id });
 
                         loadedMap.AddTileSheet(new TileSheet(vanillaSheet.Id, loadedMap, vanillaSheet.ImageSource, vanillaSheet.SheetSize, vanillaSheet.TileSize));
                     }

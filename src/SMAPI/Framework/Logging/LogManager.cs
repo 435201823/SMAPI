@@ -98,7 +98,7 @@ namespace StardewModdingAPI.Framework.Logging
         public void RunConsoleInputLoop(CommandManager commandManager, Action reloadTranslations, Action<string> handleInput, Func<bool> continueWhile)
         {
             // prepare console
-            this.Monitor.Log("Type 'help' for help, or 'help <cmd>' for a command's usage", LogLevel.Info);
+            this.Monitor.LogTra("console.log-manager.type-help-for-help", null, LogLevel.Info);
             commandManager
                 .Add(new HelpCommand(commandManager), this.Monitor)
                 .Add(new HarmonySummaryCommand(), this.Monitor)
@@ -129,7 +129,7 @@ namespace StardewModdingAPI.Framework.Logging
         /// <summary>Show a 'press any key to exit' message, and exit when they press a key.</summary>
         public void PressAnyKeyToExit()
         {
-            this.Monitor.Log("Game has ended. Press any key to exit.", LogLevel.Info);
+            this.Monitor.LogTra("console.log-manager.game-has-ended", null, LogLevel.Info);
             this.PressAnyKeyToExit(showMessage: false);
         }
 
@@ -138,7 +138,7 @@ namespace StardewModdingAPI.Framework.Logging
         public void PressAnyKeyToExit(bool showMessage)
         {
             if (showMessage)
-                this.Monitor.Log("Game has ended. Press any key to exit.");
+                this.Monitor.LogTra("console.log-manager.game-has-ended", null);
             Thread.Sleep(100);
             Console.ReadKey();
             Environment.Exit(0);
@@ -157,7 +157,7 @@ namespace StardewModdingAPI.Framework.Logging
             }
             catch (Exception ex)
             {
-                this.Monitor.Log($"SMAPI failed trying to track the crash details: {ex.GetLogSummary()}", LogLevel.Error);
+                this.Monitor.LogTra("console.log-manager.failed-try-to-track-crash", new { LogSummary = ex.GetLogSummary() }, LogLevel.Error);
             }
         }
 
@@ -184,9 +184,9 @@ namespace StardewModdingAPI.Framework.Logging
                             ? rawUpdateFound[1]
                             : Constants.HomePageUrl;
 
-                        this.Monitor.Log("A new version of SMAPI was detected last time you played.", LogLevel.Error);
-                        this.Monitor.Log($"You can update to {updateFound}: {url}.", LogLevel.Error);
-                        this.Monitor.Log("Press any key to continue playing anyway. (This only appears when using a SMAPI beta.)", LogLevel.Info);
+                        this.Monitor.LogTra("console.log-manager.detected-new-smapi", null, LogLevel.Error);
+                        this.Monitor.LogTra("console.log-manager.you-can-update-to-smapi-version", new { updateFound, url }, LogLevel.Error);
+                        this.Monitor.LogTra("console.log-manager.continue-playing-anyway", null, LogLevel.Info);
                         Console.ReadKey();
                     }
                 }
@@ -196,9 +196,9 @@ namespace StardewModdingAPI.Framework.Logging
             // show details if game crashed during last session
             if (File.Exists(Constants.FatalCrashMarker))
             {
-                this.Monitor.Log("The game crashed last time you played. If it happens repeatedly, see 'get help' on https://smapi.io.", LogLevel.Error);
-                this.Monitor.Log("If you ask for help, make sure to share your SMAPI log: https://smapi.io/log.", LogLevel.Error);
-                this.Monitor.Log("Press any key to delete the crash data and continue playing.", LogLevel.Info);
+                this.Monitor.LogTra("console.log-manager.game-crashed-last-time", null, LogLevel.Error);
+                this.Monitor.LogTra("console.log-manager.share-your-smapi-log", null, LogLevel.Error);
+                this.Monitor.LogTra("console.log-manager.delete-carsh-data-continue-playing", null, LogLevel.Info);
                 Console.ReadKey();
                 File.Delete(Constants.FatalCrashLog);
                 File.Delete(Constants.FatalCrashMarker);
@@ -221,12 +221,12 @@ namespace StardewModdingAPI.Framework.Logging
         public void LogIntro(string modsPath, IDictionary<string, object?> customSettings)
         {
             // log platform
-            this.Monitor.LogTra("console.platform",new { SmapiVersion = Constants.ApiVersion, GameVersion = Game1.GetVersionString(), OsVersion = EnvironmentUtility.GetFriendlyPlatformName(Constants.Platform) }, LogLevel.Info);
+            this.Monitor.LogTra("console.log-manager.platform", new { SmapiVersion = Constants.ApiVersion, GameVersion = Game1.GetVersionString(), OsVersion = EnvironmentUtility.GetFriendlyPlatformName(Constants.Platform) }, LogLevel.Info);
 
             // log basic info
-            this.Monitor.Log($"Mods go here: {modsPath}", LogLevel.Info);
+            this.Monitor.LogTra("console.log-manager.mods-go-here", new { modsPath }, LogLevel.Info);
             if (modsPath != Constants.DefaultModsPath)
-                this.Monitor.Log("(Using custom --mods-path argument.)");
+                this.Monitor.LogTra("console.log-manager.using-custom-mod-path-argument", null);
             this.Monitor.Log($"Log started at {DateTime.UtcNow:s} UTC");
 
             // log custom settings
@@ -240,15 +240,15 @@ namespace StardewModdingAPI.Framework.Logging
         {
             // developer mode
             if (settings.DeveloperMode)
-                this.Monitor.Log("You enabled developer mode, so the console will be much more verbose. You can disable it by installing the non-developer version of SMAPI.", LogLevel.Info);
+                this.Monitor.LogTra("console.log-manager.enabled-developer-mode", null, LogLevel.Info);
 
             // warnings
             if (!settings.CheckForUpdates)
-                this.Monitor.Log("You disabled update checks, so you won't be notified of new SMAPI or mod updates. Running an old version of SMAPI is not recommended. You can undo this by reinstalling SMAPI.", LogLevel.Warn);
+                this.Monitor.LogTra("console.log-manager.disabled-update-checks", null, LogLevel.Warn);
             if (!settings.RewriteMods)
-                this.Monitor.Log("You disabled rewriting broken mods, so many older mods may fail to load. You can undo this by reinstalling SMAPI.", LogLevel.Info);
+                this.Monitor.LogTra("console.log-manager.disabled-rewriting-broken-mods", null, LogLevel.Info);
             if (!this.Monitor.WriteToConsole)
-                this.Monitor.Log("Writing to the terminal is disabled because the --no-terminal argument was received. This usually means launching the terminal failed.", LogLevel.Warn);
+                this.Monitor.LogTra("console.log-manager.received-no-terminal-argument", null, LogLevel.Warn);
 
             // verbose logging
             this.Monitor.VerboseLog("Verbose logging enabled.");
@@ -264,7 +264,7 @@ namespace StardewModdingAPI.Framework.Logging
         public void LogModInfo(IModMetadata[] loaded, IModMetadata[] loadedContentPacks, IModMetadata[] loadedMods, IModMetadata[] skippedMods, bool logParanoidWarnings, bool logTechnicalDetailsForBrokenMods)
         {
             // log loaded mods
-            this.Monitor.Log($"Loaded {loadedMods.Length} mods" + (loadedMods.Length > 0 ? ":" : "."), LogLevel.Info);
+            this.Monitor.LogTra("console.log-manager.loaded-mods-count", new { PunctuationFormat = (loadedMods.Length > 0 ? ":" : "."), LoadedModsLength = loadedMods.Length }, LogLevel.Info);
             foreach (IModMetadata metadata in loadedMods.OrderBy(p => p.DisplayName))
             {
                 IManifest manifest = metadata.Manifest;
@@ -283,7 +283,7 @@ namespace StardewModdingAPI.Framework.Logging
             {
                 string? GetModDisplayName(string id) => loadedMods.FirstOrDefault(p => p.HasID(id))?.DisplayName;
 
-                this.Monitor.Log($"Loaded {loadedContentPacks.Length} content packs:", LogLevel.Info);
+                this.Monitor.LogTra("console.log-manager.load-content-packs-connt", new { ContentPacksLength = loadedContentPacks.Length }, LogLevel.Info);
                 foreach (IModMetadata metadata in loadedContentPacks.OrderBy(p => p.DisplayName))
                 {
                     IManifest manifest = metadata.Manifest;
@@ -337,9 +337,9 @@ namespace StardewModdingAPI.Framework.Logging
             {
                 var loggedDuplicateIds = new HashSet<string>();
 
-                this.Monitor.Log("   Skipped mods", LogLevel.Error);
+                this.Monitor.LogTra("console.log-manager.skiped-mods", null, LogLevel.Error);
                 this.Monitor.Log("   " + "".PadRight(50, '-'), LogLevel.Error);
-                this.Monitor.Log("      These mods could not be added to your game.", LogLevel.Error);
+                this.Monitor.LogTra("console.log-manager.mods-could-not-added", null, LogLevel.Error);
                 this.Monitor.Newline();
                 foreach (var list in this.GroupFailedModsByPriority(skippedMods))
                 {

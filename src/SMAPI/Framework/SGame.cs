@@ -231,7 +231,7 @@ namespace StardewModdingAPI.Framework
             catch (Exception ex)
             {
                 // log error
-                this.Monitor.Log($"An error occurred in the game's draw loop: {ex.GetLogSummary()}", LogLevel.Error);
+                this.Monitor.LogTra("console.sgame.error-when-draw-loop", new { LogSummary = ex.GetLogSummary() }, LogLevel.Error);
 
                 // exit if irrecoverable
                 if (!this.DrawCrashTimer.Decrement())
@@ -245,7 +245,7 @@ namespace StardewModdingAPI.Framework
                 {
                     if (Game1.spriteBatch.IsOpen(this.Reflection))
                     {
-                        this.Monitor.Log("Recovering sprite batch from error...");
+                        this.Monitor.LogTra("console.sgame.recover-sprite-from-error", null);
                         Game1.spriteBatch.End();
                     }
 
@@ -255,7 +255,7 @@ namespace StardewModdingAPI.Framework
                 }
                 catch (Exception innerEx)
                 {
-                    this.Monitor.Log($"Could not recover game draw state: {innerEx.GetLogSummary()}", LogLevel.Error);
+                    this.Monitor.LogTra("console.sgame.could-not-recover-game-draw", new { LogSummary = innerEx.GetLogSummary() }, LogLevel.Error);
                 }
             }
             Context.IsInDrawLoop = false;

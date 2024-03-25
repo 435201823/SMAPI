@@ -65,18 +65,18 @@ namespace StardewModdingAPI.Framework
         /// <inheritdoc />
         public override Task StartTask(Task task, string id)
         {
-            this.Monitor.Log($"Synchronizing '{id}' task...");
+            this.Monitor.LogTra("console.s-mod-hooks.synchronizing-task", new { id });
             task.RunSynchronously();
-            this.Monitor.Log("   task complete.");
+            this.Monitor.LogTra("console.s-mod-hooks.synchronizing-task-complete", null);
             return task;
         }
 
         /// <inheritdoc />
         public override Task<T> StartTask<T>(Task<T> task, string id)
         {
-            this.Monitor.Log($"Synchronizing '{id}' task...");
+            this.Monitor.LogTra("console.s-mod-hooks.synchronizing-task", new { id });
             task.RunSynchronously();
-            this.Monitor.Log("   task complete.");
+            this.Monitor.LogTra("console.s-mod-hooks.synchronizing-task-complete", null);
             return task;
         }
 
@@ -116,7 +116,7 @@ namespace StardewModdingAPI.Framework
             }
             catch (Exception ex)
             {
-                this.Monitor.Log($"The {menu.GetMenuChainLabel()} menu crashed while drawing itself. SMAPI will force it to exit to avoid crashing the game.\n{ex.GetLogSummary()}", LogLevel.Error);
+                this.Monitor.LogTra("console.s-mod-hooks.draw-menu-crashed", new { LogSummary = ex.GetLogSummary(), MenuChainLabel = menu.GetMenuChainLabel() }, LogLevel.Error);
                 Game1.activeClickableMenu.exitThisMenu();
                 return false;
             }

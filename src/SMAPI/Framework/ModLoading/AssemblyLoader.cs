@@ -174,7 +174,7 @@ namespace StardewModdingAPI.Framework.ModLoading
                 else
                 {
                     if (!oneAssembly)
-                        this.Monitor.Log($"      Loading {assembly.File.Name}...");
+                        this.Monitor.LogTra("console.assembly-loader.loading-file-name", new { FileName = assembly.File.Name });
                     lastAssembly = Assembly.UnsafeLoadFrom(assembly.File.FullName);
                 }
 
@@ -282,7 +282,7 @@ namespace StardewModdingAPI.Framework.ModLoading
                 catch (SymbolsNotMatchingException ex)
                 {
                     // read assembly without symbols
-                    this.Monitor.Log($"      Failed loading PDB for '{file.Name}'. Technical details:\n{ex}");
+                    this.Monitor.LogTra("console.assembly-loader.failed-load-pdb", new { ex, FileName = file.Name });
                     readStream.Position = 0;
                     assembly = this.TrackForDisposal(AssemblyDefinition.ReadAssembly(readStream, new ReaderParameters(ReadingMode.Immediate) { AssemblyResolver = assemblyResolver, InMemory = true }));
                 }

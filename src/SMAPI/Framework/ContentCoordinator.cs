@@ -475,7 +475,7 @@ namespace StardewModdingAPI.Framework
                 this.Monitor.Log(report.ToString().TrimEnd());
             }
             else
-                this.Monitor.LogTra("console.invalidated-cache", null);
+                this.Monitor.LogTra("console.content-coordinator.invalidated-cache", null);
 
             return invalidatedAssets.Keys;
         }
@@ -541,7 +541,7 @@ namespace StardewModdingAPI.Framework
                 return;
             this.IsDisposed = true;
 
-            this.Monitor.Log("Disposing the content coordinator. Content managers will no longer be usable after this point.");
+            this.Monitor.LogTra("console.content-coordinator.disposing-the-content-coordinator", null);
             foreach (IContentManager contentManager in this.ContentManagers)
                 contentManager.Dispose();
             this.ContentManagers.Clear();

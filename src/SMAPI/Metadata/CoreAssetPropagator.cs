@@ -121,7 +121,7 @@ namespace StardewModdingAPI.Metadata
                 }
                 catch (Exception ex)
                 {
-                    this.Monitor.Log($"An error occurred while propagating asset changes. Error details:\n{ex.GetLogSummary()}", LogLevel.Error);
+                    this.Monitor.LogTra("console.core-asset-propagator.propagatiing-asset-change-error", new { LogSummary = ex.GetLogSummary() }, LogLevel.Error);
                 }
 
                 propagatedAssets[entry.Key] = changed;
@@ -183,7 +183,7 @@ namespace StardewModdingAPI.Metadata
                             }
                             else
                             {
-                                this.Monitor.Log($"Skipped reload for '{name.Name}' because the underlying asset no longer exists.", LogLevel.Warn);
+                                this.Monitor.LogTra("console.core-asset-propagator.skip-asset-not-exist", new { Name = name.Name }, LogLevel.Warn);
                                 break;
                             }
                         }
