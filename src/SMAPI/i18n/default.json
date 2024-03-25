@@ -19,6 +19,9 @@
     "console.continue-playing-anyway": "Press any key to continue playing anyway. (This only appears when using a SMAPI beta.)",
     "console.game-crashed-last-time": "The game crashed last time you played. If it happens repeatedly, see 'get help' on https://smapi.io.",
     "console.share-your-smapi-log": "If you ask for help, make sure to share your SMAPI log: https://smapi.io/log.",
+    "console.delete-carsh-data-continue-playing": "Press any key to delete the crash data and continue playing.",
+    "console.mods-go-here": "Mods go here: {{modsPath}}",
+    "console.using-custom-mod-path-argument": "(Using custom --mods-path argument.)",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }

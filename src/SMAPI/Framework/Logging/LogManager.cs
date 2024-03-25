@@ -198,7 +198,7 @@ namespace StardewModdingAPI.Framework.Logging
             {
                 this.Monitor.LogTra("console.game-crashed-last-time", null, LogLevel.Error);
                 this.Monitor.LogTra("console.share-your-smapi-log", null, LogLevel.Error);
-                this.Monitor.Log("Press any key to delete the crash data and continue playing.", LogLevel.Info);
+                this.Monitor.LogTra("console.delete-carsh-data-continue-playing", null, LogLevel.Info);
                 Console.ReadKey();
                 File.Delete(Constants.FatalCrashLog);
                 File.Delete(Constants.FatalCrashMarker);
@@ -224,9 +224,9 @@ namespace StardewModdingAPI.Framework.Logging
             this.Monitor.LogTra("console.platform",new { SmapiVersion = Constants.ApiVersion, GameVersion = Game1.GetVersionString(), OsVersion = EnvironmentUtility.GetFriendlyPlatformName(Constants.Platform) }, LogLevel.Info);
 
             // log basic info
-            this.Monitor.Log($"Mods go here: {modsPath}", LogLevel.Info);
+            this.Monitor.LogTra("console.mods-go-here", new { modsPath }, LogLevel.Info);
             if (modsPath != Constants.DefaultModsPath)
-                this.Monitor.Log("(Using custom --mods-path argument.)");
+                this.Monitor.LogTra("console.using-custom-mod-path-argument", null);
             this.Monitor.Log($"Log started at {DateTime.UtcNow:s} UTC");
 
             // log custom settings
