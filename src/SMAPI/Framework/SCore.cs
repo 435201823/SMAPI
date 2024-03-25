@@ -304,7 +304,7 @@ namespace StardewModdingAPI.Framework
             }
             catch (Exception ex)
             {
-                this.Monitor.Log($"SMAPI failed to initialize: {ex.GetLogSummary()}", LogLevel.Error);
+                this.Monitor.LogTra("console.failed-init", new { LogSummary = ex.GetLogSummary() }, LogLevel.Error);
                 this.LogManager.PressAnyKeyToExit();
                 return;
             }
@@ -317,7 +317,7 @@ namespace StardewModdingAPI.Framework
             this.UpdateWindowTitles();
 
             // start game
-            this.Monitor.Log("Waiting for game to launch...", LogLevel.Debug);
+            this.Monitor.LogTra("console.wait-game-launch", null, LogLevel.Debug);
             try
             {
                 this.IsGameRunning = true;
@@ -356,7 +356,7 @@ namespace StardewModdingAPI.Framework
             if (this.IsDisposed)
                 return;
             this.IsDisposed = true;
-            this.Monitor.Log("Disposing...");
+            this.Monitor.LogTra("console.disposing", null);
 
             // dispose mod data
             foreach (IModMetadata mod in this.ModRegistry.GetAll())
@@ -407,7 +407,7 @@ namespace StardewModdingAPI.Framework
         {
             if (this.IsExiting)
             {
-                this.Monitor.Log("SMAPI shutting down: aborting initialization.", LogLevel.Warn);
+                this.Monitor.LogTra("console.shutting-by-aborting-init", null, LogLevel.Warn);
                 return;
             }
 
@@ -420,7 +420,7 @@ namespace StardewModdingAPI.Framework
 
             // load mods
             {
-                this.Monitor.Log("Loading mod metadata...", LogLevel.Debug);
+                this.Monitor.LogTra("console.load-mod-metadata", null, LogLevel.Debug);
                 ModResolver resolver = new();
 
                 // log loose files

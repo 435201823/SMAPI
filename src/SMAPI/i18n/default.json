@@ -41,6 +41,11 @@
     "console.failed-load-pdb": "      Failed loading PDB for '{{FileName}}'. Technical details:\n{{ex}}",
     "console.running-windows-but-unix-platform": "Oops! You're running Windows, but this version of SMAPI is for Linux or macOS. Please reinstall SMAPI to fix this.",
     "console.running-error-platform-but-windows-version": "Oops! You're running {{Platform}}, but this version of SMAPI is for Windows. Please reinstall SMAPI to fix this.",
+    "console.failed-init": "SMAPI failed to initialize: {{LogSummary}}",
+    "console.wait-game-launch": "Waiting for game to launch...",
+    "console.disposing": "Disposing...",
+    "console.shutting-by-aborting-init": "SMAPI shutting down: aborting initialization.",
+    "console.load-mod-metadata": "Loading mod metadata...",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }
