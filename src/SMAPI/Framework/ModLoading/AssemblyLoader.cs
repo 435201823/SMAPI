@@ -174,7 +174,7 @@ namespace StardewModdingAPI.Framework.ModLoading
                 else
                 {
                     if (!oneAssembly)
-                        this.Monitor.Log($"      Loading {assembly.File.Name}...");
+                        this.Monitor.LogTra("console.loading-file-name", new { FileName = assembly.File.Name });
                     lastAssembly = Assembly.UnsafeLoadFrom(assembly.File.FullName);
                 }
 
