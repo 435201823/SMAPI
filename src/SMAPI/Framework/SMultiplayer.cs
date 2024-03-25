@@ -110,7 +110,7 @@ namespace StardewModdingAPI.Framework
                 hookClient.OnSendingMessage = this.OnClientSendingMessage;
             }
             else
-                this.Monitor.Log($"Multiplayer client type '{client.GetType().AssemblyQualifiedName}' doesn't implement {nameof(IHookableClient)}, so SMAPI is unable to hook into it. This may cause mod issues in multiplayer.");
+                this.Monitor.LogTra("console.multiplayer-client-type-not-implement", new { TypeQualifiedName = client.GetType().AssemblyQualifiedName, HookName = nameof(IHookableClient) });
 
             return client;
         }
