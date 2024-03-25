@@ -1684,7 +1684,7 @@ namespace StardewModdingAPI.Framework
                         if (updates.Any())
                         {
                             this.Monitor.Newline();
-                            this.Monitor.Log($"You can update {updates.Count} mod{(updates.Count != 1 ? "s" : "")}:", LogLevel.Alert);
+                            this.Monitor.LogTra("console.can-update-mod-count", new { NotSingleMod = (updates.Count != 1 ? "s" : ""), Count = updates.Count }, LogLevel.Alert);
                             foreach ((IModMetadata mod, ISemanticVersion newVersion, string newUrl) in updates)
                                 this.Monitor.Log($"   {mod.DisplayName} {newVersion}: {newUrl} (you have {mod.Manifest.Version})", LogLevel.Alert);
                         }
