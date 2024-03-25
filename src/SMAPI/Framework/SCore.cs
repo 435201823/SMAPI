@@ -850,7 +850,7 @@ namespace StardewModdingAPI.Framework
                     if (state.WindowSize.IsChanged)
                     {
                         if (verbose)
-                            this.Monitor.Log($"Events: window size changed to {state.WindowSize.New}.");
+                            this.Monitor.LogTra("console.window-size-change", new { WindowSize = state.WindowSize.New });
 
                         if (events.WindowResized.HasListeners)
                             events.WindowResized.Raise(new WindowResizedEventArgs(state.WindowSize.Old, state.WindowSize.New));
@@ -875,7 +875,7 @@ namespace StardewModdingAPI.Framework
                             if (state.MouseWheelScroll.IsChanged)
                             {
                                 if (verbose)
-                                    this.Monitor.Log($"Events: mouse wheel scrolled to {state.MouseWheelScroll.New}.");
+                                    this.Monitor.LogTra("console.mouse-wheel-scroll", new { MouseWheelScroll = state.MouseWheelScroll.New });
 
                                 if (events.MouseWheelScrolled.HasListeners)
                                     events.MouseWheelScrolled.Raise(new MouseWheelScrolledEventArgs(cursor, state.MouseWheelScroll.Old, state.MouseWheelScroll.New));
@@ -898,7 +898,7 @@ namespace StardewModdingAPI.Framework
                                         {
                                             case SButtonState.Pressed:
                                                 if (verbose)
-                                                    this.Monitor.Log($"Events: button {button} pressed.");
+                                                    this.Monitor.LogTra("console.button-press", new { button });
 
                                                 if (raisePressed)
                                                     events.ButtonPressed.Raise(new ButtonPressedEventArgs(button, cursor, inputState));
@@ -906,7 +906,7 @@ namespace StardewModdingAPI.Framework
 
                                             case SButtonState.Released:
                                                 if (verbose)
-                                                    this.Monitor.Log($"Events: button {button} released.");
+                                                    this.Monitor.LogTra("console.button-released", new { button });
 
                                                 if (raiseReleased)
                                                     events.ButtonReleased.Raise(new ButtonReleasedEventArgs(button, cursor, inputState));
