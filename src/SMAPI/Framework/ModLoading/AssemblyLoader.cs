@@ -282,7 +282,7 @@ namespace StardewModdingAPI.Framework.ModLoading
                 catch (SymbolsNotMatchingException ex)
                 {
                     // read assembly without symbols
-                    this.Monitor.Log($"      Failed loading PDB for '{file.Name}'. Technical details:\n{ex}");
+                    this.Monitor.LogTra("console.failed-load-pdb", new { ex, FileName = file.Name });
                     readStream.Position = 0;
                     assembly = this.TrackForDisposal(AssemblyDefinition.ReadAssembly(readStream, new ReaderParameters(ReadingMode.Immediate) { AssemblyResolver = assemblyResolver, InMemory = true }));
                 }
