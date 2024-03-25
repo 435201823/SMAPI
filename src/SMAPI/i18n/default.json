@@ -34,6 +34,8 @@
     "console.access-mod-provided-api": "Tried to access a mod-provided API before all mods were initialized.",
     "console.mod-api-non-public-type": "{{ModDisplayName}} provides a per-mod API instance with a non-public type. This isn't currently supported, so the API won't be available to other mods.",
     "console.failed-loading-api-from-mod": "Failed loading the per-mod API instance from {{ModDisplayName}}. Integrations with other mods may not work. Error: {{LogSummary}}",
+    "console.access-mod-aapi": "Accessed mod-provided API ({{ApiName}}) for {{ModDisplayName}}.",
+    "console.mod-api-tried-to-map-type": "Tried to map a mod-provided API to class '{{ClassName}}'; must be a public interface.",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }
