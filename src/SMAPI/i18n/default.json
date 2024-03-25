@@ -67,6 +67,7 @@
     "console.menu-changed": "Context: menu changed from {{Old}} to {{New}}.",
     "console.location-list-changed": "Context: location list changed (added {{addedText}}; removed {{removedText}}).",
     "console.time-changed": "Context: time changed to {{Time}}.",
+    "console.set-play-location": "Context: set location to {{Location}}.",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }

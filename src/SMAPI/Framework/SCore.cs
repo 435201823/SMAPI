@@ -1022,7 +1022,7 @@ namespace StardewModdingAPI.Framework
                             if (playerState.Location.IsChanged)
                             {
                                 if (verbose)
-                                    this.Monitor.Log($"Context: set location to {playerState.Location.New}.");
+                                    this.Monitor.LogTra("console.set-play-location", new { Location = playerState.Location.New });
 
                                 if (events.Warped.HasListeners)
                                     events.Warped.Raise(new WarpedEventArgs(player, playerState.Location.Old!, playerState.Location.New!));
