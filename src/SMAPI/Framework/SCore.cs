@@ -951,7 +951,7 @@ namespace StardewModdingAPI.Framework
                             {
                                 string addedText = added.Any() ? string.Join(", ", added.Select(p => p.Name)) : "none";
                                 string removedText = removed.Any() ? string.Join(", ", removed.Select(p => p.Name)) : "none";
-                                this.Monitor.Log($"Context: location list changed (added {addedText}; removed {removedText}).");
+                                this.Monitor.LogTra("console.location-list-changed", new { removedText, addedText });
                             }
 
                             if (events.LocationListChanged.HasListeners)
@@ -1006,7 +1006,7 @@ namespace StardewModdingAPI.Framework
                         if (raiseWorldEvents && state.Time.IsChanged)
                         {
                             if (verbose)
-                                this.Monitor.Log($"Context: time changed to {state.Time.New}.");
+                                this.Monitor.LogTra("console.time-changed", new { Time = state.Time.New });
 
                             if (events.TimeChanged.HasListeners)
                                 events.TimeChanged.Raise(new TimeChangedEventArgs(state.Time.Old, state.Time.New));
