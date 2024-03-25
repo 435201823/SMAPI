@@ -1649,7 +1649,7 @@ namespace StardewModdingAPI.Framework
                         }
 
                         // fetch results
-                        this.Monitor.Log($"   Checking for updates to {searchMods.Count} mods...");
+                        this.Monitor.LogTra("console.checking-mod-updates", new { ModCount = searchMods.Count });
                         IDictionary<string, ModEntryModel> results = await client.GetModInfoAsync(searchMods.ToArray(), apiVersion: Constants.ApiVersion, gameVersion: Constants.GameVersion, platform: Constants.Platform);
 
                         // extract update alerts & errors
