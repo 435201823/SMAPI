@@ -430,7 +430,7 @@ namespace StardewModdingAPI.Framework
                     {
                         if (looseFiles.Any(name => name.Equals("manifest.json", StringComparison.OrdinalIgnoreCase) || name.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)))
                         {
-                            this.Monitor.Log($"Detected mod files directly inside the '{Path.GetFileName(this.ModsPath)}' folder. These will be ignored. Each mod must have its own subfolder instead.", LogLevel.Error);
+                            this.Monitor.LogTra("console.mod-file-inside-folder-ignore", new { FileName = Path.GetFileName(this.ModsPath) }, LogLevel.Error);
                         }
 
                         this.Monitor.Log($"  Ignored loose files: {string.Join(", ", looseFiles.OrderBy(p => p, StringComparer.OrdinalIgnoreCase))}");
