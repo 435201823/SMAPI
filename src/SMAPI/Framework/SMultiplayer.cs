@@ -292,7 +292,7 @@ namespace StardewModdingAPI.Framework
                         // store peer
                         if (!this.Peers.ContainsKey(message.FarmerID) && this.HostPeer == null)
                         {
-                            this.Monitor.Log($"Received connection for vanilla host {message.FarmerID}.");
+                            this.Monitor.LogTra("console.s-multiplayer.received-connection", new { message.FarmerID });
                             var peer = new MultiplayerPeer(
                                 playerID: message.FarmerID,
                                 screenID: this.GetScreenId(message.FarmerID),
@@ -319,7 +319,7 @@ namespace StardewModdingAPI.Framework
                                 sendMessage: sendMessage,
                                 isHost: this.HostPeer == null
                             );
-                            this.Monitor.Log($"Received connection for vanilla {(peer.IsHost ? "host" : "farmhand")} {message.FarmerID}.");
+                            this.Monitor.LogTra("console.s-multiplayer.received-connection-with-host", new { message.FarmerID, HostOrFarmhand = (peer.IsHost ? "host" : "farmhand") });
                             this.AddPeer(peer, canBeHost: true);
                         }
 

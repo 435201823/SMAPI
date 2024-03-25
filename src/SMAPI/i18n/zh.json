@@ -108,6 +108,7 @@
     "console.s-multiplayer.client-send-message": "客户端发送 {{SendMessageType}} {{MessageFarmerID}}",
     "console.s-multiplayer.server-recv-message": "服务器接收 {{RecvMessageType}} {{MessageFarmerID}}",
     "console.s-multiplayer.received-connection": "接收到针对原版玩家 {{FarmerPlayerId}} 的连接。",
+    "console.s-multiplayer.received-connection-with-host": "接收到原版{{HostOrFarmhand}} {{FarmerID}}的连接。",
     "console.s-multiplayer.client-recv-message": "客户端接收 {{RecvMessageType}} {{FarmerPlayerId}}",
     "console.s-multiplayer.player-quit": "玩家退出：{{playerID}}",
     "console.s-multiplayer.broadcasting-message-to-self": "向自己广播 '{{messageType}}' 消息：{{data}}。",
