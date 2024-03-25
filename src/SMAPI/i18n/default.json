@@ -47,6 +47,7 @@
     "console.shutting-by-aborting-init": "SMAPI shutting down: aborting initialization.",
     "console.load-mod-metadata": "Loading mod metadata...",
     "console.mod-file-inside-folder-ignore": "Detected mod files directly inside the '{{FileName}}' folder. These will be ignored. Each mod must have its own subfolder instead.",
+    "console.skip-mod-with-dot": "  Skipped {{ModPath}} (folder name starts with a dot).",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }

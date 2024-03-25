@@ -442,7 +442,7 @@ namespace StardewModdingAPI.Framework
 
                 // filter out ignored mods
                 foreach (IModMetadata mod in mods.Where(p => p.IsIgnored))
-                    this.Monitor.Log($"  Skipped {mod.GetRelativePathWithRoot()} (folder name starts with a dot).");
+                    this.Monitor.LogTra("console.skip-mod-with-dot", new { ModPath = mod.GetRelativePathWithRoot() });
                 mods = mods.Where(p => !p.IsIgnored).ToArray();
 
                 // validate manifests
