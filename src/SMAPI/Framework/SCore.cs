@@ -1179,7 +1179,7 @@ namespace StardewModdingAPI.Framework
             switch (newStage)
             {
                 case LoadStage.ReturningToTitle:
-                    this.Monitor.Log("Context: returning to title");
+                    this.Monitor.LogTra("console.returning-to-title", null);
                     this.OnReturningToTitle();
                     break;
 
@@ -1519,7 +1519,7 @@ namespace StardewModdingAPI.Framework
         private void CheckForSoftwareConflicts()
         {
 #if SMAPI_FOR_WINDOWS
-            this.Monitor.Log("Checking for known software conflicts...");
+            this.Monitor.LogTra("console.checking-for-conflicts", null);
 
             try
             {
@@ -1559,11 +1559,11 @@ namespace StardewModdingAPI.Framework
                 }
                     
                 else
-                    this.Monitor.Log("   None found!");
+                    this.Monitor.LogTra("console.none-found", null);
             }
             catch (Exception ex)
             {
-                this.Monitor.Log($"Failed when checking for conflicting software. Technical details:\n{ex}");
+                this.Monitor.LogTra("console.check-conflicting-faild", new { ex });
             }
 #endif
         }
@@ -1579,7 +1579,7 @@ namespace StardewModdingAPI.Framework
 
                 // create client
                 using WebApiClient client = new(this.Settings.WebApiBaseUrl, Constants.ApiVersion);
-                this.Monitor.Log("Checking for updates...");
+                this.Monitor.LogTra("console.checking-for-updates", null);
 
                 // check SMAPI version
                 {
@@ -1604,7 +1604,7 @@ namespace StardewModdingAPI.Framework
                             this.Monitor.LogTra("console.update-smapi-tip", new { updateFound, updateUrl }, LogLevel.Alert);
                         }
                         else
-                            this.Monitor.Log("   SMAPI okay.");
+                            this.Monitor.LogTra("console.smapi-ok", null);
 
                         // show errors
                         if (updateInfo.Errors.Any())
