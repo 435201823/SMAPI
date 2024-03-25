@@ -136,7 +136,7 @@ namespace StardewModdingAPI.Framework
         protected void OnClientSendingMessage(OutgoingMessage message, Action<OutgoingMessage> sendMessage, Action resume)
         {
             if (this.LogNetworkTraffic)
-                this.Monitor.Log($"CLIENT SEND {(MessageType)message.MessageType} {message.FarmerID}");
+                this.Monitor.LogTra("console.client-send-message", new { MessageFarmerID = message.FarmerID, SendMessageType = (MessageType)message.MessageType });
 
             switch (message.MessageType)
             {
@@ -160,7 +160,7 @@ namespace StardewModdingAPI.Framework
         public void OnServerProcessingMessage(IncomingMessage message, Action<OutgoingMessage> sendMessage, Action resume)
         {
             if (this.LogNetworkTraffic)
-                this.Monitor.Log($"SERVER RECV {(MessageType)message.MessageType} {message.FarmerID}");
+                this.Monitor.LogTra("console.server-recv-message", new { MessageFarmerID = message.FarmerID, RecvMessageType = (MessageType)message.MessageType });
 
             switch (message.MessageType)
             {
