@@ -64,7 +64,7 @@ namespace StardewModdingAPI.Framework.ModHelpers
             // validate ready
             if (!this.Registry.AreAllModsInitialized)
             {
-                this.Monitor.Log("Tried to access a mod-provided API before all mods were initialized.", LogLevel.Error);
+                this.Monitor.LogTra("console.access-mod-provided-api", null, LogLevel.Error);
                 return null;
             }
 
@@ -89,7 +89,7 @@ namespace StardewModdingAPI.Framework.ModHelpers
                         if (api != null && !api.GetType().IsPublic)
                         {
                             api = null;
-                            this.Monitor.Log($"{mod.DisplayName} provides a per-mod API instance with a non-public type. This isn't currently supported, so the API won't be available to other mods.", LogLevel.Warn);
+                            this.Monitor.LogTra("console.mod-api-non-public-type", new { ModDisplayName = mod.DisplayName }, LogLevel.Warn);
                         }
                     }
                     catch (Exception ex)
