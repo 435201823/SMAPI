@@ -83,6 +83,9 @@
     "console.mod-update-tip-item": "   {{ModDisplayName}} {{newVersion}}: {{newUrl}} (you have {{oldVersion}})",
     "console.all-mods-up-to-date": "   All mods up to date.",
     "console.could-not-check-new-mod-versions": "Couldn't check for new mod versions. This won't affect your game, but you won't be notified of mod updates if this keeps happening.",
+    "console.could-not-check-for-updates": "Couldn't check for updates. This won't affect your game, but you won't be notified of SMAPI or mod updates if this keeps happening.",
+    "console.loading-mods": "Loading mods...",
+    "console.launching-mods": "Launching mods...",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }

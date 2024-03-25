@@ -1703,7 +1703,7 @@ namespace StardewModdingAPI.Framework
             }
             catch (Exception ex)
             {
-                this.Monitor.Log("Couldn't check for updates. This won't affect your game, but you won't be notified of SMAPI or mod updates if this keeps happening.", LogLevel.Warn);
+                this.Monitor.LogTra("console.could-not-check-for-updates", null, LogLevel.Warn);
                 this.Monitor.Log(ex is WebException && ex.InnerException == null
                     ? ex.Message
                     : ex.ToString()
@@ -1734,7 +1734,7 @@ namespace StardewModdingAPI.Framework
         /// <param name="modDatabase">Handles access to SMAPI's internal mod metadata list.</param>
         private void LoadMods(IModMetadata[] mods, JsonHelper jsonHelper, ContentCoordinator contentCore, ModDatabase modDatabase)
         {
-            this.Monitor.Log("Loading mods...", LogLevel.Debug);
+            this.Monitor.LogTra("console.loading-mods", null, LogLevel.Debug);
 
             // load mods
             IList<IModMetadata> skippedMods = new List<IModMetadata>();
@@ -1769,7 +1769,7 @@ namespace StardewModdingAPI.Framework
             this.ReloadTranslations(loaded);
 
             // initialize loaded non-content-pack mods
-            this.Monitor.Log("Launching mods...", LogLevel.Debug);
+            this.Monitor.LogTra("console.launching-mods", null, LogLevel.Debug);
             foreach (IModMetadata metadata in loadedMods)
             {
                 IMod mod =
