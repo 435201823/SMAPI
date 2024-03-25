@@ -125,7 +125,7 @@ namespace StardewModdingAPI.Framework.ModHelpers
             }
             if (!typeof(TInterface).IsPublic)
             {
-                this.Monitor.Log($"Tried to map a mod-provided API to non-public interface '{typeof(TInterface).FullName}'; must be a public interface.", LogLevel.Error);
+                this.Monitor.LogTra("console.mod-api-tried-to-map-interface", new { InterfaceName = typeof(TInterface).FullName }, LogLevel.Error);
                 return null;
             }
 
