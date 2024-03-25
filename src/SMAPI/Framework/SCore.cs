@@ -1805,7 +1805,7 @@ namespace StardewModdingAPI.Framework
                     }
                     catch (Exception ex)
                     {
-                        this.Monitor.Log($"Failed loading mod-provided API for {metadata.DisplayName}. Integrations with other mods may not work. Error: {ex.GetLogSummary()}", LogLevel.Error);
+                        this.Monitor.LogTra("console.failed-loading-mod-api-for-mod", new { LogSummary = ex.GetLogSummary(), ModDisplayName = metadata.DisplayName }, LogLevel.Error);
                     }
 
                     // validate mod doesn't implement both GetApi() and GetApi(mod)
@@ -1818,7 +1818,7 @@ namespace StardewModdingAPI.Framework
             // unlock mod integrations
             this.ModRegistry.AreAllModsInitialized = true;
 
-            this.Monitor.Log("Mods loaded and ready!", LogLevel.Debug);
+            this.Monitor.LogTra("console.mods-loaded-and-ready", null, LogLevel.Debug);
         }
 
         /// <summary>Load a given mod.</summary>
