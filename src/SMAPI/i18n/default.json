@@ -101,6 +101,7 @@
     "console.synchronizing-task-complete": "   task complete.",
     "console.draw-menu-crashed": "The {{MenuChainLabel}} menu crashed while drawing itself. SMAPI will force it to exit to avoid crashing the game.\n{{LogSummary}}",
     "console.multiplayer-client-type-not-implement": "Multiplayer client type '{{TypeQualifiedName}}' doesn't implement {{HookName}}, so SMAPI is unable to hook into it. This may cause mod issues in multiplayer.",
+    "console.multiplayer-server-type-not-implement": "Multiplayer server type '{{TypeQualifiedName}}' doesn't implement {{HookName}}, so SMAPI is unable to hook into it. This may cause mod issues in multiplayer.",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }

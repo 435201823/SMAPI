@@ -124,7 +124,7 @@ namespace StardewModdingAPI.Framework
             if (server is IHookableServer hookServer)
                 hookServer.OnProcessingMessage = this.OnServerProcessingMessage;
             else
-                this.Monitor.Log($"Multiplayer server type '{server.GetType().AssemblyQualifiedName}' doesn't implement {nameof(IHookableServer)}, so SMAPI is unable to hook into it. This may cause mod issues in multiplayer.");
+                this.Monitor.LogTra("console.multiplayer-server-type-not-implement", new { TypeQualifiedName = server.GetType().AssemblyQualifiedName, HookName = nameof(IHookableServer) });
 
             return server;
         }
