@@ -106,6 +106,15 @@
     "console.server-recv-message": "SERVER RECV {{RecvMessageType}} {{MessageFarmerID}}",
     "console.received-connection": "Received connection for vanilla player {{FarmerPlayerId}}.",
     "console.client-recv-message": "CLIENT RECV {{RecvMessageType}} {{FarmerPlayerId}}",
+    "console.player-quit": "Player quit: {{playerID}}",
+    "console.broadcasting-message-to-self": "Broadcasting '{{messageType}}' message to self: {{data}}.",
+    "console.broadcasting-message-to-player": "Broadcasting '{{messageType}}' message to farmhand {{PeerPlayerId}}: {{data}}.",
+    "console.broadcasting-message-to-host": "Broadcasting '{{messageType}}' message to host {{HostPeerPlayerId}}: {{data}}.",
+    "console.received-message-json": "Received message: {{json}}.",
+    "console.received-invalid-mod-message": "Received invalid mod message from {{MessageFarmerId}}.\nRaw message data: {{json}}",
+    "console.received-invalid-mod-message-with-error": "Received invalid mod message from {{MessageFarmerId}}.\nRaw message data: {{json}}\nError details: {{LogSummary}}",
+    "console.propagatiing-asset-change-error": "An error occurred while propagating asset changes. Error details:\n{{LogSummary}}",
+    "console.skip-asset-not-exist": "Skipped reload for '{{Name}}' because the underlying asset no longer exists.",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }
