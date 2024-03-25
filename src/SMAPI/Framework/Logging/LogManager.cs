@@ -264,7 +264,7 @@ namespace StardewModdingAPI.Framework.Logging
         public void LogModInfo(IModMetadata[] loaded, IModMetadata[] loadedContentPacks, IModMetadata[] loadedMods, IModMetadata[] skippedMods, bool logParanoidWarnings, bool logTechnicalDetailsForBrokenMods)
         {
             // log loaded mods
-            this.Monitor.Log($"Loaded {loadedMods.Length} mods" + (loadedMods.Length > 0 ? ":" : "."), LogLevel.Info);
+            this.Monitor.LogTra("console.log-manager.loaded-mods-count", new { PunctuationFormat = (loadedMods.Length > 0 ? ":" : "."), LoadedModsLength = loadedMods.Length }, LogLevel.Info);
             foreach (IModMetadata metadata in loadedMods.OrderBy(p => p.DisplayName))
             {
                 IManifest manifest = metadata.Manifest;

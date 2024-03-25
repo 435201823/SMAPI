@@ -26,6 +26,7 @@
     "console.log-manager.disabled-update-checks": "You disabled update checks, so you won't be notified of new SMAPI or mod updates. Running an old version of SMAPI is not recommended. You can undo this by reinstalling SMAPI.",
     "console.log-manager.disabled-rewriting-broken-mods": "You disabled rewriting broken mods, so many older mods may fail to load. You can undo this by reinstalling SMAPI.",
     "console.log-manager.received-no-terminal-argument": "Writing to the terminal is disabled because the --no-terminal argument was received. This usually means launching the terminal failed.",
+    "console.log-manager.loaded-mods-count": "Loaded {{LoadedModsLength}} mods{{PunctuationFormat}}",
     "console.log-manager.load-content-packs-connt": "Loaded {{ContentPacksLength}} content packs:",
     "console.log-manager.skiped-mods": "   Skipped mods",
     "console.log-manager.mods-could-not-added": "      These mods could not be added to your game.",

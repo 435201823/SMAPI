@@ -26,6 +26,7 @@
     "console.log-manager.disabled-update-checks": "您已禁用更新检查，因此将不会收到有关新版 SMAPI 或模组的通知。使用旧版 SMAPI 不被推荐。您可以通过重新安装 SMAPI 来撤销此操作。",
     "console.log-manager.disabled-rewriting-broken-mods": "您已禁用修复破损模组功能，因此许多旧版模组可能无法加载。您可以通过重新安装 SMAPI 来撤销此操作。",
     "console.log-manager.received-no-terminal-argument": "禁用写入终端，因为收到了 --no-terminal 参数。这通常意味着终端启动失败。",
+    "console.log-manager.loaded-mods-count": "加载了 {{LoadedModsLength}} 个模组{{PunctuationFormat}}",
     "console.log-manager.load-content-packs-connt": "已加载 {{ContentPacksLength}} 个内容包：",
     "console.log-manager.skiped-mods": "   跳过的模组",
     "console.log-manager.mods-could-not-added": "      这些模组无法添加到游戏中。",
