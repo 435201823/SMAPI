@@ -157,7 +157,7 @@ namespace StardewModdingAPI.Framework.Logging
             }
             catch (Exception ex)
             {
-                this.Monitor.Log($"SMAPI failed trying to track the crash details: {ex.GetLogSummary()}", LogLevel.Error);
+                this.Monitor.LogTra("console.failed-try-to-track-crash", new { LogSummary = ex.GetLogSummary() }, LogLevel.Error);
             }
         }
 
