@@ -1686,14 +1686,14 @@ namespace StardewModdingAPI.Framework
                             this.Monitor.Newline();
                             this.Monitor.LogTra("console.can-update-mod-count", new { NotSingleMod = (updates.Count != 1 ? "s" : ""), Count = updates.Count }, LogLevel.Alert);
                             foreach ((IModMetadata mod, ISemanticVersion newVersion, string newUrl) in updates)
-                                this.Monitor.Log($"   {mod.DisplayName} {newVersion}: {newUrl} (you have {mod.Manifest.Version})", LogLevel.Alert);
+                                this.Monitor.LogTra("console.mod-update-tip-item", new { ModDisplayName = mod.DisplayName, newUrl, oldVersion = mod.Manifest.Version, newVersion }, LogLevel.Alert);
                         }
                         else
-                            this.Monitor.Log("   All mods up to date.");
+                            this.Monitor.LogTra("console.all-mods-up-to-date", null);
                     }
                     catch (Exception ex)
                     {
-                        this.Monitor.Log("Couldn't check for new mod versions. This won't affect your game, but you won't be notified of mod updates if this keeps happening.", LogLevel.Warn);
+                        this.Monitor.LogTra("console.could-not-check-new-mod-versions", null, LogLevel.Warn);
                         this.Monitor.Log(ex is WebException && ex.InnerException == null
                             ? ex.Message
                             : ex.ToString()
