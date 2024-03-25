@@ -117,5 +117,6 @@
     "console.s-multiplayer.received-invalid-mod-message": "接收到来自 {{MessageFarmerId}} 的无效模组消息。\n原始消息数据：{{json}}",
     "console.s-multiplayer.received-invalid-mod-message-with-error": "接收到来自 {{MessageFarmerId}} 的无效模组消息。\n原始消息数据：{{json}}\n错误细节：{{LogSummary}}",
     "console.core-asset-propagator.propagatiing-asset-change-error": "在传播资产更改时发生错误。错误细节：\n{{LogSummary}}",
-    "console.core-asset-propagator.skip-asset-not-exist": "跳过 '{{Name}}' 的重新加载，因为底层资产不存在。"
+    "console.core-asset-propagator.skip-asset-not-exist": "跳过 '{{Name}}' 的重新加载，因为底层资产不存在。",
+    "console.help-command.error-command-name": "你输入的命令不可用，输入'help'以获取帮助"
 }

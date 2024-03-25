@@ -117,5 +117,6 @@
     "console.s-multiplayer.received-invalid-mod-message": "Received invalid mod message from {{MessageFarmerId}}.\nRaw message data: {{json}}",
     "console.s-multiplayer.received-invalid-mod-message-with-error": "Received invalid mod message from {{MessageFarmerId}}.\nRaw message data: {{json}}\nError details: {{LogSummary}}",
     "console.core-asset-propagator.propagatiing-asset-change-error": "An error occurred while propagating asset changes. Error details:\n{{LogSummary}}",
-    "console.core-asset-propagator.skip-asset-not-exist": "Skipped reload for '{{Name}}' because the underlying asset no longer exists."
+    "console.core-asset-propagator.skip-asset-not-exist": "Skipped reload for '{{Name}}' because the underlying asset no longer exists.",
+    "console.help-command.error-command-name": "There's no command with that name. Type 'help' by itself for more info."
 }
