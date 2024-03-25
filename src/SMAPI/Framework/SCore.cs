@@ -927,7 +927,7 @@ namespace StardewModdingAPI.Framework
                         IClickableMenu? now = state.ActiveMenu.New;
 
                         if (verbose)
-                            this.Monitor.Log($"Context: menu changed from {was?.GetType().FullName ?? "none"} to {now?.GetType().FullName ?? "none"}.");
+                            this.Monitor.LogTra("console.menu-changed", new { New = now?.GetType().FullName ?? "none", Old = was?.GetType().FullName ?? "none" });
 
                         // raise menu events
                         if (events.MenuChanged.HasListeners)

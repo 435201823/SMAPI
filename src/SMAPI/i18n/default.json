@@ -64,6 +64,7 @@
     "console.mouse-wheel-scroll": "Events: mouse wheel scrolled to {{MouseWheelScroll}}.",
     "console.button-press": "Events: button {{button}} pressed.",
     "console.button-released": "Events: button {{button}} released.",
+    "console.menu-changed": "Context: menu changed from {{Old}} to {{New}}.",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }
