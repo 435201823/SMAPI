@@ -1857,7 +1857,7 @@ namespace StardewModdingAPI.Framework
             // validate status
             if (mod.Status == ModMetadataStatus.Failed)
             {
-                this.Monitor.Log($"      Failed: {mod.ErrorDetails ?? mod.Error}");
+                this.Monitor.LogTra("console.load-mod-fail", new { ErrorDetail = mod.ErrorDetails ?? mod.Error });
                 failReason = mod.FailReason ?? ModFailReason.LoadFailed;
                 errorReasonPhrase = mod.Error;
                 return false;
