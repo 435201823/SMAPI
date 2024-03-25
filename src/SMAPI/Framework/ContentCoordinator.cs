@@ -541,7 +541,7 @@ namespace StardewModdingAPI.Framework
                 return;
             this.IsDisposed = true;
 
-            this.Monitor.Log("Disposing the content coordinator. Content managers will no longer be usable after this point.");
+            this.Monitor.LogTra("console.disposing-the-content-coordinator", null);
             foreach (IContentManager contentManager in this.ContentManagers)
                 contentManager.Dispose();
             this.ContentManagers.Clear();
