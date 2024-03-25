@@ -181,7 +181,7 @@ namespace StardewModdingAPI.Framework.ContentManagers
             try
             {
                 data = (T)loader.GetData(info);
-                this.Monitor.Log($"{mod.DisplayName} loaded asset '{info.Name}'{this.GetOnBehalfOfLabel(loader.OnBehalfOf)}.");
+                this.Monitor.LogTra("console.mod-load-asset", new { ModDisplayName = mod.DisplayName, InfoName = info.Name, BehalfOfLabel = this.GetOnBehalfOfLabel(loader.OnBehalfOf) });
             }
             catch (Exception ex)
             {
