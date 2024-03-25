@@ -117,7 +117,7 @@ namespace StardewModdingAPI.Framework.ContentManagers
             if (this.AssetsBeingLoaded.Contains(assetName.Name))
             {
                 this.Monitor.LogTra("console.broke-loop-loaded-asset", new { assetName }, LogLevel.Warn);
-                this.Monitor.Log($"Bypassing mod loaders for this asset. Stack trace:\n{Environment.StackTrace}");
+                this.Monitor.LogTra("console.bypass-mod-asset-loader", new { StackTrace = Environment.StackTrace });
                 data = this.RawLoad<T>(assetName, useCache);
             }
             else
