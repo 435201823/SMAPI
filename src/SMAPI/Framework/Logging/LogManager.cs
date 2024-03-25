@@ -184,9 +184,9 @@ namespace StardewModdingAPI.Framework.Logging
                             ? rawUpdateFound[1]
                             : Constants.HomePageUrl;
 
-                        this.Monitor.Log("A new version of SMAPI was detected last time you played.", LogLevel.Error);
-                        this.Monitor.Log($"You can update to {updateFound}: {url}.", LogLevel.Error);
-                        this.Monitor.Log("Press any key to continue playing anyway. (This only appears when using a SMAPI beta.)", LogLevel.Info);
+                        this.Monitor.LogTra("console.detected-new-smapi", null, LogLevel.Error);
+                        this.Monitor.LogTra("console.you-can-update-to-smapi-version", new { updateFound, url }, LogLevel.Error);
+                        this.Monitor.LogTra("console.continue-playing-anyway", null, LogLevel.Info);
                         Console.ReadKey();
                     }
                 }
@@ -196,8 +196,8 @@ namespace StardewModdingAPI.Framework.Logging
             // show details if game crashed during last session
             if (File.Exists(Constants.FatalCrashMarker))
             {
-                this.Monitor.Log("The game crashed last time you played. If it happens repeatedly, see 'get help' on https://smapi.io.", LogLevel.Error);
-                this.Monitor.Log("If you ask for help, make sure to share your SMAPI log: https://smapi.io/log.", LogLevel.Error);
+                this.Monitor.LogTra("console.game-crashed-last-time", null, LogLevel.Error);
+                this.Monitor.LogTra("console.share-your-smapi-log", null, LogLevel.Error);
                 this.Monitor.Log("Press any key to delete the crash data and continue playing.", LogLevel.Info);
                 Console.ReadKey();
                 File.Delete(Constants.FatalCrashLog);
