@@ -58,6 +58,8 @@
     "console.context-before-save-creation": "Context: before save creation.",
     "console.context-before-save": "Context: before save.",
     "console.context-after-save-creation": "Context: after save creation, starting {{GameCurrentSeasion}} {{GameDayOfMonth}} Y{{GameYear}}.",
+    "console.context-after-save": "Context: after save, starting {{GameCurrentSeasion}} {{GameDayOfMonth}} Y{{GameYear}}.",
+    "console.change-locale": "Context: locale set to {{NewLocale}} ({{LocaleCode}}).",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }

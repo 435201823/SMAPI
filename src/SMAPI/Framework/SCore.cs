@@ -801,7 +801,7 @@ namespace StardewModdingAPI.Framework
                     {
                         // raise after-save
                         instance.IsBetweenSaveEvents = false;
-                        this.Monitor.Log($"Context: after save, starting {Game1.currentSeason} {Game1.dayOfMonth} Y{Game1.year}.");
+                        this.Monitor.LogTra("console.context-after-save", new { GameYear = Game1.year, GameCurrentSeasion = Game1.currentSeason, GameDayOfMonth = Game1.dayOfMonth });
                         events.Saved.RaiseEmpty();
                         events.DayStarted.RaiseEmpty();
                     }
@@ -810,7 +810,7 @@ namespace StardewModdingAPI.Framework
                     ** Locale changed events
                     *********/
                     if (state.Locale.IsChanged)
-                        this.Monitor.Log($"Context: locale set to {state.Locale.New} ({this.ContentCore.GetLocaleCode(state.Locale.New)}).");
+                        this.Monitor.LogTra("console.change-locale", new { LocaleCode = this.ContentCore.GetLocaleCode(state.Locale.New), NewLocale = state.Locale.New });
 
                     /*********
                     ** Load / return-to-title events
