@@ -238,7 +238,7 @@ namespace StardewModdingAPI.Framework.ContentManagers
                 try
                 {
                     editor.ApplyEdit(asset);
-                    this.Monitor.Log($"{mod.DisplayName} edited {info.Name}{this.GetOnBehalfOfLabel(editor.OnBehalfOf)}.");
+                    this.Monitor.LogTra("console.mod-edit-behalf", new { ModDisplayName = mod.DisplayName, InfoName = info.Name, BehalfOfLabel = this.GetOnBehalfOfLabel(editor.OnBehalfOf) });
                 }
                 catch (Exception ex)
                 {
