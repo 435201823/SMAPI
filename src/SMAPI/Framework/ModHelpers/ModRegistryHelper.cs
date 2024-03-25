@@ -94,7 +94,7 @@ namespace StardewModdingAPI.Framework.ModHelpers
                     }
                     catch (Exception ex)
                     {
-                        this.Monitor.Log($"Failed loading the per-mod API instance from {mod.DisplayName}. Integrations with other mods may not work. Error: {ex.GetLogSummary()}", LogLevel.Error);
+                        this.Monitor.LogTra("console.failed-loading-api-from-mod", new { LogSummary = ex.GetLogSummary(), ModDisplayName = mod.DisplayName }, LogLevel.Error);
                         api = null;
                     }
                 }
