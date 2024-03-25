@@ -1842,12 +1842,12 @@ namespace StardewModdingAPI.Framework
             {
                 string relativePath = mod.GetRelativePathWithRoot();
                 if (mod.IsContentPack)
-                    this.Monitor.Log($"   {mod.DisplayName} (from {relativePath}) [content pack]...");
+                    this.Monitor.LogTra("console.load-mod-is-content-pack", new { ModDisplayName = mod.DisplayName, relativePath });
                 // ReSharper disable once ConditionalAccessQualifierIsNonNullableAccordingToAPIContract -- mod may be invalid at this point
                 else if (mod.Manifest?.EntryDll != null)
-                    this.Monitor.Log($"   {mod.DisplayName} (from {relativePath}{Path.DirectorySeparatorChar}{mod.Manifest.EntryDll})..."); // don't use Path.Combine here, since EntryDLL might not be valid
+                    this.Monitor.LogTra("console.load-mod-entry-not-null", new { ModDisplayName = mod.DisplayName, DirectorySeparatorChar = Path.DirectorySeparatorChar, relativePath, ModEntryDll = mod.Manifest.EntryDll }); // don't use Path.Combine here, since EntryDLL might not be valid
                 else
-                    this.Monitor.Log($"   {mod.DisplayName} (from {relativePath})...");
+                    this.Monitor.LogTra("console.load-mod-entry-null", new { ModDisplayName = mod.DisplayName, relativePath });
             }
 
             // add warning for missing update key

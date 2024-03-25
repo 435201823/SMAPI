@@ -90,6 +90,9 @@
     "console.found-mod-api": "   Found mod-provided API ({{ApiName}}).",
     "console.failed-loading-mod-api-for-mod": "Failed loading mod-provided API for {{ModDisplayName}}. Integrations with other mods may not work. Error: {{LogSummary}}",
     "console.mods-loaded-and-ready": "Mods loaded and ready!",
+    "console.load-mod-is-content-pack": "   {{ModDisplayName}} (from {{relativePath}}) [content pack]...",
+    "console.load-mod-entry-not-null": "   {{ModDisplayName}} (from {{relativePath}}{{DirectorySeparatorChar}}{{ModEntryDll}})...",
+    "console.load-mod-entry-null": "   {{ModDisplayName}} (from {{relativePath}})...",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }
