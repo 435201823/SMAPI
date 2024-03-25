@@ -6,6 +6,7 @@
     "console.update-smapi-tip": "You can update SMAPI to {{updateFound}}: {{updateUrl}}",
     "console.invalidated-cache": "Invalidated 0 cache entries.",
     "console.disposing-the-content-coordinator": "Disposing the content coordinator. Content managers will no longer be usable after this point.",
+    "console.broke-loop-loaded-asset": "Broke loop while loading asset '{{assetName}}'.",
     "console.check-for-software-conflicts-found": "Found {{software}} installed, which may conflict with SMAPI. If you experience errors or crashes, try disabling that software or adding an exception for SMAPI and Stardew Valley.",
     "console.platform": "SMAPI {{SmapiVersion}} with Stardew Valley {{GameVersion}} on {{OsVersion}}"
 }
