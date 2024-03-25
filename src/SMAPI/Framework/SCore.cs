@@ -216,13 +216,13 @@ namespace StardewModdingAPI.Framework
 #if SMAPI_FOR_WINDOWS
             if (Constants.Platform != Platform.Windows)
             {
-                this.Monitor.Log("Oops! You're running Windows, but this version of SMAPI is for Linux or macOS. Please reinstall SMAPI to fix this.", LogLevel.Error);
+                this.Monitor.LogTra("console.running-windows-but-unix-platform", null, LogLevel.Error);
                 this.LogManager.PressAnyKeyToExit();
             }
 #else
             if (Constants.Platform == Platform.Windows)
             {
-                this.Monitor.Log($"Oops! You're running {Constants.Platform}, but this version of SMAPI is for Windows. Please reinstall SMAPI to fix this.", LogLevel.Error);
+                this.Monitor.LogTra("console.running-error-platform-but-windows-version", new { Platform = Constants.Platform }, LogLevel.Error);
                 this.LogManager.PressAnyKeyToExit();
             }
 #endif
