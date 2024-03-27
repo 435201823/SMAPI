@@ -17,13 +17,28 @@ namespace StardewModdingAPI.Toolkit.Utilities
     /// <summary>Provides utilities for I18N.</summary>
     public static class I18nUtilities
     {
-        private static string GameFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+        /*********
+        ** Accessors
+        *********/
+        /// <summary>The path to the smapi-internal folder.</summary>
+        private static readonly string InternalFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
-        private static string I18NFolder = Path.Combine(GameFolder, "i18n");
+        /// <summary>The path to the i18n folder.</summary>
+        private static readonly string I18NFolder = Path.Combine(InternalFolder, "i18n");
 
+        /*********
+        ** Fields
+        *********/
+
+        /// <summary>The translations for each locale.</summary>
         private static Dictionary<string, IDictionary<string, string>>  translations = new Dictionary<string, IDictionary<string, string>>();
 
+        /// <summary>Current locale.</summary>
         private static string locale = "en";
+
+        /*********
+        ** Public methods
+        *********/
 
         /// <summary>Read translations from a directory containing JSON translation files.</summary>
         public static void Init()
