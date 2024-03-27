@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using StardewModdingAPI.Framework.Logging;
 using StardewModdingAPI.Internal.ConsoleWriting;
+using StardewModdingAPI.Toolkit.Utilities;
 
 namespace StardewModdingAPI.Framework
 {
@@ -34,9 +35,6 @@ namespace StardewModdingAPI.Framework
 
         /// <summary>Get the screen ID that should be logged to distinguish between players in split-screen mode, if any.</summary>
         private readonly Func<int?> GetScreenIdForLog;
-
-        private Translator Translator = new();
-
 
         /*********
         ** Accessors
@@ -75,21 +73,6 @@ namespace StardewModdingAPI.Framework
             this.ConsoleWriter = new ColorfulConsoleWriter(Constants.Platform, colorConfig);
             this.IsVerbose = isVerbose;
             this.GetScreenIdForLog = getScreenIdForLog;
-        }
-
-        /// <summary>Construct an instance.</summary>
-        /// <param name="translator">The underlying translation manager.</param>
-        internal void InitLogTranslations(Translator translator)
-        {
-            CultureInfo culture = CultureInfo.InstalledUICulture;
-
-            // Get the name of the language
-            string language = culture.Name;
-
-            // Get the ISO code of a language
-            string languageCode = culture.TwoLetterISOLanguageName;
-            translator.SetLocale(language, languageCode);
-            this.Translator = translator;
         }
 
         /// <inheritdoc />
@@ -180,9 +163,9 @@ namespace StardewModdingAPI.Framework
         private void LogImpl(string source, string key, object? tokens, ConsoleLogLevel level)
         {
             // get english log message
-            string defaultText = this.Translator.GetDefaultLocale(key, tokens);
+            string defaultText = I18nUtilities.GetDefault(key, tokens);
             // get i18n log message
-            string translationText = this.Translator.Get(key, tokens);
+            string translationText = I18nUtilities.Get(key, tokens);
 
             // generate message
             string prefix = this.GenerateMessagePrefix(source, level);
