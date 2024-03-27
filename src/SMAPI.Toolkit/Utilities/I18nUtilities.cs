@@ -26,6 +26,8 @@ namespace StardewModdingAPI.Toolkit.Utilities
         /// <summary>The path to the i18n folder.</summary>
         private static readonly string I18NFolder = Path.Combine(InternalFolder, "i18n");
 
+        private const string DefaultLocale = "default";
+
         /*********
         ** Fields
         *********/
@@ -34,7 +36,7 @@ namespace StardewModdingAPI.Toolkit.Utilities
         private static Dictionary<string, IDictionary<string, string>>  translations = new Dictionary<string, IDictionary<string, string>>();
 
         /// <summary>Current locale.</summary>
-        private static string locale = "en";
+        private static string locale = DefaultLocale;
 
         /*********
         ** Public methods
@@ -90,12 +92,12 @@ namespace StardewModdingAPI.Toolkit.Utilities
         /// <param name="tokens">An object containing token key/value pairs. This can be an anonymous object (like <c>new { value = 42, name = "Cranberries" }</c>), a dictionary, or a class instance.</param>
         public static string GetDefault(string key, object? tokens)
         {
-            if (!translations.ContainsKey("default"))
+            if (!translations.ContainsKey(DefaultLocale))
             {
                 throw new Exception("I18N Translation not loading properly.");
             }
 
-            return ReplaceTokens(translations["default"][key], tokens);
+            return ReplaceTokens(translations[DefaultLocale][key], tokens);
         }
 
         /// <summary>Replace tokens in the text like <c>{{value}}</c> with the given values. Returns a new instance.</summary>
