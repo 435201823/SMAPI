@@ -4,10 +4,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using Hangfire;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using StardewModdingAPI.Toolkit;
+using StardewModdingAPI.Toolkit.Framework.Clients.NexusExport;
+using StardewModdingAPI.Toolkit.Framework.Clients.NexusExport.ResponseModels;
 using StardewModdingAPI.Toolkit.Framework.Clients.Wiki;
 using StardewModdingAPI.Web.Framework.Caching.Mods;
+using StardewModdingAPI.Web.Framework.Caching.NexusExport;
 using StardewModdingAPI.Web.Framework.Caching.Wiki;
+using StardewModdingAPI.Web.Framework.Clients.Nexus;
+using StardewModdingAPI.Web.Framework.ConfigModels;
 
 namespace StardewModdingAPI.Web
 {
@@ -27,9 +33,21 @@ namespace StardewModdingAPI.Web
         /// <summary>The cache in which to store mod data.</summary>
         private static IModCacheRepository? ModCache;
 
+        /// <summary>The cache in which to store mod data from the Nexus export API.</summary>
+        private static INexusExportCacheRepository? NexusExportCache;
+
+        /// <summary>The HTTP client for fetching the mod export from the Nexus Mods export API.</summary>
+        private static INexusExportApiClient? NexusExportApiClient;
+
+        /// <summary>The config settings for mod update checks.</summary>
+        private static IOptions<ModUpdateCheckConfig>? UpdateCheckConfig;
+
         /// <summary>Whether the service has been started.</summary>
-        [MemberNotNullWhen(true, nameof(BackgroundService.JobServer), nameof(BackgroundService.WikiCache), nameof(BackgroundService.ModCache))]
+        [MemberNotNullWhen(true, nameof(BackgroundService.JobServer), nameof(BackgroundService.ModCache), nameof(NexusExportApiClient), nameof(NexusExportCache), nameof(BackgroundService.UpdateCheckConfig), nameof(BackgroundService.WikiCache))]
         private static bool IsStarted { get; set; }
+
+        /// <summary>The number of minutes the Nexus export should be considered valid based on its last-updated date before it's ignored.</summary>
+        private static int NexusExportStaleAge => (BackgroundService.UpdateCheckConfig?.Value.SuccessCacheMinutes ?? 0) + 10;
 
 
         /*********
@@ -41,12 +59,20 @@ namespace StardewModdingAPI.Web
         /// <summary>Construct an instance.</summary>
         /// <param name="wikiCache">The cache in which to store wiki metadata.</param>
         /// <param name="modCache">The cache in which to store mod data.</param>
+        /// <param name="nexusExportCache">The cache in which to store mod data from the Nexus export API.</param>
+        /// <param name="nexusExportApiClient">The HTTP client for fetching the mod export from the Nexus Mods export API.</param>
         /// <param name="hangfireStorage">The Hangfire storage implementation.</param>
+        /// <param name="updateCheckConfig">The config settings for mod update checks.</param>
         [SuppressMessage("ReSharper", "UnusedParameter.Local", Justification = "The Hangfire reference forces it to initialize first, since it's needed by the background service.")]
-        public BackgroundService(IWikiCacheRepository wikiCache, IModCacheRepository modCache, JobStorage hangfireStorage)
+        public BackgroundService(IWikiCacheRepository wikiCache, IModCacheRepository modCache, INexusExportCacheRepository nexusExportCache, INexusExportApiClient nexusExportApiClient, JobStorage hangfireStorage, IOptions<ModUpdateCheckConfig> updateCheckConfig)
         {
             BackgroundService.WikiCache = wikiCache;
             BackgroundService.ModCache = modCache;
+            BackgroundService.NexusExportCache = nexusExportCache;
+            BackgroundService.NexusExportApiClient = nexusExportApiClient;
+            BackgroundService.UpdateCheckConfig = updateCheckConfig;
+
+            _ = hangfireStorage; // this parameter is only received so it's initialized before the background service
         }
 
         /// <summary>Start the service.</summary>
@@ -55,13 +81,19 @@ namespace StardewModdingAPI.Web
         {
             this.TryInit();
 
+            bool enableNexusExport = BackgroundService.NexusExportApiClient is not DisabledNexusExportApiClient;
+
             // set startup tasks
             BackgroundJob.Enqueue(() => BackgroundService.UpdateWikiAsync());
+            if (enableNexusExport)
+                BackgroundJob.Enqueue(() => BackgroundService.UpdateNexusExportAsync());
             BackgroundJob.Enqueue(() => BackgroundService.RemoveStaleModsAsync());
 
             // set recurring tasks
-            RecurringJob.AddOrUpdate(() => BackgroundService.UpdateWikiAsync(), "*/10 * * * *"); // every 10 minutes
-            RecurringJob.AddOrUpdate(() => BackgroundService.RemoveStaleModsAsync(), "0 * * * *"); // hourly
+            RecurringJob.AddOrUpdate("update wiki data", () => BackgroundService.UpdateWikiAsync(), "*/10 * * * *");      // every 10 minutes
+            if (enableNexusExport)
+                RecurringJob.AddOrUpdate("update Nexus export", () => BackgroundService.UpdateNexusExportAsync(), "*/10 * * * *");
+            RecurringJob.AddOrUpdate("remove stale mods", () => BackgroundService.RemoveStaleModsAsync(), "2/10 * * * *"); // offset by 2 minutes so it runs after updates (e.g. 00:02, 00:12, etc)
 
             BackgroundService.IsStarted = true;
 
@@ -100,13 +132,34 @@ namespace StardewModdingAPI.Web
             BackgroundService.WikiCache.SaveWikiData(wikiCompatList.StableVersion, wikiCompatList.BetaVersion, wikiCompatList.Mods);
         }
 
+        /// <summary>Update the cached Nexus mod dump.</summary>
+        [AutomaticRetry(Attempts = 3, DelaysInSeconds = new[] { 30, 60, 120 })]
+        public static async Task UpdateNexusExportAsync()
+        {
+            if (!BackgroundService.IsStarted)
+                throw new InvalidOperationException($"Must call {nameof(BackgroundService.StartAsync)} before scheduling tasks.");
+
+            NexusFullExport data = await BackgroundService.NexusExportApiClient.FetchExportAsync();
+
+            var cache = BackgroundService.NexusExportCache;
+            cache.SetData(data);
+            if (cache.IsStale(BackgroundService.NexusExportStaleAge))
+                cache.SetData(null); // if the export is too old, fetch fresh mod data from the site/API instead
+        }
+
         /// <summary>Remove mods which haven't been requested in over 48 hours.</summary>
         public static Task RemoveStaleModsAsync()
         {
             if (!BackgroundService.IsStarted)
                 throw new InvalidOperationException($"Must call {nameof(BackgroundService.StartAsync)} before scheduling tasks.");
 
+            // remove mods in mod cache
             BackgroundService.ModCache.RemoveStaleMods(TimeSpan.FromHours(48));
+
+            // remove stale export cache
+            if (BackgroundService.NexusExportCache.IsStale(BackgroundService.NexusExportStaleAge))
+                BackgroundService.NexusExportCache.SetData(null);
+
             return Task.CompletedTask;
         }
 

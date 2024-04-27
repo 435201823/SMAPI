@@ -1,6 +1,20 @@
 ← [README](README.md)
 
 # Release notes
+## 4.0.8
+Released 21 April 2024 for Stardew Valley 1.6.4 or later.
+
+* For players:
+  * Added option to disable Harmony fix for players with certain crashes.
+  * Fixed crash for non-English players in split-screen mode when mods translate some vanilla assets.
+  * SMAPI no longer rewrites mods which use Harmony 1.x, to help reduce Harmony crashes.  
+    _This should affect very few mods that still work otherwise, and any Harmony mod updated after July 2021 should be unaffected._
+  * Updated mod compatibility list to prevent common crashes.
+
+* For the update check server:
+  * Rewrote update checks for mods on Nexus Mods to use a new Nexus API endpoint.  
+    _This should result in much faster update checks for Nexus, and less chance of update-check errors when the Nexus servers are under heavy load._
+
 ## 4.0.7
 Released 18 April 2024 for Stardew Valley 1.6.4 or later.
 

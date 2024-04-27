@@ -491,6 +491,11 @@
             "~1.0.1 | Status": "AssumeBroken",
             "~1.0.1 | StatusReasonDetails": "affected by breaking changes in the Json Assets mod API"
         },
+        "Socializing Skill": {
+            "ID": "drbirbdev.SocializingSkill",
+            "~2.0.5 | Status": "AssumeBroken",
+            "~2.0.5 | StatusReasonDetails": "Harmony patches fail at runtime and cause hard game crash"
+        },
         "Split Screen Manager": {
             "ID": "RomenH.SplitScreenManager",
             "~1.0.0 | Status": "AssumeBroken",

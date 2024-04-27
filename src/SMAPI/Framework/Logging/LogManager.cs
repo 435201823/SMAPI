@@ -261,7 +261,8 @@ namespace StardewModdingAPI.Framework.Logging
         /// <param name="skippedMods">The mods which could not be loaded.</param>
         /// <param name="logParanoidWarnings">Whether to log issues for mods which directly use potentially sensitive .NET APIs like file or shell access.</param>
         /// <param name="logTechnicalDetailsForBrokenMods">Whether to include more technical details about broken mods in the TRACE logs. This is mainly useful for creating compatibility rewriters.</param>
-        public void LogModInfo(IModMetadata[] loaded, IModMetadata[] loadedContentPacks, IModMetadata[] loadedMods, IModMetadata[] skippedMods, bool logParanoidWarnings, bool logTechnicalDetailsForBrokenMods)
+        /// <param name="hasHarmonyFix">Whether Harmony was fixed to work with Stardew Valley.</param>
+        public void LogModInfo(IModMetadata[] loaded, IModMetadata[] loadedContentPacks, IModMetadata[] loadedMods, IModMetadata[] skippedMods, bool logParanoidWarnings, bool logTechnicalDetailsForBrokenMods, bool hasHarmonyFix)
         {
             // log loaded mods
             this.Monitor.LogTra("console.log-manager.loaded-mods-count", new { PunctuationFormat = (loadedMods.Length > 0 ? ":" : "."), LoadedModsLength = loadedMods.Length }, LogLevel.Info);
@@ -300,7 +301,7 @@ namespace StardewModdingAPI.Framework.Logging
             }
 
             // log mod warnings
-            this.LogModWarnings(loaded, skippedMods, logParanoidWarnings, logTechnicalDetailsForBrokenMods);
+            this.LogModWarnings(loaded, skippedMods, logParanoidWarnings, logTechnicalDetailsForBrokenMods, hasHarmonyFix);
         }
 
         /// <inheritdoc />
@@ -318,8 +319,9 @@ namespace StardewModdingAPI.Framework.Logging
         /// <param name="skippedMods">The mods which could not be loaded.</param>
         /// <param name="logParanoidWarnings">Whether to log issues for mods which directly use potentially sensitive .NET APIs like file or shell access.</param>
         /// <param name="logTechnicalDetailsForBrokenMods">Whether to include more technical details about broken mods in the TRACE logs. This is mainly useful for creating compatibility rewriters.</param>
+        /// <param name="hasHarmonyFix">Whether Harmony was fixed to work with Stardew Valley.</param>
         [SuppressMessage("ReSharper", "ConditionalAccessQualifierIsNonNullableAccordingToAPIContract", Justification = "Manifests aren't guaranteed non-null at this point in the loading process.")]
-        private void LogModWarnings(IEnumerable<IModMetadata> mods, IModMetadata[] skippedMods, bool logParanoidWarnings, bool logTechnicalDetailsForBrokenMods)
+        private void LogModWarnings(IEnumerable<IModMetadata> mods, IModMetadata[] skippedMods, bool logParanoidWarnings, bool logTechnicalDetailsForBrokenMods, bool hasHarmonyFix)
         {
             // get mods with warnings
             IModMetadata[] modsWithWarnings = mods
@@ -391,6 +393,15 @@ namespace StardewModdingAPI.Framework.Logging
                     I18nUtilities.Get("console.log-manager.broken-mods-crashes-in-game")
                 );
 
+                // missing Harmony fix
+                if (!hasHarmonyFix)
+                {
+                    this.LogModWarningGroup(modsWithWarnings, ModWarning.PatchesGame, LogLevel.Warn, "Patched game code without Harmony fix",
+                        $"These mods directly change the game code using Harmony, but you disabled the {nameof(SConfig.FixHarmony)} option.",
+                        "The game will probably crash soon."
+                    );
+                }
+
                 // changes serializer
                 this.LogModWarningGroup(modsWithWarnings, ModWarning.ChangesSaveSerializer, LogLevel.Warn,
                     I18nUtilities.Get("console.log-manager.changed-save-serializer"),
@@ -399,11 +410,14 @@ namespace StardewModdingAPI.Framework.Logging
                 );
 
                 // patched game code
-                this.LogModWarningGroup(modsWithWarnings, ModWarning.PatchesGame, LogLevel.Info,
+                if (hasHarmonyFix)
+                {
+                    this.LogModWarningGroup(modsWithWarnings, ModWarning.PatchesGame, LogLevel.Info,
                     I18nUtilities.Get("console.log-manager.patched-game-code"),
                     I18nUtilities.Get("console.log-manager.patched-game-code-warn"),
                     I18nUtilities.Get("console.log-manager.patched-game-code-suggestion")
-                );
+                    );
+                }
 
                 // unvalidated update tick
                 this.LogModWarningGroup(modsWithWarnings, ModWarning.UsesUnvalidatedUpdateTick, LogLevel.Info,

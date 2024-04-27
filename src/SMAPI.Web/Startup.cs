@@ -10,9 +10,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using StardewModdingAPI.Toolkit.Framework.Clients.NexusExport;
 using StardewModdingAPI.Toolkit.Serialization;
 using StardewModdingAPI.Web.Framework;
 using StardewModdingAPI.Web.Framework.Caching.Mods;
+using StardewModdingAPI.Web.Framework.Caching.NexusExport;
 using StardewModdingAPI.Web.Framework.Caching.Wiki;
 using StardewModdingAPI.Web.Framework.Clients.Chucklefish;
 using StardewModdingAPI.Web.Framework.Clients.CurseForge;
@@ -78,6 +80,7 @@ namespace StardewModdingAPI.Web
 
             // init storage
             services.AddSingleton<IModCacheRepository>(new ModCacheMemoryRepository());
+            services.AddSingleton<INexusExportCacheRepository>(new NexusExportCacheMemoryRepository());
             services.AddSingleton<IWikiCacheRepository>(new WikiCacheMemoryRepository());
 
             // init Hangfire
@@ -130,21 +133,33 @@ namespace StardewModdingAPI.Web
                     modUrlFormat: api.ModDropModPageUrl
                 ));
 
-                if (!string.IsNullOrWhiteSpace(api.NexusApiKey))
+                if (!string.IsNullOrWhiteSpace(api.NexusExportUrl))
                 {
-                    services.AddSingleton<INexusClient>(new NexusClient(
-                        webUserAgent: userAgent,
-                        webBaseUrl: api.NexusBaseUrl,
-                        webModUrlFormat: api.NexusModUrlFormat,
-                        webModScrapeUrlFormat: api.NexusModScrapeUrlFormat,
-                        apiAppVersion: version,
-                        apiKey: api.NexusApiKey
-                    ));
+                    services.AddSingleton<INexusExportApiClient>(
+                        new NexusExportApiClient(
+                            userAgent: userAgent,
+                            baseUrl: api.NexusExportUrl
+                        )
+                    );
                 }
                 else
+                    services.AddSingleton<INexusExportApiClient>(new DisabledNexusExportApiClient());
+
+                if (!string.IsNullOrWhiteSpace(api.NexusApiKey))
                 {
-                    services.AddSingleton<INexusClient>(new DisabledNexusClient());
+                    services.AddSingleton<INexusClient>(
+                        provider => new NexusClient(
+                            webUserAgent: userAgent,
+                            webBaseUrl: api.NexusBaseUrl,
+                            webModUrlFormat: api.NexusModUrlFormat,
+                            webModScrapeUrlFormat: api.NexusModScrapeUrlFormat,
+                            apiAppVersion: version,
+                            apiKey: api.NexusApiKey,
+                            provider.GetService<INexusExportCacheRepository>()
+                        ));
                 }
+                else
+                    services.AddSingleton<INexusClient>(new DisabledNexusClient());
 
                 services.AddSingleton<IPastebinClient>(new PastebinClient(
                     baseUrl: api.PastebinBaseUrl,
