@@ -294,16 +294,14 @@ namespace StardewModdingAPI.Metadata
 
                 // 32-bit to 64-bit in Stardew Valley 1.5.5
                 yield return new ArchitectureAssemblyRewriter();
-
-                // detect Harmony & rewrite for SMAPI 3.12 (Harmony 1.x => 2.0 update)
-                yield return new HarmonyRewriter();
             }
-            else
-                yield return new HarmonyRewriter(shouldRewrite: false);
 
             /****
             ** detect mod issues
             ****/
+            // Harmony usage
+            yield return new HarmonyDetector();
+
             // broken code
             yield return new ReferenceToInvalidMemberFinder(this.ValidateReferencesToAssemblies, logTechnicalDetailsForBrokenMods);
 

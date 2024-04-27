@@ -131,6 +131,13 @@ namespace StardewModdingAPI.Framework.ContentManagers
         }
 
         /// <inheritdoc />
+        public sealed override T Load<T>(string assetName, LanguageCode language)
+        {
+            IAssetName parsedAssetName = this.Coordinator.ParseAssetName(this.PrenormalizeRawAssetName(assetName), allowLocales: this.TryLocalizeKeys);
+            return this.LoadLocalized<T>(parsedAssetName, this.Language, true);
+        }
+
+        /// <inheritdoc />
         [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Inherited from base method.")]
         public sealed override T LoadImpl<T>(string base_asset_name, string localized_asset_name, LanguageCode language_code)
         {

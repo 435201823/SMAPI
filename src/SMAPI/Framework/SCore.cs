@@ -281,7 +281,8 @@ namespace StardewModdingAPI.Framework
                 GameRunner.instance = this.Game;
 
                 // fix Harmony for mods
-                MiniMonoModHotfix.Apply();
+                if (this.Settings.FixHarmony)
+                    MiniMonoModHotfix.Apply();
 
                 // set window titles
                 this.UpdateWindowTitles();
@@ -1749,7 +1750,7 @@ namespace StardewModdingAPI.Framework
             this.ModRegistry.AreAllModsLoaded = true;
 
             // log mod info
-            this.LogManager.LogModInfo(loaded, loadedContentPacks, loadedMods, skippedMods.ToArray(), this.Settings.ParanoidWarnings, this.Settings.LogTechnicalDetailsForBrokenMods);
+            this.LogManager.LogModInfo(loaded, loadedContentPacks, loadedMods, skippedMods.ToArray(), this.Settings.ParanoidWarnings, this.Settings.LogTechnicalDetailsForBrokenMods, this.Settings.FixHarmony);
 
             // initialize translations
             this.ReloadTranslations(loaded);
