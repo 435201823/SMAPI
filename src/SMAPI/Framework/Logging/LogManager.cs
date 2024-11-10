@@ -336,12 +336,6 @@ namespace StardewModdingAPI.Framework.Logging
             if (!modsWithWarnings.Any() && !skippedMods.Any())
                 return;
 
-            // log intro
-            {
-                int count = modsWithWarnings.Length + skippedMods.Length;
-                this.Monitor.Log(I18nUtilities.Get("console.log-manager.found-mod-with-warnings", new { count, ModCountFormat = count == 1 ? "" : "s" }), LogLevel.Info);
-            }
-
             // log skipped mods
             if (skippedMods.Any())
             {
