@@ -54,7 +54,7 @@
                     "Section": {
                         "title": "Section",
                         "description": "An optional section key to group related fields on config UIs. This can be the literal text to show, or you can add a translation with the key 'config.section.<section value>.name' and '.description' to add a translated name & tooltip.",
-                        "type": "string" 
+                        "type": "string"
                     },
 
                     "additionalProperties": false
@@ -257,10 +257,7 @@
                     "Entries": {
                         "title": "Entries",
                         "description": "The entries in the data file you want to add, replace, or delete. If you only want to change a few fields, use Fields instead for best compatibility with other mods. To add an entry, just specify a key that doesn't exist; to delete an entry, set the value to null (like \"some key\": null). This field supports tokens in entry keys and values.\nCaution: some XNB files have extra fields at the end for translations; when adding or replacing an entry for all locales, make sure you include the extra fields to avoid errors for non-English players.",
-                        "type": "object",
-                        "additionalProperties": {
-                            "type": [ "object", "string" ]
-                        }
+                        "type": "object"
                     },
                     "MoveEntries": {
                         "title": "Move entries",
@@ -557,7 +554,7 @@
         "Condition": {
             "type": "object",
             "additionalProperties": {
-                "type": [ "boolean", "string" ]
+                "type": [ "boolean", "integer", "string" ]
             }
         },
         "Position": {

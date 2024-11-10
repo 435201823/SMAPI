@@ -134,7 +134,7 @@ namespace StardewModdingAPI.Framework.ContentManagers
         public sealed override T Load<T>(string assetName, LanguageCode language)
         {
             IAssetName parsedAssetName = this.Coordinator.ParseAssetName(this.PrenormalizeRawAssetName(assetName), allowLocales: this.TryLocalizeKeys);
-            return this.LoadLocalized<T>(parsedAssetName, this.Language, true);
+            return this.LoadLocalized<T>(parsedAssetName, language, true);
         }
 
         /// <inheritdoc />
