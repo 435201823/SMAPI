@@ -282,9 +282,14 @@ namespace StardewModdingAPI.Framework.ModLoading
             {
                 string[] failedModNames = (
                     from entry in dependencies
-                    where entry.IsRequired && entry.Mod == null
-                    let displayName = modDatabase.Get(entry.ID)?.DisplayName ?? entry.ID
+                    where entry is { IsRequired: true, Mod: null }
+
+                    let dataEntry = modDatabase.Get(entry.ID)
+                    where dataEntry?.IgnoreDependencies is not true
+
+                    let displayName = dataEntry?.DisplayName ?? entry.ID
                     let modUrl = modDatabase.GetModPageUrlFor(entry.ID)
+
                     orderby displayName
                     select modUrl != null
                         ? $"{displayName}: {modUrl}"

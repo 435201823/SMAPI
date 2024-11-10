@@ -6,6 +6,7 @@
   * Fixed installer not detecting Linux Flatpak install paths.
   * Fixed content issues for non-English players in recent builds (e.g. content packs not detecting the current festival correctly).
   * Fixed dried items, pickled forage, smoked fish, and specific bait not handled by console commands like `list_items` or `player_add`.
+  * Fixed dependencies on transparently obsolete mods not ignored in some cases.
 
 * For mod authors:
   * Updated dependencies, including...
@@ -19,7 +20,7 @@
     _This should result in much faster update checks for CurseForge, and less chance of update-check errors when the CurseForge servers are under heavy load._
 
 * For the web UI:
-  * Updated JSON validator for Content Patcher 2.1.0.
+  * Updated JSON validator for Content Patcher 2.1.0 and 2.2.0.
   * Fixed the log parser showing the wrong game folder path if the `Mods` folder path was customized.
   * Fixed JSON validator for Content Patcher showing incorrect errors for..
     * some valid `Entries`, `Fields`, `MapProperties`, `MapTiles`, and `When` field values;

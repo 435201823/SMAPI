@@ -117,35 +117,21 @@ namespace StardewModdingAPI.Web.Framework.Clients.CurseForge
 
             // get downloads
             var downloads = new List<IModDownload>();
+            foreach (CurseForgeFileExport file in data.Files)
             {
-                bool foundMain = false;
-                var fallbackDownloads = new List<IModDownload>();
-
-                foreach (CurseForgeFileExport file in data.Files)
+                // CurseForge imports files from Nexus into groups, but files uploaded manually still have a group type
+                // set to null or zero.
+                switch (file.FileGroupType)
                 {
-                    switch (file.FileGroupType)
-                    {
-                        case null:
-                        case CurseForgeFileGroupType.None:
-                            fallbackDownloads.Add(
-                                new GenericModDownload(file.DisplayName ?? file.FileName ?? file.Id.ToString(), null, this.GetRawVersion(null, file.FileName))
-                            );
-                            break;
-
-                        case CurseForgeFileGroupType.Main:
-                        case CurseForgeFileGroupType.Optional:
-                            if (file.FileGroupType is CurseForgeFileGroupType.Main)
-                                foundMain = true;
-
-                            downloads.Add(
-                                new GenericModDownload(file.DisplayName ?? file.FileName ?? file.Id.ToString(), null, this.GetRawVersion(null, file.FileName))
-                            );
-                            break;
-                    }
+                    case null:
+                    case CurseForgeFileGroupType.None:
+                    case CurseForgeFileGroupType.Main:
+                    case CurseForgeFileGroupType.Optional:
+                        downloads.Add(
+                            new GenericModDownload(file.DisplayName ?? file.FileName ?? file.Id.ToString(), null, this.GetRawVersion(null, file.FileName))
+                        );
+                        break;
                 }
-
-                if (!foundMain) // if there's no main download, it may predate file categories
-                    downloads.AddRange(fallbackDownloads);
             }
 
             // yield info
