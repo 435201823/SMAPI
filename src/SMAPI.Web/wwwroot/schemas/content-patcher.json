@@ -90,19 +90,15 @@
                         "type": "string",
                         "allOf": [
                             {
-                                "pattern": "^ *Custom_"
+                                "pattern": "._."
                             },
                             {
-                                "pattern": "^ *[a-zA-Z0-9_]+ *$"
-                            },
-                            {
-                                "pattern": "^ *Custom_.+_.+ *$"
+                                "pattern": "^ *[a-zA-Z0-9_\\.]+ *$"
                             }
                         ],
                         "@errorMessages": {
-                            "allOf:indexes: 0": "Custom location names must start with the exact text 'Custom_'.",
-                            "allOf:indexes: 1": "Custom location names can only contain alphanumeric or underscore characters.",
-                            "allOf:indexes: 2": "The location name should have three parts separated by underscores: the exact text 'Custom', a short label or acronym for your mod, and a map name (like 'Custom_YourModName_MapName'). Although not strictly required, this is very strongly recommended due to the consequences if two mods accidentally use the same location name."
+                            "allOf:indexes: 0": "Custom location names must be prefixed with your mod's ID (like 'Example.ModName_LocationName') or the exact text 'Custom_' (deprecated).",
+                            "allOf:indexes: 1": "Custom location names can only contain alphanumeric, period, or underscore characters."
                         }
                     },
                     "FromMapFile": {

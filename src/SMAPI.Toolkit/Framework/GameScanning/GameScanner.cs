@@ -133,6 +133,7 @@ namespace StardewModdingAPI.Toolkit.Framework.GameScanning
                         yield return Directory.Exists($"{home}/.steam/steam/steamapps/common/Stardew Valley")
                             ? $"{home}/.steam/steam/steamapps/common/Stardew Valley"
                             : $"{home}/.local/share/Steam/steamapps/common/Stardew Valley";
+                        yield return $"{home}/.var/app/com.valvesoftware.Steam/data/Steam/steamapps/common/Stardew Valley"; // Flatpak
 
                         // macOS
                         yield return "/Applications/Stardew Valley.app/Contents/MacOS";
