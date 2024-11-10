@@ -1,16 +1,13 @@
-@using Microsoft.Extensions.Options
 @using StardewModdingAPI.Web.Framework
-@using StardewModdingAPI.Web.Framework.ConfigModels
-@inject IOptions<SiteConfig> SiteConfig
 @model StardewModdingAPI.Web.ViewModels.IndexModel
 @{
     ViewData["Title"] = "SMAPI";
     ViewData["ViewTitle"] = string.Empty;
 }
 @section Head {
-    <link rel="stylesheet" href="~/Content/css/index.css" />
+    <link rel="stylesheet" href="@Url.ContentWithCacheBust("~/Content/css/index.css")" />
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1" crossorigin="anonymous"></script>
-    <script src="~/Content/js/index.js?r=20220708"></script>
+    <script src="@Url.ContentWithCacheBust("~/Content/js/index.js")"></script>
 }
 
 <h1>
@@ -24,7 +21,7 @@
 
 <div id="call-to-action">
     <div class="cta-dropdown">
-        <a href="@Model!.StableVersion.DownloadUrl" class="main-cta download">Download SMAPI @Model.StableVersion.Version</a><br />
+        <a href="@Model.StableVersion.DownloadUrl" class="main-cta download">Download SMAPI @Model.StableVersion.Version</a><br />
         <div class="dropdown-content">
             <a href="https://www.nexusmods.com/stardewvalley/mods/2400"><img src="Content/images/nexus-icon.svg" /> Download from Nexus</a>
             <a href="https://www.curseforge.com/stardewvalley/utility/smapi"><img src="Content/images/curseforge-icon.svg" /> Download from CurseForge</a>
@@ -89,9 +86,9 @@
     }
 </div>
 
-    <h2 id="modcreators">For mod creators</h2>
-    <ul>
-        <li><a href="@Model.StableVersion.DevDownloadUrl">SMAPI @Model.StableVersion.Version for developers</a> (includes <a href="https://docs.microsoft.com/en-us/visualstudio/ide/using-intellisense">intellisense</a> and full console output)</li>
-        <li><a href="https://stardewvalleywiki.com/Modding:Index">Modding documentation</a></li>
-        <li><a href="https://github.com/Pathoschild/SMAPI">Source code</a></li>
-    </ul>
+<h2 id="modcreators">For mod creators</h2>
+<ul>
+    <li><a href="@Model.StableVersion.DevDownloadUrl">SMAPI @Model.StableVersion.Version for developers</a> (includes <a href="https://docs.microsoft.com/en-us/visualstudio/ide/using-intellisense">intellisense</a> and full console output)</li>
+    <li><a href="https://stardewvalleywiki.com/Modding:Index">Modding documentation</a></li>
+    <li><a href="https://github.com/Pathoschild/SMAPI">Source code</a></li>
+</ul>

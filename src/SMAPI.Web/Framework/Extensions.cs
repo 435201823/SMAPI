@@ -52,6 +52,16 @@ namespace StardewModdingAPI.Web.Framework
             return url;
         }
 
+        /// <summary>Convert a virtual (relative, starting with ~/) path to an application absolute path, and append a query argument to force browsers to re-download the asset if needed.</summary>
+        /// <param name="helper">The URL helper to extend.</param>
+        /// <param name="url">The virtual path of the content.</param>
+        public static string ContentWithCacheBust(this IUrlHelper helper, string url)
+        {
+            char delimiter = url.Contains('?') ? '&' : '?';
+
+            return helper.Content($"{url}{delimiter}v={Program.CacheBustValue}");
+        }
+
         /// <summary>Get a serialized JSON representation of the value.</summary>
         /// <param name="page">The page to extend.</param>
         /// <param name="value">The value to serialize.</param>

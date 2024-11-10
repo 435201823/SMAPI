@@ -376,6 +376,11 @@
             "~0.1.1 | Status": "AssumeBroken",
             "~0.1.1 | StatusReasonDetails": "Harmony patches fail at runtime"
         },
+        "No Fence Decay": {
+            "ID": "cat.nofencedecay",
+            "~1.5.0 | Status": "AssumeBroken",
+            "~1.5.0 | StatusReasonDetails": "causes runtime errors"
+        },
         "NPC Clothing": {
             "ID": "aedenthorn.NPCClothing",
             "~0.1.0 | Status": "AssumeBroken",

@@ -42,15 +42,15 @@
     {
         <meta name="robots" content="noindex" />
     }
-    <link rel="stylesheet" href="~/Content/css/file-upload.css" />
-    <link rel="stylesheet" href="~/Content/css/log-parser.css?r=20221009" />
+    <link rel="stylesheet" href="@Url.ContentWithCacheBust("~/Content/css/file-upload.css")" />
+    <link rel="stylesheet" href="@Url.ContentWithCacheBust("~/Content/css/log-parser.css")" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tabbyjs@12.0.3/dist/css/tabby-ui-vertical.min.css" />
 
     <script src="https://cdn.jsdelivr.net/npm/tabbyjs@12.0.3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1" crossorigin="anonymous"></script>
-    <script src="~/Content/js/file-upload.js"></script>
-    <script src="~/Content/js/log-parser.js"></script>
+    <script src="@Url.ContentWithCacheBust("~/Content/js/file-upload.js")"></script>
+    <script src="@Url.ContentWithCacheBust("~/Content/js/log-parser.js")"></script>
 
     <script id="serializedData" type="application/json">
         @if (!Model.ShowRaw)
