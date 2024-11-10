@@ -177,7 +177,7 @@ namespace StardewModdingAPI.Web.Framework.Clients.Nexus
                     .GetAsync(string.Format(this.WebModScrapeUrlFormat, id))
                     .AsString();
             }
-            catch (ApiException ex) when (ex.Status == HttpStatusCode.NotFound)
+            catch (ApiException ex) when (ex.Status is HttpStatusCode.NotFound or HttpStatusCode.Forbidden)
             {
                 return null;
             }

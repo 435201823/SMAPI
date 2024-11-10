@@ -22,6 +22,9 @@ namespace StardewModdingAPI.Web.Framework.LogParsing
         /// <summary>A regex pattern matching SMAPI's mod folder path line.</summary>
         private readonly Regex ModPathPattern = new(@"^Mods go here: (?<path>.+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        /// <summary>A regex pattern matching SMAPI's mod folder path line.</summary>
+        private readonly Regex GamePathPattern = new(@"^\(Using custom --mods-path argument\. Game folder: (?<path>.+)\.\)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         /// <summary>A regex pattern matching SMAPI's log timestamp line.</summary>
         private readonly Regex LogStartedAtPattern = new(@"^Log started at (?<timestamp>.+) UTC", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -224,6 +227,13 @@ namespace StardewModdingAPI.Web.Framework.LogParsing
                             log.GamePath = lastDelimiterPos >= 0
                                 ? log.ModPath[..lastDelimiterPos]
                                 : log.ModPath;
+                        }
+
+                        // game path line
+                        else if (message.Level == LogLevel.Trace && this.GamePathPattern.IsMatch(message.Text))
+                        {
+                            Match match = this.GamePathPattern.Match(message.Text);
+                            log.GamePath = match.Groups["path"].Value;
                         }
 
                         // log UTC timestamp line
