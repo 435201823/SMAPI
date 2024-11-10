@@ -14,9 +14,9 @@
             "title": "Format version",
             "description": "The format version. You should always use the latest version to enable the latest features, avoid obsolete behavior, and reduce load times.",
             "type": "string",
-            "pattern": "^2\\.0\\.[0-9]+$",
+            "pattern": "^2\\.1\\.[0-9]+$",
             "@errorMessages": {
-                "pattern": "Incorrect value '@value'. You should always use the latest format version (currently 2.0.0) to enable the latest features, avoid obsolete behavior, and reduce load times."
+                "pattern": "Incorrect value '@value'. You should always use the latest format version (currently 2.1.0) to enable the latest features, avoid obsolete behavior, and reduce load times."
             }
         },
         "ConfigSchema": {
@@ -191,6 +191,15 @@
                             "not": "Invalid target; it shouldn't include the 'Content/' folder, '.xnb' extension, or locale code."
                         }
                     },
+                    "TargetLocale": {
+                        "title": "Target locale",
+                        "description": "The locale code in the target asset's name to match (like 'fr-FR' to target `Characters/Dialogue/Abigail.fr-FR`), or an empty string to match only the base unlocalized asset, or omit to match all localized or unlocalized variants of the target asset.",
+                        "type": "string",
+                        "pattern": "^ *[a-zA-Z0-9_\\-]+ *$",
+                        "@errorMessages": {
+                            "pattern": "Invalid target locale; it should only contain alphanumeric, underscore, or dash characters."
+                        }
+                    },
                     "LogName": {
                         "title": "Patch log name",
                         "description": "A name for this patch shown in log messages. This is very useful for understanding errors; if not specified, will default to a name like 'entry #14 (EditImage Animals/Dinosaurs)'.",
@@ -253,7 +262,7 @@
                     "Entries": {
                         "title": "Entries",
                         "description": "The entries in the data file you want to add, replace, or delete. If you only want to change a few fields, use Fields instead for best compatibility with other mods. To add an entry, just specify a key that doesn't exist; to delete an entry, set the value to null (like \"some key\": null). This field supports tokens in entry keys and values.\nCaution: some XNB files have extra fields at the end for translations; when adding or replacing an entry for all locales, make sure you include the extra fields to avoid errors for non-English players.",
-                        "type": "object"
+                        "type": [ "object", "null" ]
                     },
                     "MoveEntries": {
                         "title": "Move entries",
@@ -340,7 +349,7 @@
                         "description": "The map properties (not tile properties) to add, replace, or delete. To add an property, just specify a key that doesn't exist; to delete an entry, set the value to null (like \"some key\": null). This field supports tokens in property keys and values.",
                         "type": "object",
                         "additionalProperties": {
-                            "type": "string"
+                            "type": [ "string", "null" ]
                         }
                     },
                     "MapTiles": {
@@ -373,7 +382,7 @@
                                     "description": "The properties to set or remove. This is merged into the existing tile properties, if any. To remove a property, set its value to `null` (not \"null\" in quotes).",
                                     "type": "object",
                                     "additionalProperties": {
-                                        "type": "string"
+                                        "type": [ "string", "null" ]
                                     }
                                 },
                                 "Remove": {

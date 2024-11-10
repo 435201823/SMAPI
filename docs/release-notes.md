@@ -12,9 +12,10 @@
   * Fixed player sprites and building paint masks not always propagated on change.
 
 * For the web UI:
+  * Updated JSON validator for Content Patcher 2.1.0.
   * Fixed the log parser showing the wrong game folder path if the `Mods` folder path was customized.
   * Fixed JSON validator for Content Patcher showing incorrect errors for..
-    * some valid `Entries`, `Fields`, and `When` field values;
+    * some valid `Entries`, `Fields`, `MapProperties`, `MapTiles`, and `When` field values;
     * `CustomLocations` entries which use the new [unique string ID](https://stardewvalleywiki.com/Modding:Common_data_field_types#Unique_string_ID) format;
     * `AddWarps` warps when a location name contains a dot.
 
