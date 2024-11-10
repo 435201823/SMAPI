@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FluentAssertions;
 using NUnit.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Toolkit.Framework.Clients.Wiki;
@@ -36,10 +37,10 @@ namespace SMAPI.Tests.WikiClient
             ChangeDescriptor parsed = ChangeDescriptor.Parse(rawDescriptor, out string[] errors);
 
             // assert
-            Assert.That(parsed.Add, Is.EquivalentTo(expectedAdd), $"{nameof(parsed.Add)} doesn't match the expected value.");
-            Assert.That(parsed.Remove, Is.EquivalentTo(expectedRemove), $"{nameof(parsed.Replace)} doesn't match the expected value.");
-            Assert.That(parsed.Replace, Is.EquivalentTo(expectedReplace), $"{nameof(parsed.Replace)} doesn't match the expected value.");
-            Assert.That(errors, Is.EquivalentTo(expectedErrors), $"{nameof(errors)} doesn't match the expected value.");
+            parsed.Add.Should().BeEquivalentTo(expectedAdd);
+            parsed.Remove.Should().BeEquivalentTo(expectedRemove);
+            parsed.Replace.Should().BeEquivalentTo(expectedReplace);
+            errors.Should().BeEquivalentTo(expectedErrors);
         }
 
         [Test(Description = "Assert that Parse sets the expected values for descriptors when a format callback is specified.")]
@@ -69,10 +70,10 @@ namespace SMAPI.Tests.WikiClient
             );
 
             // assert
-            Assert.That(parsed.Add, Is.EquivalentTo(expectedAdd), $"{nameof(parsed.Add)} doesn't match the expected value.");
-            Assert.That(parsed.Remove, Is.EquivalentTo(expectedRemove), $"{nameof(parsed.Replace)} doesn't match the expected value.");
-            Assert.That(parsed.Replace, Is.EquivalentTo(expectedReplace), $"{nameof(parsed.Replace)} doesn't match the expected value.");
-            Assert.That(errors, Is.EquivalentTo(expectedErrors), $"{nameof(errors)} doesn't match the expected value.");
+            parsed.Add.Should().BeEquivalentTo(expectedAdd);
+            parsed.Remove.Should().BeEquivalentTo(expectedRemove);
+            parsed.Replace.Should().BeEquivalentTo(expectedReplace);
+            errors.Should().BeEquivalentTo(expectedErrors);
         }
 
         [Test(Description = "Assert that Apply returns the expected value for the given descriptor.")]
@@ -111,7 +112,7 @@ namespace SMAPI.Tests.WikiClient
         {
             ChangeDescriptor parsed = ChangeDescriptor.Parse(descriptor, out string[] errors);
 
-            Assert.IsEmpty(errors, "Parsing the descriptor failed.");
+            errors.Should().BeEmpty();
 
             return parsed.ApplyToCopy(input);
         }
@@ -128,7 +129,7 @@ namespace SMAPI.Tests.WikiClient
         {
             var parsed = ChangeDescriptor.Parse(descriptor, out string[] errors);
 
-            Assert.IsEmpty(errors, "Parsing the descriptor failed.");
+            errors.Should().BeEmpty();
 
             return parsed.ToString();
         }

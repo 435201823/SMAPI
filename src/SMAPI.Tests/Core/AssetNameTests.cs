@@ -56,11 +56,10 @@ namespace SMAPI.Tests.Core
         public void Constructor_NullOrWhitespace(string? name)
         {
             // act
-            ArgumentException exception = Assert.Throws<ArgumentException>(() => _ = AssetName.Parse(name!, _ => null))!;
-
-            // assert
-            exception.ParamName.Should().Be("rawName");
-            exception.Message.Should().Be("The asset name can't be null or empty. (Parameter 'rawName')");
+            FluentActions.Invoking(() => _ = AssetName.Parse(name!, _ => null)).Should()
+                .Throw<ArgumentException>()
+                .WithParameterName("rawName")
+                .WithMessage("The asset name can't be null or empty. (Parameter 'rawName')");
         }
 
 

@@ -8,6 +8,9 @@
   * Fixed pickled forage not shown by `list_items` console command.
 
 * For mod authors:
+  * Updated dependencies, including...
+    * [FluentHttpClient](https://github.com/Pathoschild/FluentHttpClient#readme) 4.3.0 → 4.4.0 (see [changes](https://github.com/Pathoschild/FluentHttpClient/blob/develop/RELEASE-NOTES.md#440));
+    * [Pintail](https://github.com/Nanoray-pl/Pintail) 2.3.0 → 2.4.2 (see [changes](https://github.com/Nanoray-pl/Pintail/blob/master/docs/release-notes.md#242)).
   * Fixed `content.Load` ignoring language override in recent SMAPI builds.
   * Fixed player sprites and building paint masks not always propagated on change.
 

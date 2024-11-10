@@ -24,13 +24,10 @@
     <PackageReference Include="Mono.Cecil" Version="0.11.5" />
     <PackageReference Include="MonoMod.Common" Version="22.3.5.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Pathoschild.Http.FluentClient" Version="4.3.0" />
-    <PackageReference Include="Pintail" Version="2.3.0" />
+    <PackageReference Include="Pathoschild.Http.FluentClient" Version="4.4.0" />
+    <PackageReference Include="Pintail" Version="2.4.2" />
     <PackageReference Include="Platonymous.TMXTile" Version="1.5.9" />
     <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
-
-    <!-- legacy package; remove in SMAPI 4.0.0 -->
-    <PackageReference Include="System.Runtime.Caching" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>

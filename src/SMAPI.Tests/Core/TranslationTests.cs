@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Framework;
@@ -42,13 +43,12 @@ namespace SMAPI.Tests.Core
             Translation[]? translationList = helper.GetTranslations()?.ToArray();
 
             // assert
-            Assert.AreEqual("en", helper.Locale, "The locale doesn't match the input value.");
-            Assert.AreEqual(LocalizedContentManager.LanguageCode.en, helper.LocaleEnum, "The locale enum doesn't match the input value.");
-            Assert.IsNotNull(translationList, "The full list of translations is unexpectedly null.");
-            Assert.AreEqual(0, translationList!.Length, "The full list of translations is unexpectedly not empty.");
+            helper.Locale.Should().Be("en");
+            helper.LocaleEnum.Should().Be(LocalizedContentManager.LanguageCode.en);
+            translationList.Should().NotBeNull().And.BeEmpty();
 
-            Assert.IsNotNull(translation, "The translation helper unexpectedly returned a null translation.");
-            Assert.AreEqual(this.GetPlaceholderText("key"), translation.ToString(), "The translation returned an unexpected value.");
+            translation.Should().NotBeNull();
+            translation.ToString().Should().Be(this.GetPlaceholderText("key"));
         }
 
         [Test(Description = "Assert that the translation helper returns the expected translations correctly.")]
@@ -70,8 +70,9 @@ namespace SMAPI.Tests.Core
             // assert
             foreach (string locale in expected.Keys)
             {
-                Assert.IsNotNull(actual[locale], $"The translations for {locale} is unexpectedly null.");
-                Assert.That(actual[locale], Is.EquivalentTo(expected[locale]).Using<Translation, Translation>(this.CompareEquality), $"The translations for {locale} don't match the expected values.");
+                actual[locale].Should()
+                    .NotBeNull($"the translations for {locale} should be set")
+                    .And.BeEquivalentTo(expected[locale], $"the translations for {locale} should match the input values");
             }
         }
 
@@ -98,8 +99,9 @@ namespace SMAPI.Tests.Core
             // assert
             foreach (string locale in expected.Keys)
             {
-                Assert.IsNotNull(actual[locale], $"The translations for {locale} is unexpectedly null.");
-                Assert.That(actual[locale], Is.EquivalentTo(expected[locale]).Using<Translation, Translation>(this.CompareEquality), $"The translations for {locale} don't match the expected values.");
+                actual[locale].Should()
+                    .NotBeNull($"the translations for {locale} should be set")
+                    .And.BeEquivalentTo(expected[locale], $"the translations for {locale} should match the input values");
             }
         }
 
@@ -125,9 +127,9 @@ namespace SMAPI.Tests.Core
 
             // assert
             if (translation.HasValue())
-                Assert.AreEqual(text, translation.ToString(), "The translation returned an unexpected value given a valid input.");
+                translation.ToString().Should().Be(text, "the translation should match the valid input");
             else
-                Assert.AreEqual(this.GetPlaceholderText("key"), translation.ToString(), "The translation returned an unexpected value given a null or empty input.");
+                translation.ToString().Should().Be(this.GetPlaceholderText("key"), "the translation should match the placeholder given a null or empty input");
         }
 
         [Test(Description = "Assert that the translation's implicit string conversion returns the expected text for various inputs.")]
@@ -138,9 +140,9 @@ namespace SMAPI.Tests.Core
 
             // assert
             if (translation.HasValue())
-                Assert.AreEqual(text, (string?)translation, "The translation returned an unexpected value given a valid input.");
+                ((string?)translation).Should().Be(text, "the translation should match the valid input");
             else
-                Assert.AreEqual(this.GetPlaceholderText("key"), (string?)translation, "The translation returned an unexpected value given a null or empty input.");
+                ((string?)translation).Should().Be(this.GetPlaceholderText("key"), "the translation should match the placeholder given a null or empty input");
         }
 
         [Test(Description = "Assert that the translation returns the expected text given a use-placeholder setting.")]
@@ -151,11 +153,11 @@ namespace SMAPI.Tests.Core
 
             // assert
             if (translation.HasValue())
-                Assert.AreEqual(text, translation.ToString(), "The translation returned an unexpected value given a valid input.");
+                translation.ToString().Should().Be(text, "the translation should match the valid input");
             else if (!value)
-                Assert.AreEqual(text, translation.ToString(), "The translation returned an unexpected value given a null or empty input with the placeholder disabled.");
+                translation.ToString().Should().Be(text, "the translation should return the text as-is given a null or empty input with the placeholder disabled");
             else
-                Assert.AreEqual(this.GetPlaceholderText("key"), translation.ToString(), "The translation returned an unexpected value given a null or empty input with the placeholder enabled.");
+                translation.ToString().Should().Be(this.GetPlaceholderText("key"), "the translation should match the placeholder given a null or empty input with the placeholder enabled");
         }
 
         [Test(Description = "Assert that the translation returns the expected text after setting the default.")]
@@ -166,11 +168,11 @@ namespace SMAPI.Tests.Core
 
             // assert
             if (!string.IsNullOrEmpty(text))
-                Assert.AreEqual(text, translation.ToString(), "The translation returned an unexpected value given a valid base text.");
+                translation.ToString().Should().Be(text, "the translation should match the valid base text");
             else if (!string.IsNullOrEmpty(@default))
-                Assert.AreEqual(@default, translation.ToString(), "The translation returned an unexpected value given a null or empty base text, but valid default.");
+                translation.ToString().Should().Be(@default, "the translation should match the default text, given a null or empty base text and valid default.");
             else
-                Assert.AreEqual(this.GetPlaceholderText("key"), translation.ToString(), "The translation returned an unexpected value given a null or empty base and default text.");
+                translation.ToString().Should().Be(this.GetPlaceholderText("key"), translation.ToString(), "the translation should match the placeholder, given a null or empty base text and no default text");
         }
 
         /****
@@ -211,7 +213,7 @@ namespace SMAPI.Tests.Core
             }
 
             // assert
-            Assert.AreEqual(expected, translation.ToString(), "The translation returned an unexpected text.");
+            translation.ToString().Should().Be(expected);
         }
 
         [Test(Description = "Assert that the translation can replace tokens in all valid formats.")]
@@ -231,7 +233,7 @@ namespace SMAPI.Tests.Core
             Translation translation = new Translation("pt-BR", "key", text).Tokens(new Dictionary<string, object> { [key] = value });
 
             // assert
-            Assert.AreEqual(value, translation.ToString(), "The translation returned an unexpected value given a valid base text.");
+            translation.ToString().Should().Be(value);
         }
 
         [Test(Description = "Assert that translation tokens are case-insensitive and surrounding-whitespace-insensitive.")]
@@ -247,7 +249,7 @@ namespace SMAPI.Tests.Core
             Translation translation = new Translation("pt-BR", "key", text).Tokens(new Dictionary<string, object> { [key] = value });
 
             // assert
-            Assert.AreEqual(value, translation.ToString(), "The translation returned an unexpected value given a valid base text.");
+            translation.ToString().Should().Be(value);
         }
 
 
@@ -261,8 +263,8 @@ namespace SMAPI.Tests.Core
         private void AssertSetLocale(TranslationHelper helper, string locale, LocalizedContentManager.LanguageCode localeEnum)
         {
             helper.SetLocale(locale, localeEnum);
-            Assert.AreEqual(locale, helper.Locale, "The locale doesn't match the input value.");
-            Assert.AreEqual(localeEnum, helper.LocaleEnum, "The locale enum doesn't match the input value.");
+            helper.Locale.Should().Be(locale);
+            helper.LocaleEnum.Should().Be(localeEnum);
         }
 
         /// <summary>Get sample raw translations to input.</summary>
@@ -312,14 +314,6 @@ namespace SMAPI.Tests.Core
             };
             expected["en-us"] = expected["en"].ToArray();
             return expected;
-        }
-
-        /// <summary>Get whether two translations have the same public values.</summary>
-        /// <param name="a">The first translation to compare.</param>
-        /// <param name="b">The second translation to compare.</param>
-        private bool CompareEquality(Translation a, Translation b)
-        {
-            return a.Key == b.Key && a.ToString() == b.ToString();
         }
 
         /// <summary>Get the default placeholder text when a translation is missing.</summary>

@@ -416,6 +416,9 @@ The NuGet package is generated automatically in `StardewModdingAPI.ModBuildConfi
 when you compile it.
 
 ## Release notes
+## Upcoming release
+* Updated dependencies.
+
 ## 4.1.1
 Released 24 June 2023 for SMAPI 3.13.0 or later.
 

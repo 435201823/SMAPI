@@ -151,11 +151,6 @@ for folder in ${folders[@]}; do
         cp "$smapiBin/System.Management.dll" "$bundlePath/smapi-internal"
     fi
 
-    # copy legacy .NET dependencies (remove in SMAPI 4.0.0)
-    cp "$smapiBin/System.Configuration.ConfigurationManager.dll" "$bundlePath/smapi-internal"
-    cp "$smapiBin/System.Runtime.Caching.dll" "$bundlePath/smapi-internal"
-    cp "$smapiBin/System.Security.Permissions.dll" "$bundlePath/smapi-internal"
-
     # copy bundled mods
     for modName in ${bundleModNames[@]}; do
         fromPath="src/SMAPI.Mods.$modName/bin/$buildConfig/$runtime/publish"

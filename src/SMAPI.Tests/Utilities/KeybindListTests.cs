@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FluentAssertions;
 using NUnit.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
@@ -24,11 +25,10 @@ namespace SMAPI.Tests.Utilities
             bool success = KeybindList.TryParse($"{button}", out KeybindList? parsed, out string[] errors);
 
             // assert
-            Assert.IsTrue(success, "Parsing unexpectedly failed.");
-            Assert.IsNotNull(parsed, "The parsed result should not be null.");
-            Assert.AreEqual(parsed!.ToString(), $"{button}");
-            Assert.IsNotNull(errors, message: "The errors should never be null.");
-            Assert.IsEmpty(errors, message: "The input bindings incorrectly reported errors.");
+            success.Should().BeTrue();
+            parsed.Should().NotBeNull();
+            parsed!.ToString().Should().Be(button.ToString());
+            errors.Should().NotBeNull().And.BeEmpty();
         }
 
         /// <summary>Assert the parsed fields when constructed from multi-key values.</summary>
@@ -50,10 +50,10 @@ namespace SMAPI.Tests.Utilities
             bool success = KeybindList.TryParse(input, out KeybindList? parsed, out string[] errors);
 
             // assert
-            Assert.IsTrue(success, "Parsing unexpectedly failed.");
-            Assert.IsNotNull(parsed, "The parsed result should not be null.");
-            Assert.IsNotNull(errors, message: "The errors should never be null.");
-            Assert.IsEmpty(errors, message: "The input bindings incorrectly reported errors.");
+            success.Should().BeTrue();
+            parsed.Should().NotBeNull();
+            errors.Should().NotBeNull().And.BeEmpty();
+
             return parsed!.ToString();
         }
 
@@ -70,10 +70,9 @@ namespace SMAPI.Tests.Utilities
             bool success = KeybindList.TryParse(input, out KeybindList? parsed, out string[] errors);
 
             // assert
-            Assert.IsFalse(success, "Parsing unexpectedly succeeded.");
-            Assert.IsNull(parsed, "The parsed result should be null.");
-            Assert.IsNotNull(errors, message: "The errors should never be null.");
-            Assert.AreEqual(expectedError, string.Join("; ", errors), "The errors don't match the expected ones.");
+            success.Should().BeFalse();
+            parsed.Should().BeNull();
+            errors.Should().BeEquivalentTo(errors);
         }
 
 
@@ -110,10 +109,10 @@ namespace SMAPI.Tests.Utilities
             }
 
             // assert
-            Assert.IsTrue(success, "Parsing unexpected failed");
-            Assert.IsNotNull(parsed, "The parsed result should not be null.");
-            Assert.IsNotNull(errors, message: "The errors should never be null.");
-            Assert.IsEmpty(errors, message: "The input bindings incorrectly reported errors.");
+            success.Should().BeTrue();
+            parsed.Should().NotBeNull();
+            errors.Should().NotBeNull().And.BeEmpty();
+
             return parsed!.GetState();
         }
 

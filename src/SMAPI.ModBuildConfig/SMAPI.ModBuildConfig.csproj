@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.10" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.10.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
     <!--

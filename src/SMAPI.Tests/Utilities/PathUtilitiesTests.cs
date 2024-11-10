@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using FluentAssertions;
 using NUnit.Framework;
 using StardewModdingAPI.Toolkit.Utilities;
 
@@ -152,7 +153,9 @@ namespace SMAPI.Tests.Utilities
             string[] segments = PathUtilities.GetSegments(path.OriginalPath);
 
             // assert
-            Assert.AreEqual(path.Segments, segments);
+            path.Segments.Should()
+                .HaveCount(segments.Length)
+                .And.ContainInOrder(segments);
         }
 
         [Test(Description = "Assert that PathUtilities.GetSegments splits paths correctly when given a limit.")]
@@ -163,7 +166,9 @@ namespace SMAPI.Tests.Utilities
             string[] segments = PathUtilities.GetSegments(path.OriginalPath, 3);
 
             // assert
-            Assert.AreEqual(path.SegmentsLimit3, segments);
+            path.SegmentsLimit3.Should()
+                .HaveCount(segments.Length)
+                .And.ContainInOrder(segments);
         }
 
         /****
@@ -180,7 +185,7 @@ namespace SMAPI.Tests.Utilities
             string normalized = PathUtilities.NormalizeAssetName(path.OriginalPath);
 
             // assert
-            Assert.AreEqual(path.NormalizedOnUnix, normalized); // MonoGame uses the Linux format
+            normalized.Should().Be(path.NormalizedOnUnix); // MonoGame uses the Linux format
         }
 
         /****
@@ -194,11 +199,13 @@ namespace SMAPI.Tests.Utilities
             string normalized = PathUtilities.NormalizePath(path.OriginalPath);
 
             // assert
+            normalized.Should().Be(
 #if SMAPI_FOR_WINDOWS
-            Assert.AreEqual(path.NormalizedOnWindows, normalized);
+                path.NormalizedOnWindows
 #else
-            Assert.AreEqual(path.NormalizedOnUnix, normalized);
+                path.NormalizedOnUnix
 #endif
+            );
         }
 
         /****

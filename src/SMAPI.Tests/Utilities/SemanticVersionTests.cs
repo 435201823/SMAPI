@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using StardewModdingAPI;
@@ -91,7 +92,9 @@ namespace SMAPI.Tests.Utilities
         [TestCase("1.2.3.4-some-tag.4      ")]
         public void Constructor_FromString_Standard_DisallowsNonStandardVersion(string input)
         {
-            Assert.Throws<FormatException>(() => _ = new SemanticVersion(input));
+            FluentActions
+                .Invoking(() => _ = new SemanticVersion(input))
+                .Should().Throw<FormatException>();
         }
 
         /// <summary>Assert the parsed version when constructed from standard parts.</summary>
@@ -277,7 +280,10 @@ namespace SMAPI.Tests.Utilities
                 : null;
 
             // assert
-            Assert.AreEqual(versionA.IsOlderThan(versionB), versionA.IsOlderThan(versionB?.ToString()), "The two signatures returned different results.");
+            bool olderThanVersion = versionA.IsOlderThan(versionB);
+            bool olderThanString = versionA.IsOlderThan(versionB?.ToString());
+            olderThanVersion.Should().Be(olderThanString, "comparing to a version or string should return the same result");
+
             return versionA.IsOlderThan(versionB);
         }
 
@@ -326,7 +332,10 @@ namespace SMAPI.Tests.Utilities
                 : null;
 
             // assert
-            Assert.AreEqual(versionA.IsNewerThan(versionB), versionA.IsNewerThan(versionB?.ToString()), "The two signatures returned different results.");
+            bool newerThanVersion = versionA.IsNewerThan(versionB);
+            bool newerThanString = versionA.IsNewerThan(versionB?.ToString());
+            newerThanVersion.Should().Be(newerThanString, "comparing to a version or string should return the same result");
+
             return versionA.IsNewerThan(versionB);
         }
 
@@ -366,7 +375,10 @@ namespace SMAPI.Tests.Utilities
             ISemanticVersion version = new SemanticVersion(versionStr);
 
             // assert
-            Assert.AreEqual(version.IsBetween(lower, upper), version.IsBetween(lower?.ToString(), upper?.ToString()), "The two signatures returned different results.");
+            bool betweenVersions = version.IsBetween(lower, upper);
+            bool betweenStrings = version.IsBetween(lower?.ToString(), upper?.ToString());
+            betweenVersions.Should().Be(betweenStrings, "comparing to a version or string should return the same result");
+
             return version.IsBetween(lower, upper);
         }
 
@@ -385,8 +397,8 @@ namespace SMAPI.Tests.Utilities
             SemanticVersion? after = JsonConvert.DeserializeObject<SemanticVersion>(json);
 
             // assert
-            Assert.IsNotNull(after, "The semantic version after deserialization is unexpectedly null.");
-            Assert.AreEqual(versionStr, after!.ToString(), "The semantic version after deserialization doesn't match the input version.");
+            after.Should().NotBeNull();
+            after!.ToString().Should().Be(versionStr);
         }
 
 
@@ -419,7 +431,7 @@ namespace SMAPI.Tests.Utilities
             GameVersion version = new(versionStr);
 
             // assert
-            Assert.AreEqual(versionStr, version.ToString(), "The game version did not round-trip to the same value.");
+            version.ToString().Should().Be(versionStr, "the game version should round-trip to the same value");
         }
 
 
@@ -436,12 +448,21 @@ namespace SMAPI.Tests.Utilities
         /// <param name="nonStandard">Whether the version should be marked as non-standard.</param>
         private void AssertParts(ISemanticVersion version, int major, int minor, int patch, string? prerelease, string? build, bool nonStandard)
         {
-            Assert.AreEqual(major, version.MajorVersion, "The major version doesn't match.");
-            Assert.AreEqual(minor, version.MinorVersion, "The minor version doesn't match.");
-            Assert.AreEqual(patch, version.PatchVersion, "The patch version doesn't match.");
-            Assert.AreEqual(string.IsNullOrWhiteSpace(prerelease) ? null : prerelease.Trim(), version.PrereleaseTag, "The prerelease tag doesn't match.");
-            Assert.AreEqual(string.IsNullOrWhiteSpace(build) ? null : build.Trim(), version.BuildMetadata, "The build metadata doesn't match.");
-            Assert.AreEqual(nonStandard, version.IsNonStandard(), $"The version is incorrectly marked {(nonStandard ? "standard" : "non-standard")}.");
+            version.MajorVersion.Should().Be(major);
+            version.MinorVersion.Should().Be(minor);
+            version.PatchVersion.Should().Be(patch);
+
+            if (string.IsNullOrWhiteSpace(prerelease))
+                version.PrereleaseTag.Should().BeNull();
+            else
+                version.PrereleaseTag.Should().Be(prerelease.Trim());
+
+            if (string.IsNullOrWhiteSpace(build))
+                version.BuildMetadata.Should().BeNull();
+            else
+                version.BuildMetadata.Should().Be(build.Trim());
+
+            version.IsNonStandard().Should().Be(nonStandard);
         }
 
         /// <summary>Assert that the expected exception type is thrown, and log the action output and thrown exception.</summary>
