@@ -13,9 +13,6 @@ namespace StardewModdingAPI.Web.Framework.Caching.CurseForgeExport
         /// <summary>The cached mod data from the CurseForge export API.</summary>
         private CurseForgeFullExport? Data;
 
-        /// <summary>When the data was last updated.</summary>
-        private DateTimeOffset LastRefreshed;
-
 
         /*********
         ** Public methods
@@ -29,7 +26,7 @@ namespace StardewModdingAPI.Web.Framework.Caching.CurseForgeExport
         /// <inheritdoc />
         public DateTimeOffset? GetLastRefreshed()
         {
-            return this.LastRefreshed;
+            return this.Data?.LastModified;
         }
 
         /// <inheritdoc />
@@ -50,13 +47,14 @@ namespace StardewModdingAPI.Web.Framework.Caching.CurseForgeExport
         public void SetData(CurseForgeFullExport? export)
         {
             this.Data = export;
-            this.LastRefreshed = DateTimeOffset.UtcNow;
         }
 
         /// <inheritdoc />
         public bool IsStale(int staleMinutes)
         {
-            return this.IsStale(this.LastRefreshed, staleMinutes);
+            return
+                this.Data is null
+                || this.IsStale(this.Data.LastModified, staleMinutes);
         }
     }
 }

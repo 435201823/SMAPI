@@ -85,6 +85,7 @@ namespace StardewModdingAPI.Mods.ConsoleCommands.Framework
                                             case "(O)DriedFruit":
                                             case "(O)DriedMushrooms":
                                             case "(O)SmokedFish":
+                                            case "(O)SpecificBait":
                                                 break;
 
                                             default:
@@ -190,6 +191,7 @@ namespace StardewModdingAPI.Mods.ConsoleCommands.Framework
                 // fish
                 case SObject.FishCategory:
                     yield return this.TryCreate(itemType.Identifier, $"SmokedFish/{id}", _ => objectDataDefinition.CreateFlavoredSmokedFish(item));
+                    yield return this.TryCreate(itemType.Identifier, $"SpecificBait/{id}", _ => objectDataDefinition.CreateFlavoredBait(item));
                     break;
 
                 // fruit products
