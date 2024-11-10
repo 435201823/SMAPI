@@ -5,7 +5,7 @@
 * For players:
   * Fixed installer not detecting Linux Flatpak install paths.
   * Fixed content issues for non-English players in recent builds (e.g. content packs not detecting the current festival correctly).
-  * Fixed pickled forage not shown by `list_items` console command.
+  * Fixed dried items, smoked items, and picked forage not handled by console commands like `list_items` or `player_add`.
 
 * For mod authors:
   * Updated dependencies, including...
@@ -13,6 +13,10 @@
     * [Pintail](https://github.com/Nanoray-pl/Pintail) 2.3.0 → 2.4.2 (see [changes](https://github.com/Nanoray-pl/Pintail/blob/master/docs/release-notes.md#242)).
   * Fixed `content.Load` ignoring language override in recent SMAPI builds.
   * Fixed player sprites and building paint masks not always propagated on change.
+
+* For the update check server:
+  * Rewrote update checks for mods on CurseForge to use a new CurseForge API endpoint.  
+    _This should result in much faster update checks for CurseForge, and less chance of update-check errors when the CurseForge servers are under heavy load._
 
 * For the web UI:
   * Updated JSON validator for Content Patcher 2.1.0.

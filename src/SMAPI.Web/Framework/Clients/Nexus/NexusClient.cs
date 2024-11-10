@@ -34,7 +34,7 @@ namespace StardewModdingAPI.Web.Framework.Clients.Nexus
         private readonly FluentNexusClient ApiClient;
 
         /// <summary>The cached mod data from the Nexus export API to use if available.</summary>
-        private readonly INexusExportCacheRepository NexusExportCache;
+        private readonly INexusExportCacheRepository ExportCache;
 
 
         /*********
@@ -54,14 +54,14 @@ namespace StardewModdingAPI.Web.Framework.Clients.Nexus
         /// <param name="webModScrapeUrlFormat">The URL for a Nexus mod page to scrape for versions, excluding the base URL, where {0} is the mod ID.</param>
         /// <param name="apiAppVersion">The app version to show in API user agents.</param>
         /// <param name="apiKey">The Nexus API authentication key.</param>
-        /// <param name="nexusExportCache">The cached mod data from the Nexus export API to use if available.</param>
-        public NexusClient(string webUserAgent, string webBaseUrl, string webModUrlFormat, string webModScrapeUrlFormat, string apiAppVersion, string apiKey, INexusExportCacheRepository nexusExportCache)
+        /// <param name="exportCache">The cached mod data from the Nexus export API to use if available.</param>
+        public NexusClient(string webUserAgent, string webBaseUrl, string webModUrlFormat, string webModScrapeUrlFormat, string apiAppVersion, string apiKey, INexusExportCacheRepository exportCache)
         {
             this.WebModUrlFormat = webModUrlFormat;
             this.WebModScrapeUrlFormat = webModScrapeUrlFormat;
             this.WebClient = new FluentClient(webBaseUrl).SetUserAgent(webUserAgent);
             this.ApiClient = new FluentNexusClient(apiKey, "SMAPI", apiAppVersion);
-            this.NexusExportCache = nexusExportCache;
+            this.ExportCache = exportCache;
         }
 
         /// <summary>Get update check info about a mod.</summary>
@@ -93,7 +93,7 @@ namespace StardewModdingAPI.Web.Framework.Clients.Nexus
             //      For adult mods, fallback to the official Nexus API which has strict rate
             //      limits.
             NexusMod? mod;
-            if (this.NexusExportCache.IsLoaded())
+            if (this.ExportCache.IsLoaded())
                 mod = await this.GetModFromExportDataAsync(parsedId);
             else
             {
@@ -132,7 +132,7 @@ namespace StardewModdingAPI.Web.Framework.Clients.Nexus
             static Task<NexusMod?> StatusResult(NexusModStatus status) => Task.FromResult<NexusMod?>(new NexusMod(status, status.ToString()));
 
             // skip if no data available
-            if (!this.NexusExportCache.IsLoaded() || !this.NexusExportCache.TryGetMod(id, out NexusModExport? data))
+            if (!this.ExportCache.IsLoaded() || !this.ExportCache.TryGetMod(id, out NexusModExport? data))
                 return Task.FromResult<NexusMod?>(null);
 
             // handle hidden mod
