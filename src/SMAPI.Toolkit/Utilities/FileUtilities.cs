@@ -49,9 +49,16 @@ namespace StardewModdingAPI.Toolkit.Utilities
         /// <param name="absolutePath">The absolute file path.</param>
         public static string GetFileHash(string absolutePath)
         {
-            using FileStream stream = File.OpenRead(absolutePath);
             using MD5 md5 = MD5.Create();
+            return FileUtilities.GetFileHash(md5, absolutePath);
+        }
 
+        /// <summary>Get the MD5 hash for a file.</summary>
+        /// <param name="md5">The MD5 implementation to use.</param>
+        /// <param name="absolutePath">The absolute file path.</param>
+        public static string GetFileHash(MD5 md5, string absolutePath)
+        {
+            using FileStream stream = File.OpenRead(absolutePath);
             byte[] hash = md5.ComputeHash(stream);
             return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
         }

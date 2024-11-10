@@ -3,6 +3,8 @@
 # Release notes
 ## Upcoming release
 * For players:
+  * Updated for Stardew Valley 1.6.9. **This drops compatibility with Stardew Valley 1.6.4–1.6.8.**
+  * SMAPI now auto-detects missing or modified content files and logs a warning.
   * Fixed installer not detecting Linux Flatpak install paths.
   * Fixed content issues for non-English players in recent builds (e.g. content packs not detecting the current festival correctly).
   * Fixed console commands like `list_items` or `player_add`...

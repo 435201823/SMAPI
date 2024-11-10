@@ -50,6 +50,7 @@ using xTile.Display;
 using LanguageCode = StardewValley.LocalizedContentManager.LanguageCode;
 using MiniMonoModHotfix = MonoMod.Utils.MiniMonoModHotfix;
 using PathUtilities = StardewModdingAPI.Toolkit.Utilities.PathUtilities;
+using System.Security.Cryptography;
 
 namespace StardewModdingAPI.Framework
 {
@@ -252,6 +253,10 @@ namespace StardewModdingAPI.Framework
 
                 // hook locale event
                 LocalizedContentManager.OnLanguageChange += _ => this.OnLocaleChanged();
+
+                // check content integrity
+                // we start this before initializing the game, in case content issues crash its initialization
+                Task.Run(this.LogContentIntegrityIssues);
 
                 // override game
                 this.Multiplayer = new SMultiplayer(this.Monitor, this.EventManager, this.Toolkit.JsonHelper, this.ModRegistry, this.OnModMessageReceived, this.Settings.LogNetworkTraffic);
@@ -1694,6 +1699,85 @@ namespace StardewModdingAPI.Framework
                 this.Monitor.Log(ex is WebException && ex.InnerException == null
                     ? ex.Message
                     : ex.ToString()
+                );
+            }
+        }
+
+        /// <summary>Verify the game's content files and log a warning if any are missing or modified.</summary>
+        public void LogContentIntegrityIssues()
+        {
+            string contentPath = Constants.ContentPath;
+
+            // get file
+            FileInfo hashesFile = new(Path.Combine(contentPath, "ContentHashes.json"));
+            if (!hashesFile.Exists)
+            {
+                this.Monitor.Log($"The game's '{hashesFile.Name}' content file doesn't exist, so SMAPI can't check if the game's content files are valid.", LogLevel.Warn);
+                return;
+            }
+
+            // load hashes
+            Dictionary<string, string> hashes;
+            try
+            {
+                var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(hashesFile.FullName));
+                if (data?.Count is not > 0)
+                {
+                    this.Monitor.Log($"The game's '{hashesFile.Name}' content file could not be loaded, so SMAPI can't check if the game's content files are valid.", LogLevel.Error);
+                    return;
+                }
+
+                hashes = new Dictionary<string, string>(data, StringComparer.OrdinalIgnoreCase);
+            }
+            catch (Exception ex)
+            {
+                this.Monitor.Log($"The game's '{hashesFile.Name}' content file could not be loaded, so SMAPI can't check if the game's content files are valid.\nTechnical details: {ex.GetLogSummary()}", LogLevel.Error);
+                return;
+            }
+
+            // validate all content files
+            List<string>? modifiedFiles = null;
+            using (MD5 md5 = MD5.Create())
+            {
+                foreach (string assetPath in Directory.GetFiles(contentPath, "*", SearchOption.AllDirectories))
+                {
+                    string relativePath = PathUtilities.NormalizeAssetName(Path.GetRelativePath(contentPath, assetPath));
+
+                    if (hashes.TryGetValue(relativePath, out string? expectedHash))
+                    {
+                        string hash = FileUtilities.GetFileHash(md5, assetPath);
+                        if (!string.Equals(hash, expectedHash, StringComparison.OrdinalIgnoreCase))
+                        {
+                            modifiedFiles ??= new();
+                            modifiedFiles.Add(relativePath);
+                        }
+
+                        hashes.Remove(relativePath);
+                    }
+                }
+            }
+
+            // log missing files
+            if (hashes.Count > 0)
+            {
+                modifiedFiles ??= new();
+
+                foreach (string remainingFile in hashes.Keys)
+                    modifiedFiles.Add($"{remainingFile} (missing)");
+            }
+
+            // log modified files
+            if (modifiedFiles != null)
+            {
+                this.Monitor.Log(
+                    $"""
+                    Some of the game's content files were modified or corrupted. This may cause game crashes, errors, or other issues.
+                    See https://smapi.io/reset-content for help fixing this.
+
+                    Affected assets:
+                       - {string.Join("\n   - ", modifiedFiles.OrderBy(p => p, StringComparer.OrdinalIgnoreCase))}
+                    """,
+                    LogLevel.Warn
                 );
             }
         }

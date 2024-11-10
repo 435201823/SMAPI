@@ -273,8 +273,9 @@ namespace StardewModdingAPI.Web
                     [@"^/docs\.?$"] = "https://stardewvalleywiki.com/Modding:Index",
                     [@"^/help\.?$"] = "https://stardewvalleywiki.com/Modding:Help",
                     [@"^/install\.?$"] = "https://stardewvalleywiki.com/Modding:Player_Guide/Getting_Started#Install_SMAPI",
-                    [@"^/troubleshoot(.*)$"] = "https://stardewvalleywiki.com/Modding:Player_Guide/Troubleshooting$1",
+                    [@"^/troubleshoot(?:/?(.*))$"] = "https://stardewvalleywiki.com/Modding:Player_Guide/Troubleshooting#$1",
                     [@"^/xnb\.?$"] = "https://stardewvalleywiki.com/Modding:Using_XNB_mods",
+                    [@"^/reset-content\.?$"] = "https://stardewvalleywiki.com/Modding:Player_Guide/Troubleshooting#reset-content",
 
                     // GitHub docs
                     ["^/package(?:/?(.*))$"] = "https://github.com/Pathoschild/SMAPI/blob/develop/docs/technical/mod-package.md#$1",
