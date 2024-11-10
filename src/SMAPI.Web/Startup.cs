@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using Hangfire;
+using Hangfire.Console;
 using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -95,7 +96,8 @@ namespace StardewModdingAPI.Web
                         .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                         .UseSimpleAssemblyNameTypeSerializer()
                         .UseRecommendedSerializerSettings()
-                        .UseMemoryStorage();
+                        .UseMemoryStorage()
+                        .UseConsole();
                 });
 
             // init background service

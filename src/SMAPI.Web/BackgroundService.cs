@@ -3,14 +3,18 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Hangfire;
+using Hangfire.Console;
+using Hangfire.Server;
+using Humanizer;
+using Humanizer.Localisation;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using StardewModdingAPI.Toolkit;
+using StardewModdingAPI.Toolkit.Framework.Clients;
 using StardewModdingAPI.Toolkit.Framework.Clients.CurseForgeExport;
-using StardewModdingAPI.Toolkit.Framework.Clients.CurseForgeExport.ResponseModels;
 using StardewModdingAPI.Toolkit.Framework.Clients.NexusExport;
-using StardewModdingAPI.Toolkit.Framework.Clients.NexusExport.ResponseModels;
 using StardewModdingAPI.Toolkit.Framework.Clients.Wiki;
+using StardewModdingAPI.Web.Framework.Caching;
 using StardewModdingAPI.Web.Framework.Caching.CurseForgeExport;
 using StardewModdingAPI.Web.Framework.Caching.Mods;
 using StardewModdingAPI.Web.Framework.Caching.NexusExport;
@@ -108,19 +112,19 @@ namespace StardewModdingAPI.Web
             bool enableNexusExport = BackgroundService.NexusExportApiClient is not DisabledNexusExportApiClient;
 
             // set startup tasks
-            BackgroundJob.Enqueue(() => BackgroundService.UpdateWikiAsync());
+            BackgroundJob.Enqueue(() => BackgroundService.UpdateWikiAsync(null));
             if (enableCurseForgeExport)
-                BackgroundJob.Enqueue(() => BackgroundService.UpdateCurseForgeExportAsync());
+                BackgroundJob.Enqueue(() => BackgroundService.UpdateCurseForgeExportAsync(null));
             if (enableNexusExport)
-                BackgroundJob.Enqueue(() => BackgroundService.UpdateNexusExportAsync());
+                BackgroundJob.Enqueue(() => BackgroundService.UpdateNexusExportAsync(null));
             BackgroundJob.Enqueue(() => BackgroundService.RemoveStaleModsAsync());
 
             // set recurring tasks
-            RecurringJob.AddOrUpdate("update wiki data", () => BackgroundService.UpdateWikiAsync(), "*/10 * * * *");      // every 10 minutes
+            RecurringJob.AddOrUpdate("update wiki data", () => BackgroundService.UpdateWikiAsync(null), "*/10 * * * *");      // every 10 minutes
             if (enableCurseForgeExport)
-                RecurringJob.AddOrUpdate("update CurseForge export", () => BackgroundService.UpdateCurseForgeExportAsync(), "*/10 * * * *");
+                RecurringJob.AddOrUpdate("update CurseForge export", () => BackgroundService.UpdateCurseForgeExportAsync(null), "*/10 * * * *");
             if (enableNexusExport)
-                RecurringJob.AddOrUpdate("update Nexus export", () => BackgroundService.UpdateNexusExportAsync(), "*/10 * * * *");
+                RecurringJob.AddOrUpdate("update Nexus export", () => BackgroundService.UpdateNexusExportAsync(null), "*/10 * * * *");
             RecurringJob.AddOrUpdate("remove stale mods", () => BackgroundService.RemoveStaleModsAsync(), "2/10 * * * *"); // offset by 2 minutes so it runs after updates (e.g. 00:02, 00:12, etc)
 
             BackgroundService.IsStarted = true;
@@ -150,44 +154,48 @@ namespace StardewModdingAPI.Web
         ** Tasks
         ****/
         /// <summary>Update the cached wiki metadata.</summary>
-        [AutomaticRetry(Attempts = 3, DelaysInSeconds = new[] { 30, 60, 120 })]
-        public static async Task UpdateWikiAsync()
+        /// <param name="context">Information about the context in which the job is performed. This is injected automatically by Hangfire.</param>
+        [AutomaticRetry(Attempts = 3, DelaysInSeconds = [30, 60, 120])]
+        public static async Task UpdateWikiAsync(PerformContext? context)
         {
             if (!BackgroundService.IsStarted)
                 throw new InvalidOperationException($"Must call {nameof(BackgroundService.StartAsync)} before scheduling tasks.");
 
+            context.WriteLine("Fetching data from wiki...");
             WikiModList wikiCompatList = await new ModToolkit().GetWikiCompatibilityListAsync();
+
+            context.WriteLine("Saving data...");
             BackgroundService.WikiCache.SaveWikiData(wikiCompatList.StableVersion, wikiCompatList.BetaVersion, wikiCompatList.Mods);
+
+            context.WriteLine("Done!");
         }
 
         /// <summary>Update the cached CurseForge mod dump.</summary>
-        [AutomaticRetry(Attempts = 3, DelaysInSeconds = new[] { 30, 60, 120 })]
-        public static async Task UpdateCurseForgeExportAsync()
+        /// <param name="context">Information about the context in which the job is performed. This is injected automatically by Hangfire.</param>
+        [AutomaticRetry(Attempts = 3, DelaysInSeconds = [30, 60, 120])]
+        public static async Task UpdateCurseForgeExportAsync(PerformContext? context)
         {
-            if (!BackgroundService.IsStarted)
-                throw new InvalidOperationException($"Must call {nameof(BackgroundService.StartAsync)} before scheduling tasks.");
-
-            CurseForgeFullExport data = await BackgroundService.CurseForgeExportApiClient.FetchExportAsync();
-
-            var cache = BackgroundService.CurseForgeExportCache;
-            cache.SetData(data);
-            if (cache.IsStale(BackgroundService.ExportStaleAge))
-                cache.SetData(null); // if the export is too old, fetch fresh mod data from the site/API instead
+            await UpdateExportAsync(
+                context,
+                BackgroundService.CurseForgeExportCache!,
+                BackgroundService.CurseForgeExportApiClient!,
+                fetchCacheHeadersAsync: client => client.FetchCacheHeadersAsync(),
+                fetchDataAsync: async (cache, client) => cache.SetData(await client.FetchExportAsync())
+            );
         }
 
         /// <summary>Update the cached Nexus mod dump.</summary>
-        [AutomaticRetry(Attempts = 3, DelaysInSeconds = new[] { 30, 60, 120 })]
-        public static async Task UpdateNexusExportAsync()
+        /// <param name="context">Information about the context in which the job is performed. This is injected automatically by Hangfire.</param>
+        [AutomaticRetry(Attempts = 3, DelaysInSeconds = [30, 60, 120])]
+        public static async Task UpdateNexusExportAsync(PerformContext? context)
         {
-            if (!BackgroundService.IsStarted)
-                throw new InvalidOperationException($"Must call {nameof(BackgroundService.StartAsync)} before scheduling tasks.");
-
-            NexusFullExport data = await BackgroundService.NexusExportApiClient.FetchExportAsync();
-
-            var cache = BackgroundService.NexusExportCache;
-            cache.SetData(data);
-            if (cache.IsStale(BackgroundService.ExportStaleAge))
-                cache.SetData(null); // if the export is too old, fetch fresh mod data from the site/API instead
+            await UpdateExportAsync(
+                context,
+                BackgroundService.NexusExportCache!,
+                BackgroundService.NexusExportApiClient!,
+                fetchCacheHeadersAsync: client => client.FetchCacheHeadersAsync(),
+                fetchDataAsync: async (cache, client) => cache.SetData(await client.FetchExportAsync())
+            );
         }
 
         /// <summary>Remove mods which haven't been requested in over 48 hours.</summary>
@@ -198,10 +206,6 @@ namespace StardewModdingAPI.Web
 
             // remove mods in mod cache
             BackgroundService.ModCache.RemoveStaleMods(TimeSpan.FromHours(48));
-
-            // remove stale export cache
-            if (BackgroundService.NexusExportCache.IsStale(BackgroundService.ExportStaleAge))
-                BackgroundService.NexusExportCache.SetData(null);
 
             return Task.CompletedTask;
         }
@@ -218,6 +222,82 @@ namespace StardewModdingAPI.Web
                 throw new InvalidOperationException("The scheduler service is already started.");
 
             BackgroundService.JobServer = new BackgroundJobServer();
+        }
+
+        /// <summary>Update the cached mods export for a site.</summary>
+        /// <typeparam name="TCacheRepository">The export cache repository type.</typeparam>
+        /// <typeparam name="TExportApiClient">The export API client.</typeparam>
+        /// <param name="context">Information about the context in which the job is performed. This is injected automatically by Hangfire.</param>
+        /// <param name="cache">The export cache to update.</param>
+        /// <param name="client">The export API with which to fetch data from the remote API.</param>
+        /// <param name="fetchCacheHeadersAsync">Fetch the HTTP cache headers set by the remote API.</param>
+        /// <param name="fetchDataAsync">Fetch the latest export file from the Nexus Mods export API.</param>
+        /// <exception cref="InvalidOperationException">The <see cref="StartAsync"/> method wasn't called before running this task.</exception>
+        private static async Task UpdateExportAsync<TCacheRepository, TExportApiClient>(PerformContext? context, TCacheRepository cache, TExportApiClient client, Func<TExportApiClient, Task<ApiCacheHeaders>> fetchCacheHeadersAsync, Func<TCacheRepository, TExportApiClient, Task> fetchDataAsync)
+            where TCacheRepository : IExportCacheRepository
+        {
+            if (!BackgroundService.IsStarted)
+                throw new InvalidOperationException($"Must call {nameof(BackgroundService.StartAsync)} before scheduling tasks.");
+
+            // log initial state
+            context.WriteLine(cache.IsLoaded
+                ? $"The previous export is cached with data from {BackgroundService.FormatDateModified(cache.CacheHeaders.LastModified)}."
+                : "No previous export is cached."
+            );
+
+            // fetch cache headers
+            context.WriteLine("Fetching cache headers...");
+            ApiCacheHeaders serverCacheHeaders = await fetchCacheHeadersAsync(client);
+            DateTimeOffset serverModified = serverCacheHeaders.LastModified;
+            string serverEntityTag = serverCacheHeaders.EntityTag;
+
+            // update data
+            {
+                // skip if no update needed
+                if (cache.IsStale(serverModified, BackgroundService.ExportStaleAge))
+                    context.WriteLine($"Skipped data fetch: server was last modified {BackgroundService.FormatDateModified(serverModified)}, which exceeds the {BackgroundService.ExportStaleAge}-minute-stale limit.");
+                else if (cache.IsLoaded && cache.CacheHeaders.LastModified >= serverModified)
+                    context.WriteLine($"Skipped data fetch: server was last modified {BackgroundService.FormatDateModified(serverModified)}, which {(serverModified == cache.CacheHeaders.LastModified ? "matches" : "is older than")} our cached data.");
+
+                // update cache headers if data unchanged
+                else if (cache.IsLoaded && cache.CacheHeaders.EntityTag == serverEntityTag)
+                {
+                    context.WriteLine($"Skipped data fetch: server provided entity tag '{serverEntityTag}', which already matches the data we have.");
+                    cache.SetCacheHeaders(serverCacheHeaders);
+                }
+
+                // else update data
+                else
+                {
+                    context.WriteLine("Fetching data...");
+                    await fetchDataAsync(cache, client);
+                }
+            }
+
+            // clear if stale
+            if (cache.IsStale(BackgroundService.ExportStaleAge))
+            {
+                context.WriteLine("The cached data is stale, clearing cache...");
+                cache.Clear();
+            }
+
+            // log final result
+            context.WriteLine(cache.IsLoaded
+                ? $"Done! The export is currently cached with data from {BackgroundService.FormatDateModified(cache.CacheHeaders.LastModified)}."
+                : "Done! The export cache is currently disabled."
+            );
+        }
+
+        /// <summary>Format a 'date modified' value for the task logs.</summary>
+        /// <param name="date">The date to log.</param>
+        private static string FormatDateModified(DateTimeOffset? date)
+        {
+            if (!date.HasValue)
+                return "<null>";
+
+            string ageLabel = (DateTimeOffset.UtcNow - date.Value).Humanize(precision: 2, minUnit: TimeUnit.Minute, maxUnit: TimeUnit.Hour);
+
+            return $"{date.Value:O} (age: {ageLabel})";
         }
     }
 }

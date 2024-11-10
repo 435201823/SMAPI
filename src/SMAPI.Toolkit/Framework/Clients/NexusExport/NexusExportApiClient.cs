@@ -1,3 +1,4 @@
+using System.Net.Http;
 using System.Threading.Tasks;
 using Pathoschild.Http.Client;
 using StardewModdingAPI.Toolkit.Framework.Clients.NexusExport.ResponseModels;
@@ -26,11 +27,21 @@ namespace StardewModdingAPI.Toolkit.Framework.Clients.NexusExport
         }
 
         /// <inheritdoc />
+        public async Task<ApiCacheHeaders> FetchCacheHeadersAsync()
+        {
+            IResponse response = await this.Client.SendAsync(HttpMethod.Head, "");
+            return ApiCacheHeaders.FromResponse(response);
+        }
+
+        /// <inheritdoc />
         public async Task<NexusFullExport> FetchExportAsync()
         {
-            return await this.Client
-                .GetAsync("")
-                .As<NexusFullExport>();
+            IResponse response = await this.Client.GetAsync("");
+
+            NexusFullExport export = await response.As<NexusFullExport>();
+            export.CacheHeaders = ApiCacheHeaders.FromResponse(response);
+
+            return export;
         }
 
         /// <inheritdoc />

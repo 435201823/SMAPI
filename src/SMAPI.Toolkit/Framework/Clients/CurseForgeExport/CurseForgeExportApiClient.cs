@@ -1,4 +1,4 @@
-using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Pathoschild.Http.Client;
 using StardewModdingAPI.Toolkit.Framework.Clients.CurseForgeExport.ResponseModels;
@@ -27,12 +27,19 @@ namespace StardewModdingAPI.Toolkit.Framework.Clients.CurseForgeExport
         }
 
         /// <inheritdoc />
+        public async Task<ApiCacheHeaders> FetchCacheHeadersAsync()
+        {
+            IResponse response = await this.Client.SendAsync(HttpMethod.Head, "");
+            return ApiCacheHeaders.FromResponse(response);
+        }
+
+        /// <inheritdoc />
         public async Task<CurseForgeFullExport> FetchExportAsync()
         {
             IResponse response = await this.Client.GetAsync("");
 
             CurseForgeFullExport export = await response.As<CurseForgeFullExport>();
-            export.LastModified = response.Message.Content.Headers.LastModified ?? throw new InvalidOperationException("Can't fetch from CurseForge export API: expected Last-Modified header wasn't set.");
+            export.CacheHeaders = ApiCacheHeaders.FromResponse(response);
 
             return export;
         }

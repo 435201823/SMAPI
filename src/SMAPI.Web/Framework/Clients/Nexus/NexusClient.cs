@@ -93,7 +93,7 @@ namespace StardewModdingAPI.Web.Framework.Clients.Nexus
             //      For adult mods, fallback to the official Nexus API which has strict rate
             //      limits.
             NexusMod? mod;
-            if (this.ExportCache.IsLoaded())
+            if (this.ExportCache.IsLoaded)
                 mod = await this.GetModFromExportDataAsync(parsedId);
             else
             {
@@ -132,7 +132,7 @@ namespace StardewModdingAPI.Web.Framework.Clients.Nexus
             static Task<NexusMod?> StatusResult(NexusModStatus status) => Task.FromResult<NexusMod?>(new NexusMod(status, status.ToString()));
 
             // skip if no data available
-            if (!this.ExportCache.IsLoaded() || !this.ExportCache.TryGetMod(id, out NexusModExport? data))
+            if (!this.ExportCache.IsLoaded || !this.ExportCache.TryGetMod(id, out NexusModExport? data))
                 return Task.FromResult<NexusMod?>(null);
 
             // handle hidden mod

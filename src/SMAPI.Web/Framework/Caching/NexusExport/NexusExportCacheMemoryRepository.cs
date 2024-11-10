@@ -1,11 +1,12 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using StardewModdingAPI.Toolkit.Framework.Clients;
 using StardewModdingAPI.Toolkit.Framework.Clients.NexusExport.ResponseModels;
 
 namespace StardewModdingAPI.Web.Framework.Caching.NexusExport
 {
     /// <summary>Manages cached mod data from the Nexus export API in-memory.</summary>
-    internal class NexusExportCacheMemoryRepository : BaseCacheRepository, INexusExportCacheRepository
+    internal class NexusExportCacheMemoryRepository : BaseExportCacheRepository, INexusExportCacheRepository
     {
         /*********
         ** Fields
@@ -15,18 +16,32 @@ namespace StardewModdingAPI.Web.Framework.Caching.NexusExport
 
 
         /*********
+        ** Accessors
+        *********/
+        /// <inheritdoc />
+        [MemberNotNullWhen(true, nameof(NexusExportCacheMemoryRepository.Data))]
+        public override bool IsLoaded => this.Data?.Data.Count > 0;
+
+        /// <inheritdoc />
+        public override ApiCacheHeaders? CacheHeaders => this.Data?.CacheHeaders;
+
+
+        /*********
         ** Public methods
         *********/
         /// <inheritdoc />
-        public bool IsLoaded()
+        public override void Clear()
         {
-            return this.Data?.Data.Count > 0;
+            this.SetData(null);
         }
 
         /// <inheritdoc />
-        public DateTimeOffset? GetLastRefreshed()
+        public override void SetCacheHeaders(ApiCacheHeaders headers)
         {
-            return this.Data?.LastUpdated;
+            if (!this.IsLoaded)
+                throw new InvalidOperationException("Can't set the cache headers before any data is loaded.");
+
+            this.Data.CacheHeaders = headers;
         }
 
         /// <inheritdoc />
@@ -47,13 +62,6 @@ namespace StardewModdingAPI.Web.Framework.Caching.NexusExport
         public void SetData(NexusFullExport? export)
         {
             this.Data = export;
-        }
-
-        /// <inheritdoc />
-        public bool IsStale(int staleMinutes)
-        {
-            DateTimeOffset? lastUpdated = this.Data?.LastUpdated;
-            return lastUpdated.HasValue && this.IsStale(lastUpdated.Value, staleMinutes);
         }
     }
 }

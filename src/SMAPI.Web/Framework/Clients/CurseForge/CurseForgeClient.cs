@@ -75,7 +75,7 @@ namespace StardewModdingAPI.Web.Framework.Clients.CurseForge
             //      isn't available for some reason.
             return
                 (
-                    this.ExportCache.IsLoaded() && parsedId != 898372/* SMAPI isn't in the export since it's not technically a mod */
+                    this.ExportCache.IsLoaded && parsedId != 898372/* SMAPI isn't in the export since it's not technically a mod */
                         ? this.GetModFromExportData(parsedId)
                         : await this.GetModFromApiAsync(parsedId)
                 )
@@ -112,7 +112,7 @@ namespace StardewModdingAPI.Web.Framework.Clients.CurseForge
         private IModPage? GetModFromExportData(uint id)
         {
             // skip if no data available
-            if (!this.ExportCache.IsLoaded() || !this.ExportCache.TryGetMod(id, out CurseForgeModExport? data))
+            if (!this.ExportCache.IsLoaded || !this.ExportCache.TryGetMod(id, out CurseForgeModExport? data))
                 return null;
 
             // get downloads
