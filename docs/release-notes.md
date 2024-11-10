@@ -1,6 +1,10 @@
 ← [README](README.md)
 
 # Release notes
+## Upcoming release
+* For players:
+  * Fixed pickled forage not shown by `list_items` console command.
+
 ## 4.0.8
 Released 21 April 2024 for Stardew Valley 1.6.4 or later.
 
