@@ -210,7 +210,7 @@ namespace StardewModdingAPI.Metadata
                     case "characters/farmer/farmer_base_bald":
                     case "characters/farmer/farmer_girl_base":
                     case "characters/farmer/farmer_girl_base_bald":
-                        if (ignoreWorld)
+                        if (!ignoreWorld)
                             this.UpdatePlayerSprites(assetName);
                         break;
 
@@ -489,7 +489,7 @@ namespace StardewModdingAPI.Metadata
         private bool UpdateBuildingPaintMask(IAssetName assetName)
         {
             // remove from paint mask cache
-            bool removedFromCache = BuildingPainter.paintMaskLookup.Remove(assetName.BaseName);
+            bool removedFromCache = BuildingPainter.paintMaskLookup.Remove(assetName.BaseName) | BuildingPainter.paintMaskLookup.Remove(assetName.BaseName.Replace('/', '\\'));
 
             // reload building textures
             bool anyReloaded = false;
