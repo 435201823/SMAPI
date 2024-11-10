@@ -13,10 +13,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using StardewModdingAPI.Toolkit.Framework.Clients.CurseForgeExport;
+using StardewModdingAPI.Toolkit.Framework.Clients.ModDropExport;
 using StardewModdingAPI.Toolkit.Framework.Clients.NexusExport;
 using StardewModdingAPI.Toolkit.Serialization;
 using StardewModdingAPI.Web.Framework;
 using StardewModdingAPI.Web.Framework.Caching.CurseForgeExport;
+using StardewModdingAPI.Web.Framework.Caching.ModDropExport;
 using StardewModdingAPI.Web.Framework.Caching.Mods;
 using StardewModdingAPI.Web.Framework.Caching.NexusExport;
 using StardewModdingAPI.Web.Framework.Caching.Wiki;
@@ -85,6 +87,7 @@ namespace StardewModdingAPI.Web
             // init storage
             services.AddSingleton<IModCacheRepository>(new ModCacheMemoryRepository());
             services.AddSingleton<ICurseForgeExportCacheRepository>(new CurseForgeExportCacheMemoryRepository());
+            services.AddSingleton<IModDropExportCacheRepository>(new ModDropExportCacheMemoryRepository());
             services.AddSingleton<INexusExportCacheRepository>(new NexusExportCacheMemoryRepository());
             services.AddSingleton<IWikiCacheRepository>(new WikiCacheMemoryRepository());
 
@@ -147,11 +150,24 @@ namespace StardewModdingAPI.Web
                     password: api.GitHubPassword
                 ));
 
-                services.AddSingleton<IModDropClient>(new ModDropClient(
-                    userAgent: userAgent,
-                    apiUrl: api.ModDropApiUrl,
-                    modUrlFormat: api.ModDropModPageUrl
-                ));
+                if (!string.IsNullOrWhiteSpace(api.ModDropExportUrl))
+                {
+                    services.AddSingleton<IModDropExportApiClient>(new ModDropExportApiClient(
+                        userAgent: userAgent,
+                        baseUrl: api.ModDropExportUrl
+                    ));
+                }
+                else
+                    services.AddSingleton<IModDropExportApiClient>(new DisabledModDropExportApiClient());
+
+                services.AddSingleton<IModDropClient>(
+                    provider => new ModDropClient(
+                        userAgent: userAgent,
+                        apiUrl: api.ModDropApiUrl,
+                        modUrlFormat: api.ModDropModPageUrl,
+                        exportCache: provider.GetRequiredService<IModDropExportCacheRepository>()
+                    )
+                );
 
                 if (!string.IsNullOrWhiteSpace(api.NexusExportUrl))
                 {

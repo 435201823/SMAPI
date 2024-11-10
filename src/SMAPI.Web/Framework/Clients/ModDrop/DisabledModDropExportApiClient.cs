@@ -1,13 +1,13 @@
 using System;
 using System.Threading.Tasks;
 using StardewModdingAPI.Toolkit.Framework.Clients;
-using StardewModdingAPI.Toolkit.Framework.Clients.NexusExport;
-using StardewModdingAPI.Toolkit.Framework.Clients.NexusExport.ResponseModels;
+using StardewModdingAPI.Toolkit.Framework.Clients.ModDropExport;
+using StardewModdingAPI.Toolkit.Framework.Clients.ModDropExport.ResponseModels;
 
-namespace StardewModdingAPI.Web.Framework.Clients.Nexus
+namespace StardewModdingAPI.Web.Framework.Clients.ModDrop
 {
-    /// <summary>A client for the Nexus export API which does nothing, used for local development.</summary>
-    internal class DisabledNexusExportApiClient : INexusExportApiClient
+    /// <summary>A client for the ModDrop export API which does nothing, used for local development.</summary>
+    internal class DisabledModDropExportApiClient : IModDropExportApiClient
     {
         /*********
         ** Public methods
@@ -21,11 +21,11 @@ namespace StardewModdingAPI.Web.Framework.Clients.Nexus
         }
 
         /// <inheritdoc />
-        public async Task<NexusFullExport> FetchExportAsync()
+        public async Task<ModDropFullExport> FetchExportAsync()
         {
-            return new NexusFullExport
+            return new ModDropFullExport
             {
-                Data = new(),
+                Mods = new(),
                 CacheHeaders = await this.FetchCacheHeadersAsync()
             };
         }

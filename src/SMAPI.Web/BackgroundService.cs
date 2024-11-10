@@ -12,14 +12,17 @@ using Microsoft.Extensions.Options;
 using StardewModdingAPI.Toolkit;
 using StardewModdingAPI.Toolkit.Framework.Clients;
 using StardewModdingAPI.Toolkit.Framework.Clients.CurseForgeExport;
+using StardewModdingAPI.Toolkit.Framework.Clients.ModDropExport;
 using StardewModdingAPI.Toolkit.Framework.Clients.NexusExport;
 using StardewModdingAPI.Toolkit.Framework.Clients.Wiki;
 using StardewModdingAPI.Web.Framework.Caching;
 using StardewModdingAPI.Web.Framework.Caching.CurseForgeExport;
+using StardewModdingAPI.Web.Framework.Caching.ModDropExport;
 using StardewModdingAPI.Web.Framework.Caching.Mods;
 using StardewModdingAPI.Web.Framework.Caching.NexusExport;
 using StardewModdingAPI.Web.Framework.Caching.Wiki;
 using StardewModdingAPI.Web.Framework.Clients.CurseForge;
+using StardewModdingAPI.Web.Framework.Clients.ModDrop;
 using StardewModdingAPI.Web.Framework.Clients.Nexus;
 using StardewModdingAPI.Web.Framework.ConfigModels;
 
@@ -44,8 +47,14 @@ namespace StardewModdingAPI.Web
         /// <summary>The HTTP client for fetching the mod export from the CurseForge export API.</summary>
         private static ICurseForgeExportApiClient? CurseForgeExportApiClient;
 
-        /// <summary>The HTTP client for fetching the mod export from the CurseForge export API.</summary>
+        /// <summary>The cache in which to store the mod data from the CurseForge export API.</summary>
         private static ICurseForgeExportCacheRepository? CurseForgeExportCache;
+
+        /// <summary>The HTTP client for fetching the mod export from the ModDrop export API.</summary>
+        private static IModDropExportApiClient? ModDropExportApiClient;
+
+        /// <summary>The cache in which to store the mod data from the ModDrop export API.</summary>
+        private static IModDropExportCacheRepository? ModDropExportCache;
 
         /// <summary>The cache in which to store mod data from the Nexus export API.</summary>
         private static INexusExportCacheRepository? NexusExportCache;
@@ -62,6 +71,8 @@ namespace StardewModdingAPI.Web
             nameof(BackgroundService.ModCache),
             nameof(BackgroundService.CurseForgeExportApiClient),
             nameof(BackgroundService.CurseForgeExportCache),
+            nameof(BackgroundService.ModDropExportApiClient),
+            nameof(BackgroundService.ModDropExportCache),
             nameof(BackgroundService.NexusExportApiClient),
             nameof(BackgroundService.NexusExportCache),
             nameof(BackgroundService.UpdateCheckConfig),
@@ -84,17 +95,32 @@ namespace StardewModdingAPI.Web
         /// <param name="modCache">The cache in which to store mod data.</param>
         /// <param name="curseForgeExportCache">The cache in which to store mod data from the CurseForge export API.</param>
         /// <param name="curseForgeExportApiClient">The HTTP client for fetching the mod export from the CurseForge export API.</param>
+        /// /// <param name="modDropExportCache">The cache in which to store mod data from the ModDrop export API.</param>
+        /// <param name="modDropExportApiClient">The HTTP client for fetching the mod export from the ModDrop export API.</param>
         /// <param name="nexusExportCache">The cache in which to store mod data from the Nexus export API.</param>
         /// <param name="nexusExportApiClient">The HTTP client for fetching the mod export from the Nexus Mods export API.</param>
         /// <param name="hangfireStorage">The Hangfire storage implementation.</param>
         /// <param name="updateCheckConfig">The config settings for mod update checks.</param>
         [SuppressMessage("ReSharper", "UnusedParameter.Local", Justification = "The Hangfire reference forces it to initialize first, since it's needed by the background service.")]
-        public BackgroundService(IWikiCacheRepository wikiCache, IModCacheRepository modCache, ICurseForgeExportCacheRepository curseForgeExportCache, ICurseForgeExportApiClient curseForgeExportApiClient, INexusExportCacheRepository nexusExportCache, INexusExportApiClient nexusExportApiClient, JobStorage hangfireStorage, IOptions<ModUpdateCheckConfig> updateCheckConfig)
+        public BackgroundService(
+            IWikiCacheRepository wikiCache,
+            IModCacheRepository modCache,
+            ICurseForgeExportCacheRepository curseForgeExportCache,
+            ICurseForgeExportApiClient curseForgeExportApiClient,
+            IModDropExportCacheRepository modDropExportCache,
+            IModDropExportApiClient modDropExportApiClient,
+            INexusExportCacheRepository nexusExportCache,
+            INexusExportApiClient nexusExportApiClient,
+            JobStorage hangfireStorage,
+            IOptions<ModUpdateCheckConfig> updateCheckConfig
+        )
         {
             BackgroundService.WikiCache = wikiCache;
             BackgroundService.ModCache = modCache;
             BackgroundService.CurseForgeExportApiClient = curseForgeExportApiClient;
             BackgroundService.CurseForgeExportCache = curseForgeExportCache;
+            BackgroundService.ModDropExportApiClient = modDropExportApiClient;
+            BackgroundService.ModDropExportCache = modDropExportCache;
             BackgroundService.NexusExportCache = nexusExportCache;
             BackgroundService.NexusExportApiClient = nexusExportApiClient;
             BackgroundService.UpdateCheckConfig = updateCheckConfig;
@@ -109,12 +135,15 @@ namespace StardewModdingAPI.Web
             this.TryInit();
 
             bool enableCurseForgeExport = BackgroundService.CurseForgeExportApiClient is not DisabledCurseForgeExportApiClient;
+            bool enableModDropExport = BackgroundService.ModDropExportApiClient is not DisabledModDropExportApiClient;
             bool enableNexusExport = BackgroundService.NexusExportApiClient is not DisabledNexusExportApiClient;
 
             // set startup tasks
             BackgroundJob.Enqueue(() => BackgroundService.UpdateWikiAsync(null));
             if (enableCurseForgeExport)
                 BackgroundJob.Enqueue(() => BackgroundService.UpdateCurseForgeExportAsync(null));
+            if (enableModDropExport)
+                BackgroundJob.Enqueue(() => BackgroundService.UpdateModDropExportAsync(null));
             if (enableNexusExport)
                 BackgroundJob.Enqueue(() => BackgroundService.UpdateNexusExportAsync(null));
             BackgroundJob.Enqueue(() => BackgroundService.RemoveStaleModsAsync());
@@ -123,6 +152,8 @@ namespace StardewModdingAPI.Web
             RecurringJob.AddOrUpdate("update wiki data", () => BackgroundService.UpdateWikiAsync(null), "*/10 * * * *");      // every 10 minutes
             if (enableCurseForgeExport)
                 RecurringJob.AddOrUpdate("update CurseForge export", () => BackgroundService.UpdateCurseForgeExportAsync(null), "*/10 * * * *");
+            if (enableModDropExport)
+                RecurringJob.AddOrUpdate("update ModDrop export", () => BackgroundService.UpdateModDropExportAsync(null), "*/10 * * * *");
             if (enableNexusExport)
                 RecurringJob.AddOrUpdate("update Nexus export", () => BackgroundService.UpdateNexusExportAsync(null), "*/10 * * * *");
             RecurringJob.AddOrUpdate("remove stale mods", () => BackgroundService.RemoveStaleModsAsync(), "2/10 * * * *"); // offset by 2 minutes so it runs after updates (e.g. 00:02, 00:12, etc)
@@ -170,7 +201,7 @@ namespace StardewModdingAPI.Web
             context.WriteLine("Done!");
         }
 
-        /// <summary>Update the cached CurseForge mod dump.</summary>
+        /// <summary>Update the cached CurseForge mod export.</summary>
         /// <param name="context">Information about the context in which the job is performed. This is injected automatically by Hangfire.</param>
         [AutomaticRetry(Attempts = 3, DelaysInSeconds = [30, 60, 120])]
         public static async Task UpdateCurseForgeExportAsync(PerformContext? context)
@@ -184,7 +215,21 @@ namespace StardewModdingAPI.Web
             );
         }
 
-        /// <summary>Update the cached Nexus mod dump.</summary>
+        /// <summary>Update the cached ModDrop mod export.</summary>
+        /// <param name="context">Information about the context in which the job is performed. This is injected automatically by Hangfire.</param>
+        [AutomaticRetry(Attempts = 3, DelaysInSeconds = [30, 60, 120])]
+        public static async Task UpdateModDropExportAsync(PerformContext? context)
+        {
+            await UpdateExportAsync(
+                context,
+                BackgroundService.ModDropExportCache!,
+                BackgroundService.ModDropExportApiClient!,
+                fetchCacheHeadersAsync: client => client.FetchCacheHeadersAsync(),
+                fetchDataAsync: async (cache, client) => cache.SetData(await client.FetchExportAsync())
+            );
+        }
+
+        /// <summary>Update the cached Nexus mod export.</summary>
         /// <param name="context">Information about the context in which the job is performed. This is injected automatically by Hangfire.</param>
         [AutomaticRetry(Attempts = 3, DelaysInSeconds = [30, 60, 120])]
         public static async Task UpdateNexusExportAsync(PerformContext? context)
@@ -249,7 +294,7 @@ namespace StardewModdingAPI.Web
             context.WriteLine("Fetching cache headers...");
             ApiCacheHeaders serverCacheHeaders = await fetchCacheHeadersAsync(client);
             DateTimeOffset serverModified = serverCacheHeaders.LastModified;
-            string serverEntityTag = serverCacheHeaders.EntityTag;
+            string? serverEntityTag = serverCacheHeaders.EntityTag;
 
             // update data
             {
@@ -260,7 +305,7 @@ namespace StardewModdingAPI.Web
                     context.WriteLine($"Skipped data fetch: server was last modified {BackgroundService.FormatDateModified(serverModified)}, which {(serverModified == cache.CacheHeaders.LastModified ? "matches" : "is older than")} our cached data.");
 
                 // update cache headers if data unchanged
-                else if (cache.IsLoaded && cache.CacheHeaders.EntityTag == serverEntityTag)
+                else if (cache.IsLoaded && cache.CacheHeaders.EntityTag != null && cache.CacheHeaders.EntityTag == serverEntityTag)
                 {
                     context.WriteLine($"Skipped data fetch: server provided entity tag '{serverEntityTag}', which already matches the data we have.");
                     cache.SetCacheHeaders(serverCacheHeaders);

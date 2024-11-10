@@ -6,7 +6,7 @@ using StardewModdingAPI.Toolkit.Framework.Clients.CurseForgeExport.ResponseModel
 
 namespace StardewModdingAPI.Web.Framework.Clients.CurseForge
 {
-    /// <summary>A client for the CurseForge website which does nothing, used for local development.</summary>
+    /// <summary>A client for the CurseForge export API which does nothing, used for local development.</summary>
     internal class DisabledCurseForgeExportApiClient : ICurseForgeExportApiClient
     {
         /*********

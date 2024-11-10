@@ -80,6 +80,9 @@ namespace StardewModdingAPI.Web.Framework.ConfigModels
         /// <summary>The URL for a ModDrop mod page for the user, where {0} is the mod ID.</summary>
         public string ModDropModPageUrl { get; set; } = null!;
 
+        /// <summary>The base URL for the ModDrop export API.</summary>
+        public string ModDropExportUrl { get; set; } = null!;
+
 
         /****
         ** Nexus Mods

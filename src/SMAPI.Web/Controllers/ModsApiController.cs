@@ -158,9 +158,6 @@ namespace StardewModdingAPI.Web.Controllers
             ModEntryVersionModel? unofficialForBeta = null;
             foreach (UpdateKey updateKey in updateKeys)
             {
-                if (updateKey.Site == ModSiteKey.ModDrop)
-                    continue;
-
                 // validate update key
                 if (
                     !updateKey.LooksValid
