@@ -1961,9 +1961,6 @@ namespace StardewModdingAPI.Framework
             // load as content pack
             if (mod.IsContentPack)
             {
-                if (manifest.PrivateAssemblies.Length != 0)
-                    this.Monitor.Log($"      Content pack specifies private assemblies, which is only valid for SMAPI mods.", LogLevel.Warn);
-
                 IMonitor monitor = this.LogManager.GetMonitor(manifest.UniqueID, mod.DisplayName);
                 IFileLookup fileLookup = this.GetFileLookup(mod.DirectoryPath);
                 GameContentHelper gameContentHelper = new(this.ContentCore, mod, mod.DisplayName, monitor, this.Reflection);
@@ -1985,7 +1982,7 @@ namespace StardewModdingAPI.Framework
                 FileInfo assemblyFile = this.GetFileLookup(mod.DirectoryPath).GetFile(manifest.EntryDll!);
 
                 // load mod
-                ModAssemblyLoadContext modAssemblyLoadContext = new(mod, modAssemblyLoadContexts);
+                ModAssemblyLoadContext modAssemblyLoadContext = new(mod);
                 Assembly modAssembly;
                 try
                 {

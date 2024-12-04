@@ -100,24 +100,41 @@ namespace StardewModdingAPI.Toolkit.Framework
             }
 
             // validate private assemblies format
-            foreach (IManifestPrivateAssembly? assembly in manifest.PrivateAssemblies)
+            if (!hasDll)
             {
-                if (assembly is null)
+                if (manifest.PrivateAssemblies.Length > 0)
                 {
-                    error = $"manifest has a null entry under {nameof(IManifest.PrivateAssemblies)}.";
+                    error = $"manifest includes {nameof(IManifest.PrivateAssemblies)}, which isn't valid for a content pack.";
                     return false;
                 }
-
-                if (string.IsNullOrWhiteSpace(assembly.Name))
+            }
+            else
+            {
+                foreach (IManifestPrivateAssembly? assembly in manifest.PrivateAssemblies)
                 {
-                    error = $"manifest has a {nameof(IManifest.PrivateAssemblies)} entry with no {nameof(IManifestPrivateAssembly.Name)} field.";
-                    return false;
-                }
+                    if (assembly is null)
+                    {
+                        error = $"manifest has a null entry under {nameof(IManifest.PrivateAssemblies)}.";
+                        return false;
+                    }
 
-                if (assembly.Name.Contains('/') || assembly.Name.Contains('\\') || assembly.Name.Contains(".dll"))
-                {
-                    error = $"manifest has a {nameof(IManifest.PrivateAssemblies)} entry with an invalid {nameof(IManifestPrivateAssembly.Name)} field (must be the assembly name without the file path/extension).";
-                    return false;
+                    if (string.IsNullOrWhiteSpace(assembly.Name))
+                    {
+                        error = $"manifest has a {nameof(IManifest.PrivateAssemblies)} entry with no {nameof(IManifestPrivateAssembly.Name)} field.";
+                        return false;
+                    }
+
+                    if (assembly.Name.Contains('/') || assembly.Name.Contains('\\') || assembly.Name.Contains(".dll"))
+                    {
+                        error = $"manifest has a {nameof(IManifest.PrivateAssemblies)} entry with an invalid {nameof(IManifestPrivateAssembly.Name)} field (must be the assembly name without the file path, extension, or metadata).";
+                        return false;
+                    }
+
+                    if (assembly.Name is "0Harmony" or "MonoGame.Framework" or "StardewModdingAPI" or "Stardew Valley" or "StardewValley.GameData")
+                    {
+                        error = $"manifest has a {nameof(IManifest.PrivateAssemblies)} entry with an invalid {nameof(IManifestPrivateAssembly.Name)} field (the '{assembly.Name}' assembly can't be private).";
+                        return false;
+                    }
                 }
             }
 

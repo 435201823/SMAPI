@@ -23,8 +23,7 @@ namespace StardewModdingAPI.Framework.ModLoading
         *********/
         /// <summary>Construct an instance.</summary>
         /// <param name="mod">The mod this context is for.</param>
-        /// <param name="modAssemblyLoadContexts">The assembly load contexts for all loaded mods, including this one.</param>
-        public ModAssemblyLoadContext(IModMetadata mod, IReadOnlyList<ModAssemblyLoadContext> modAssemblyLoadContexts)
+        public ModAssemblyLoadContext(IModMetadata mod)
             : base(mod.Manifest.UniqueID)
         {
             this.PrivateAssemblyNames = new HashSet<string>(mod.Manifest.PrivateAssemblies.Select(p => p.Name));
