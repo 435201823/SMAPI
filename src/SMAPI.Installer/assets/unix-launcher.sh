@@ -59,22 +59,21 @@ if [ "$(uname)" == "Darwin" ]; then
         # reopen in Terminal if needed
         # https://stackoverflow.com/a/29511052/262123
         if [ "$USE_CURRENT_SHELL" == "false" ]; then
-            echo "Reopening in the Terminal app..."
             echo '#!/bin/sh' > /tmp/open-smapi-terminal.command
             echo "\"$0\" $@ --use-current-shell" >> /tmp/open-smapi-terminal.command
             chmod +x /tmp/open-smapi-terminal.command
             cat /tmp/open-smapi-terminal.command
-            # Check if iTerm2 is installed by attempting to locate the iTerm application
+
+            # open in ITerm2 if installed, else the default Terminal
             if [ -d "/Applications/iTerm.app" ]; then
-                echo "Opening in iTerm2..."
-                # Open the script in iTerm2
+                echo "Reopening in iTerm2..."
                 open -a "/Applications/iTerm.app" /tmp/open-smapi-terminal.command
             else
-                echo "iTerm2 not found. Opening in the default Terminal app..."
-                # Fall back to the default Terminal if iTerm2 is not found
+                echo "Reopening in the Terminal app..."
                 open -W /tmp/open-smapi-terminal.command
             fi
-            # Remove the temporary script after a delay
+
+            # remove temporary script after a delay
             (sleep 10; rm /tmp/open-smapi-terminal.command)
             exit 0
         fi
