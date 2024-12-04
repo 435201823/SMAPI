@@ -53,7 +53,7 @@ namespace StardewModdingAPI.Framework.ModHelpers
         /// <summary>Set whether to suppress scroll wheel updates.</summary>
         public void SuppressScrollWheel(bool isSuppressed)
         {
-            this.CurrentInputState().OverrideScrollWheel(isSuppressed);
+            this.CurrentInputState().SuppressScrollWheel(isSuppressed);
         }
 
         /// <inheritdoc />

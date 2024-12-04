@@ -49,7 +49,7 @@ namespace StardewModdingAPI.Framework.Input
         public ICursorPosition CursorPosition => this.CursorPositionImpl;
 
         /// <summary>Whether the scroll wheel should have its old value updated during updates to suppress changes.</summary>
-        public bool IsScrollWheelSuppressed { get; private set; }
+        private bool IsScrollWheelSuppressed { get; set; }
 
 
         /*********
@@ -171,7 +171,7 @@ namespace StardewModdingAPI.Framework.Input
 
         /// <summary>Set whether to suppress scroll wheel changes</summary>
         /// <param name="isSuppressed">Whether to suppress scroll wheel changes</param>
-        internal void OverrideScrollWheel(bool isSuppressed)
+        public void SuppressScrollWheel(bool isSuppressed)
         {
             this.IsScrollWheelSuppressed = isSuppressed;
         }
