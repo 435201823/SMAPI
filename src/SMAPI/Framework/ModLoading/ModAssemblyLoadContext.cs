@@ -5,7 +5,7 @@ using System.Runtime.Loader;
 
 namespace StardewModdingAPI.Framework.ModLoading
 {
-    /// <summary>An assembly load context which redirects assembly load requests if another mod already loaded a given assembly and marked it public.</summary>
+    /// <summary>An assembly load context which contains all the assemblies loaded by a particular mod, and redirects requests for public assemblies already loaded by another mod.</summary>
     internal class ModAssemblyLoadContext : AssemblyLoadContext
     {
         /*********
@@ -14,7 +14,7 @@ namespace StardewModdingAPI.Framework.ModLoading
         /// <summary>A lookup of public assembly names to the load context which contains them.</summary>
         private static readonly Dictionary<string, ModAssemblyLoadContext> LoadContextsByPublicAssemblyName = new();
 
-        /// <summary>A preprocessed list of private assembly names handled by this instance.</summary>
+        /// <summary>The list of private assembly names handled by this instance.</summary>
         private readonly HashSet<string> PrivateAssemblyNames;
 
 

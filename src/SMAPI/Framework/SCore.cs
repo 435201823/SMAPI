@@ -1896,7 +1896,7 @@ namespace StardewModdingAPI.Framework
         /// <summary>Load a given mod.</summary>
         /// <param name="mod">The mod to load.</param>
         /// <param name="mods">The mods being loaded.</param>
-        /// <param name="modAssemblyLoadContexts">A mutable list of mods' assembly load contexts, <i>excluding</i> the one for the mod currently being loaded. This method is responsible for adding one to the list for the current mod.</param>
+        /// <param name="modAssemblyLoadContexts">The assembly load contexts containing assemblies loaded by mods, which should be updated with the context for the mod being loaded.</param>
         /// <param name="assemblyLoader">Preprocesses and loads mod assemblies.</param>
         /// <param name="proxyFactory">Generates proxy classes to access mod APIs through an arbitrary interface.</param>
         /// <param name="jsonHelper">The JSON helper with which to read mods' JSON files.</param>

@@ -106,7 +106,7 @@ namespace StardewModdingAPI.Framework.ModLoading
         /// <param name="mod">The mod for which the assembly is being loaded.</param>
         /// <param name="assemblyFile">The assembly file.</param>
         /// <param name="assumeCompatible">Assume the mod is compatible, even if incompatible code is detected.</param>
-        /// <param name="assemblyLoadContext">The assembly load context for the mod currently being loaded.</param>
+        /// <param name="assemblyLoadContext">The assembly load context with which to load assemblies for the current mod.</param>
         /// <returns>Returns the rewrite metadata for the preprocessed assembly.</returns>
         /// <exception cref="IncompatibleInstructionException">An incompatible CIL instruction was found while rewriting the assembly.</exception>
         public Assembly Load(IModMetadata mod, FileInfo assemblyFile, bool assumeCompatible, ModAssemblyLoadContext assemblyLoadContext)
@@ -128,7 +128,7 @@ namespace StardewModdingAPI.Framework.ModLoading
                 assemblies = this.GetReferencedLocalAssemblies(assemblyFile, visitedAssemblyNames, this.AssemblyDefinitionResolver).ToArray();
             }
 
-            // validate private assembly names
+            // validate private assemblies
             foreach (IManifestPrivateAssembly entry in mod.Manifest.PrivateAssemblies)
             {
                 string assemblyName = entry.Name;
