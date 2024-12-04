@@ -137,8 +137,11 @@ namespace StardewModdingAPI.ModBuildConfig.Framework
             DirectoryInfo translationsFolder = new(Path.Combine(projectDir, "i18n"));
             if (translationsFolder.Exists)
             {
-                foreach (FileInfo file in translationsFolder.EnumerateFiles())
-                    yield return Tuple.Create(Path.Combine("i18n", file.Name), file);
+                foreach (FileInfo file in translationsFolder.EnumerateFiles("*", SearchOption.AllDirectories))
+                {
+                    string relativePath = PathUtilities.GetRelativePath(projectDir, file.FullName);
+                    yield return Tuple.Create(relativePath, file);
+                }
                 hasProjectTranslations = true;
             }
 
