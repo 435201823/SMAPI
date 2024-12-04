@@ -80,7 +80,7 @@ namespace StardewModdingAPI.Toolkit.Framework
             // validate dependency format
             foreach (IManifestDependency? dependency in manifest.Dependencies)
             {
-                if (dependency == null)
+                if (dependency is null)
                 {
                     error = $"manifest has a null entry under {nameof(IManifest.Dependencies)}.";
                     return false;
@@ -95,6 +95,28 @@ namespace StardewModdingAPI.Toolkit.Framework
                 if (!PathUtilities.IsSlug(dependency.UniqueID))
                 {
                     error = $"manifest has a {nameof(IManifest.Dependencies)} entry with an invalid {nameof(IManifestDependency.UniqueID)} field (IDs must only contain letters, numbers, underscores, periods, or hyphens).";
+                    return false;
+                }
+            }
+
+            // validate private assemblies format
+            foreach (IManifestPrivateAssembly? assembly in manifest.PrivateAssemblies)
+            {
+                if (assembly is null)
+                {
+                    error = $"manifest has a null entry under {nameof(IManifest.PrivateAssemblies)}.";
+                    return false;
+                }
+
+                if (string.IsNullOrWhiteSpace(assembly.Name))
+                {
+                    error = $"manifest has a {nameof(IManifest.PrivateAssemblies)} entry with no {nameof(IManifestPrivateAssembly.Name)} field.";
+                    return false;
+                }
+
+                if (assembly.Name.Contains('/') || assembly.Name.Contains('\\') || assembly.Name.Contains(".dll"))
+                {
+                    error = $"manifest has a {nameof(IManifest.PrivateAssemblies)} entry with an invalid {nameof(IManifestPrivateAssembly.Name)} field (must be the assembly name without the file path/extension).";
                     return false;
                 }
             }
