@@ -179,6 +179,7 @@ namespace StardewModdingAPI.Metadata
                     // note: types are mapped before members, regardless of the order listed here
                     .MapFacade<AbigailGame, AbigailGameFacade>()
                     .MapFacade<AnimalHouse, AnimalHouseFacade>()
+                    .MapFacade(typeof(ArgUtility).FullName!, typeof(ArgUtilityFacade))
                     .MapFacade<BasicProjectile, BasicProjectileFacade>()
                     .MapFacade<BedFurniture, BedFurnitureFacade>()
                     .MapFacade<BoatTunnel, BoatTunnelFacade>()
@@ -222,11 +223,13 @@ namespace StardewModdingAPI.Metadata
                     .MapFacade<HoeDirt, HoeDirtFacade>()
                     .MapFacade<HUDMessage, HudMessageFacade>()
                     .MapFacade<IClickableMenu, IClickableMenuFacade>()
+                    .MapFacade<IslandWest, IslandWestFacade>()
                     .MapFacade<Item, ItemFacade>()
                     .MapFacade<JunimoHut, JunimoHutFacade>()
                     .MapFacade<LargeTerrainFeature, LargeTerrainFeatureFacade>()
                     .MapFacade<Layer, LayerFacade>()
                     .MapFacade<LibraryMuseum, LibraryMuseumFacade>()
+                    .MapFacade<LightSource, LightSourceFacade>()
                     .MapFacade<LocalizedContentManager, LocalizedContentManagerFacade>()
                     .MapType("StardewValley.Buildings.Mill", typeof(Building))
                     .MapFacade<MineShaft, MineShaftFacade>()
@@ -241,6 +244,7 @@ namespace StardewModdingAPI.Metadata
                     .MapFacade<Quest, QuestFacade>()
                     .MapFacade<ResourceClump, ResourceClumpFacade>()
                     .MapFacade<Ring, RingFacade>()
+                    .MapFacade<ShippingBin, ShippingBinFacade>()
                     .MapFacade<ShopMenu, ShopMenuFacade>()
                     .MapFacade<Sign, SignFacade>()
                     .MapFacade<Slingshot, SlingshotFacade>()
@@ -285,7 +289,7 @@ namespace StardewModdingAPI.Metadata
                     // implicit NetField conversions removed
                     .MapMethod("Netcode.NetFieldBase`2::op_Implicit", typeof(NetFieldBaseFacade<,>), "op_Implicit")
                     .MapMethod("System.Int64 Netcode.NetLong::op_Implicit(Netcode.NetLong)", typeof(NetLongFacade), nameof(NetLongFacade.op_Implicit))
-                    .MapMethod("System.Int32 StardewValley.Network.NetDirection::op_Implicit(StardewValley.Network.NetDirection)", typeof(ImplicitConversionOperators), nameof(ImplicitConversionOperators.NetDirection_ToInt))
+                    .MapMethod("System.Int32 StardewValley.Network.NetDirection::op_Implicit(StardewValley.Network.NetDirection)", typeof(ImplicitConversionOperatorsFacade), nameof(ImplicitConversionOperatorsFacade.NetDirection_ToInt))
                     .MapMethod("!0 StardewValley.Network.NetPausableField`3<Microsoft.Xna.Framework.Vector2,Netcode.NetVector2,Netcode.NetVector2>::op_Implicit(StardewValley.Network.NetPausableField`3<!0,!1,!2>)", typeof(NetPausableFieldFacade<Vector2, NetVector2, NetVector2>), nameof(NetPausableFieldFacade<Vector2, NetVector2, NetVector2>.op_Implicit));
 
                 // heuristic rewrites

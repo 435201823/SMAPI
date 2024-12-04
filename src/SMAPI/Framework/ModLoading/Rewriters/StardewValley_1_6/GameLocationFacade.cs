@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Netcode;
 using StardewModdingAPI.Framework.ModLoading.Framework;
@@ -9,18 +8,10 @@ using StardewValley.Extensions;
 using StardewValley.Objects;
 using xTile.Dimensions;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member: This is internal code to support rewriters and shouldn't be called directly.
-
 namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
 {
     /// <summary>Maps Stardew Valley 1.5.6's <see cref="GameLocation"/> methods to their newer form to avoid breaking older mods.</summary>
     /// <remarks>This is public to support SMAPI rewriting and should never be referenced directly by mods. See remarks on <see cref="ReplaceReferencesRewriter"/> for more info.</remarks>
-    [SuppressMessage("ReSharper", "IdentifierTypo", Justification = SuppressReasons.MatchesOriginal)]
-    [SuppressMessage("ReSharper", "InconsistentNaming", Justification = SuppressReasons.MatchesOriginal)]
-    [SuppressMessage("ReSharper", "ParameterHidesMember", Justification = SuppressReasons.MatchesOriginal)]
-    [SuppressMessage("ReSharper", "PossibleLossOfFraction", Justification = SuppressReasons.MatchesOriginal)]
-    [SuppressMessage("ReSharper", "RedundantBaseQualifier", Justification = SuppressReasons.BaseForClarity)]
-    [SuppressMessage("ReSharper", "UnusedMember.Global", Justification = SuppressReasons.UsedViaRewriting)]
     public class GameLocationFacade : GameLocation, IRewriteFacade
     {
         /*********
@@ -45,6 +36,12 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
         public Object? getFish(float millisecondsAfterNibble, int bait, int waterDepth, Farmer who, double baitPotency, Vector2 bobberTile, string? location = null)
         {
             return base.getFish(millisecondsAfterNibble, bait.ToString(), waterDepth, who, baitPotency, bobberTile, location) as Object;
+        }
+
+        /// <remarks>Changed in Stardew Valley 1.6.9.</remarks>
+        public LightSource getLightSource(int identifier)
+        {
+            return base.getLightSource(identifier.ToString());
         }
 
         public Dictionary<string, string> GetLocationEvents()
@@ -74,6 +71,12 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
         public string GetSeasonForLocation()
         {
             return base.GetSeasonKey();
+        }
+
+        /// <remarks>Changed in Stardew Valley 1.6.9.</remarks>
+        public bool hasLightSource(int identifier)
+        {
+            return base.hasLightSource(identifier.ToString());
         }
 
         public bool isTileLocationOpenIgnoreFrontLayers(Location tile)
@@ -129,6 +132,18 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
             base.localSound(audioName, position);
         }
 
+        /// <remarks>Changed in Stardew Valley 1.6.9.</remarks>
+        public new void makeHoeDirt(Vector2 tileLocation, bool ignoreChecks = false)
+        {
+            base.makeHoeDirt(tileLocation, ignoreChecks);
+        }
+
+        /// <remarks>Changed in Stardew Valley 1.6.9.</remarks>
+        public bool moveObject(int oldX, int oldY, int newX, int newY, string unlessItemId)
+        {
+            return base.moveContents(oldX, oldY, newX, newY, unlessItemId);
+        }
+
         public void OnStoneDestroyed(int indexOfStone, int x, int y, Farmer who)
         {
             base.OnStoneDestroyed(indexOfStone.ToString(), x, y, who);
@@ -147,6 +162,18 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
         public void playSoundPitched(string audioName, int pitch, SoundContext soundContext = SoundContext.Default)
         {
             base.playSound(audioName, pitch: pitch, context: soundContext);
+        }
+
+        /// <remarks>Changed in Stardew Valley 1.6.9.</remarks>
+        public void repositionLightSource(int identifier, Vector2 position)
+        {
+            base.repositionLightSource(identifier.ToString(), position);
+        }
+
+        /// <remarks>Changed in Stardew Valley 1.6.9.</remarks>
+        public void removeLightSource(int identifier)
+        {
+            base.removeLightSource(identifier.ToString());
         }
 
 

@@ -383,6 +383,10 @@ namespace StardewModdingAPI.Metadata
                     Game1.jukeboxTrackData = DataLoader.JukeboxTracks(content);
                     return true;
 
+                case "data/locations": // Game1.LoadContent
+                    Game1.locationData = DataLoader.Locations(content);
+                    return true;
+
                 case "data/locationcontexts": // Game1.LoadContent
                     Game1.locationContextData = DataLoader.LocationContexts(content);
                     return true;

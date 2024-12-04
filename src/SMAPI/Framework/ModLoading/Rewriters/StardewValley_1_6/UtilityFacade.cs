@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Framework.ModLoading.Framework;
@@ -9,16 +8,10 @@ using StardewValley.Buildings;
 using StardewValley.Extensions;
 using SObject = StardewValley.Object;
 
-#pragma warning disable CS0618 // Type or member is obsolete: this is backwards-compatibility code.
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member: This is internal code to support rewriters and shouldn't be called directly.
-
 namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
 {
     /// <summary>Maps Stardew Valley 1.5.6's <see cref="Utility"/> methods to their newer form to avoid breaking older mods.</summary>
     /// <remarks>This is public to support SMAPI rewriting and should never be referenced directly by mods. See remarks on <see cref="ReplaceReferencesRewriter"/> for more info.</remarks>
-    [SuppressMessage("ReSharper", "IdentifierTypo", Justification = SuppressReasons.MatchesOriginal)]
-    [SuppressMessage("ReSharper", "InconsistentNaming", Justification = SuppressReasons.MatchesOriginal)]
-    [SuppressMessage("ReSharper", "UnusedMember.Global", Justification = SuppressReasons.UsedViaRewriting)]
     public class UtilityFacade : Utility, IRewriteFacade
     {
         /*********
@@ -46,10 +39,12 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
             });
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete: this is backwards-compatibility code.
         public new static DisposableList<NPC> getAllCharacters()
         {
             return new DisposableList<NPC>(Utility.getAllCharacters());
         }
+#pragma warning restore CS0618
 
         public static List<NPC> getAllCharacters(List<NPC> list)
         {

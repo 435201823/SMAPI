@@ -148,6 +148,19 @@ namespace StardewModdingAPI.Framework
             this.OnContentLoaded();
         }
 
+        /// <inheritdoc />
+        public override bool ShouldDrawOnBuffer()
+        {
+            // For some reason, screen positions are UI-scale-adjusted in non-UI mode in the specific case where [a] UI
+            // mode is not 100%, and [b] zoom level is 100% (which causes this method to return false). That can cause
+            // issues like mods' world overlays being mispositioned with that specific combination of settings.
+            //
+            // It's not clear why that happens, but there's little reason not to just using the buffer consistently and
+            // avoid the issue.
+
+            return true;
+        }
+
         /*********
         ** Protected methods
         *********/

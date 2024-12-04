@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Netcode;
 using StardewModdingAPI.Framework.ModLoading.Framework;
@@ -7,18 +6,10 @@ using StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6.Interna
 using StardewValley;
 using SObject = StardewValley.Object;
 
-#pragma warning disable CS0618 // Type or member is obsolete: this is backwards-compatibility code.
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member: This is internal code to support rewriters and shouldn't be called directly.
-
 namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
 {
     /// <summary>Maps Stardew Valley 1.5.6's <see cref="Farmer"/> methods to their newer form to avoid breaking older mods.</summary>
     /// <remarks>This is public to support SMAPI rewriting and should never be referenced directly by mods. See remarks on <see cref="ReplaceReferencesRewriter"/> for more info.</remarks>
-    [SuppressMessage("ReSharper", "IdentifierTypo", Justification = SuppressReasons.MatchesOriginal)]
-    [SuppressMessage("ReSharper", "InconsistentNaming", Justification = SuppressReasons.MatchesOriginal)]
-    [SuppressMessage("ReSharper", "ParameterHidesMember", Justification = SuppressReasons.MatchesOriginal)]
-    [SuppressMessage("ReSharper", "RedundantBaseQualifier", Justification = SuppressReasons.BaseForClarity)]
-    [SuppressMessage("ReSharper", "UnusedMember.Global", Justification = SuppressReasons.UsedViaRewriting)]
     public class FarmerFacade : Farmer, IRewriteFacade
     {
         /*********
@@ -148,7 +139,9 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
         {
             // minPrice field was always ignored
 
+#pragma warning disable CS0618 // Type or member is obsolete: this is backwards-compatibility code.
             return base.getItemCount(item_index.ToString());
+#pragma warning restore CS0618
         }
 
         public bool hasBuff(int whichBuff)
@@ -179,7 +172,9 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
                     return Game1.netWorldState.Value.GoldenWalnuts >= quantity;
 
                 default:
+#pragma warning disable CS0618 // Type or member is obsolete: this is backwards-compatibility code.
                     return base.getItemCount(ItemRegistry.type_object + itemIndex) >= quantity;
+#pragma warning restore CS0618
             }
         }
 
@@ -282,6 +277,13 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
             if (!item.bigCraftable)
                 base.revealGiftTaste(npc.Name, item.ItemId);
         }
+
+        /// <remarks>Changed in Stardew Valley 1.6.9.</remarks>
+        public static void showReceiveNewItemMessage(Farmer who, Item item)
+        {
+            Farmer.showReceiveNewItemMessage(who, item, item.Stack);
+        }
+
 
 
         /*********

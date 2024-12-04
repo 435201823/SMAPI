@@ -1,27 +1,27 @@
 using StardewModdingAPI.Framework.ModLoading.Framework;
 using StardewValley;
-using StardewValley.Menus;
+using StardewValley.Buildings;
 
 namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
 {
-    /// <summary>Maps Stardew Valley 1.5.6's <see cref="ProfileMenu"/> methods to their newer form to avoid breaking older mods.</summary>
+    /// <summary>Maps Stardew Valley 1.5.6's <see cref="ShippingBin"/> methods to their newer form to avoid breaking older mods.</summary>
     /// <remarks>This is public to support SMAPI rewriting and should never be referenced directly by mods. See remarks on <see cref="ReplaceReferencesRewriter"/> for more info.</remarks>
-    public class ProfileMenuFacade : ProfileMenu, IRewriteFacade
+    public class ShippingBinFacade : ShippingBin, IRewriteFacade
     {
         /*********
         ** Public methods
         *********/
-        public Character? GetCharacter()
+        /// <remarks>Changed in Stardew Valley 1.6.9.</remarks>
+        public void showShipment(Object item, bool playThrowSound = true)
         {
-            return base.Current?.Character;
+            base.showShipment(item, playThrowSound);
         }
 
 
         /*********
         ** Private methods
         *********/
-        private ProfileMenuFacade()
-            : base(null, null)
+        private ShippingBinFacade()
         {
             RewriteHelper.ThrowFakeConstructorCalled();
         }

@@ -17,14 +17,17 @@
     * Fixed `list_items` & `player_add` not handling dried items, pickled forage, smoked fish, and specific bait correctly.
     * Fixed `list_items` & `player_add` listing some flooring & wallpaper items twice.
     * Fixed `show_data_files` & `show_game_files` no longer working correctly (thanks to jakerosado!).
+  * Fixed some mod overlays mispositioned when your UI scale is non-100% and zoom level is 100%.
   * Updated mod compatibility list.
 
 * For mod authors:
   * Added support for [private assembly references](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Manifest#Private_assemblies) (thanks to Shockah!).
+  * Added support for [i18n subfolders](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Translation#i18n_folder) (thanks to spacechase0!).
   * Added `DoesAssetExist` methods to `helper.GameContent` and `helper.ModContent` (thanks to KhloeLeclair!).
   * Added scroll wheel suppression via `helper.Input.SuppressScrollWheel()` (thanks to MercuriusXeno!).
   * Added `PathUtilities.AnonymizePathForDisplay` to anonymize home paths (thanks to AnotherPillow!).
   * Updated dependencies, including [FluentHttpClient](https://github.com/Pathoschild/FluentHttpClient#readme) 4.3.0 → 4.4.0 (see [changes](https://github.com/Pathoschild/FluentHttpClient/blob/develop/RELEASE-NOTES.md#440)) and [Pintail](https://github.com/Nanoray-pl/Pintail) 2.3.0 → 2.4.2 (see [changes](https://github.com/Nanoray-pl/Pintail/blob/master/docs/release-notes.md#242)).
+  * The SMAPI log now includes the assembly version of each loaded mod (thanks to spacechase0!).
   * Fixed `content.Load` ignoring language override in recent versions.
   * Fixed player sprites and building paint masks not always propagated on change.
 

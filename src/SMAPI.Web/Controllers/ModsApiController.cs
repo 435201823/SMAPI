@@ -159,12 +159,7 @@ namespace StardewModdingAPI.Web.Controllers
             foreach (UpdateKey updateKey in updateKeys)
             {
                 // validate update key
-                if (
-                    !updateKey.LooksValid
-#if SMAPI_DEPRECATED
-                    || (updateKey.Site == ModSiteKey.UpdateManifest && apiVersion?.IsNewerThan("4.0.0-alpha") != true) // 4.0-alpha feature, don't make available to released mods in case it changes before release
-#endif
-                )
+                if (!updateKey.LooksValid)
                 {
                     errors.Add($"The update key '{updateKey}' isn't in a valid format. It should contain the site key and mod ID like 'Nexus:541', with an optional subkey like 'Nexus:541@subkey'.");
                     continue;
