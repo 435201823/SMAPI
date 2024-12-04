@@ -13,7 +13,7 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
         *********/
         public Building getBuilding()
         {
-            return base.GetContainingBuilding();
+            return base.ParentBuilding; // new in 1.6.9
         }
 
 

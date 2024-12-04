@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using StardewModdingAPI.Framework.ModLoading.Framework;
 using StardewValley;
+using StardewValley.GameData.Shops;
 using StardewValley.Menus;
 
 namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
@@ -23,16 +25,35 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
         /*********
         ** Public methods
         *********/
+        /// <remarks>Changed in 1.6.0.</remarks>
         public static ShopMenu Constructor(Dictionary<ISalable, int[]> itemPriceAndStock, int currency = 0, string? who = null, Func<ISalable, Farmer, int, bool>? on_purchase = null, Func<ISalable, bool>? on_sell = null, string? context = null)
         {
-            return new ShopMenu(ShopMenuFacade.GetShopId(context), ShopMenuFacade.ToItemStockInformation(itemPriceAndStock), currency, who, on_purchase, on_sell, playOpenSound: true);
+            return new ShopMenu(ShopMenuFacade.GetShopId(context), ShopMenuFacade.ToItemStockInformation(itemPriceAndStock), currency, who, ToOnPurchaseDelegate(on_purchase), on_sell, playOpenSound: true);
         }
 
+        /// <remarks>Changed in 1.6.0.</remarks>
         public static ShopMenu Constructor(List<ISalable> itemsForSale, int currency = 0, string? who = null, Func<ISalable, Farmer, int, bool>? on_purchase = null, Func<ISalable, bool>? on_sell = null, string? context = null)
         {
-            return new ShopMenu(ShopMenuFacade.GetShopId(context), itemsForSale, currency, who, on_purchase, on_sell, playOpenSound: true);
+            return new ShopMenu(ShopMenuFacade.GetShopId(context), itemsForSale, currency, who, ToOnPurchaseDelegate(on_purchase), on_sell, playOpenSound: true);
         }
 
+        /// <remarks>Changed in 1.6.9.</remarks>
+        public static ShopMenu Constructor(string shopId, ShopData shopData, ShopOwnerData ownerData, NPC? owner = null, Func<ISalable, Farmer, int, bool>? onPurchase = null, Func<ISalable, bool>? onSell = null, bool playOpenSound = true)
+        {
+            return new ShopMenu(shopId, shopData, ownerData, owner, ToOnPurchaseDelegate(onPurchase), onSell, playOpenSound: true);
+        }
+
+        /// <remarks>Changed in 1.6.9.</remarks>
+        public static ShopMenu Constructor(string shopId, Dictionary<ISalable, ItemStockInformation> itemPriceAndStock, int currency = 0, string? who = null, Func<ISalable, Farmer, int, bool>? on_purchase = null, Func<ISalable, bool>? on_sell = null, bool playOpenSound = true)
+        {
+            return new ShopMenu(shopId, itemPriceAndStock, currency, who, ToOnPurchaseDelegate(on_purchase), on_sell, playOpenSound);
+        }
+
+        /// <remarks>Changed in 1.6.9.</remarks>
+        public static ShopMenu Constructor(string shopId, List<ISalable> itemsForSale, int currency = 0, string? who = null, Func<ISalable, Farmer, int, bool>? on_purchase = null, Func<ISalable, bool>? on_sell = null, bool playOpenSound = true)
+        {
+            return new ShopMenu(shopId, itemsForSale, currency, who, ToOnPurchaseDelegate(on_purchase), on_sell, playOpenSound);
+        }
 
         /*********
         ** Private methods
@@ -61,6 +82,16 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
             }
 
             return stock;
+        }
+
+        /// <summary>Convert a pre-1.6.9 <see cref="ShopMenu.onPurchase"/> callback into its new delegate type.</summary>
+        /// <param name="onPurchase">The callback to convert.</param>
+        [return: NotNullIfNotNull(nameof(onPurchase))]
+        private static ShopMenu.OnPurchaseDelegate? ToOnPurchaseDelegate(Func<ISalable, Farmer, int, bool>? onPurchase)
+        {
+            return onPurchase != null
+                ? (item, who, countTaken, _) => onPurchase(item, who, countTaken)
+                : null;
         }
     }
 }

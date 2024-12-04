@@ -86,11 +86,9 @@ folder before compiling.
 
 ## Prepare a release
 ### On any platform
-**⚠ Ideally we'd have one set of instructions for all platforms. The instructions in this section
-will produce a fully functional release for all supported platforms, _except_ that the application
-icon for SMAPI on Windows will disappear due to [.NET runtime bug
-3828](https://github.com/dotnet/runtime/issues/3828). Until that's fixed, see the _[on
-Windows](#on-windows)_ section below to create a build that retains the icon.**
+_This is the unified process that works on any platform. However, it needs a few extra steps on
+Windows (e.g. running Steam in WSL); see ['On Windows'](#on-windows) below for an alternative quick
+option._
 
 #### First-time setup
 1. On Windows only:
@@ -136,6 +134,10 @@ Windows](#on-windows)_ section below to create a build that retains the icon.**
    release    | `<version>`              | `4.0.0`
 
 ### On Windows
+_This is the alternative quick process for Windows only. This avoids needing Steam installed on WSL,
+and can be used to create Windows-only builds without using WSL at all. See ['on any platform'](#on-any-platform)
+above for the unified process._
+
 #### First-time setup
 1. Set up Windows Subsystem for Linux (WSL):
    1. [Install WSL](https://docs.microsoft.com/en-us/windows/wsl/install).

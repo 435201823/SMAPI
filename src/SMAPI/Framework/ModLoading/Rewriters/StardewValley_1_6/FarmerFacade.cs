@@ -240,7 +240,7 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
                     default:
                         for (int i = 0; i < base.Items.Count; i++)
                         {
-                            if (base.Items[i] is SObject obj && obj.parentSheetIndex == index)
+                            if (base.Items[i] is SObject obj && obj.parentSheetIndex.Value == index)
                             {
                                 if (obj.Stack > stack)
                                 {
@@ -274,7 +274,7 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
 
         public void revealGiftTaste(NPC npc, SObject item)
         {
-            if (!item.bigCraftable)
+            if (!item.bigCraftable.Value)
                 base.revealGiftTaste(npc.Name, item.ItemId);
         }
 

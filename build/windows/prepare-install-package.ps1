@@ -79,7 +79,7 @@ foreach ($folder in $folders) {
 
     echo "Compiling installer for $folder..."
     echo "-------------------------------------------------"
-    dotnet publish src/SMAPI.Installer --configuration $buildConfig -v minimal --runtime "$runtime" --framework "$framework" -p:OS="$msbuildPlatformName" -p:TargetFrameworks="$framework" -p:GamePath="$gamePath" -p:CopyToGameFolder="false" -p:PublishTrimmed=True -p:TrimMode=Link --self-contained true
+    dotnet publish src/SMAPI.Installer --configuration $buildConfig -v minimal --runtime "$runtime" --framework "$framework" -p:OS="$msbuildPlatformName" -p:TargetFrameworks="$framework" -p:GamePath="$gamePath" -p:CopyToGameFolder="false" --self-contained true
     echo ""
     echo ""
 

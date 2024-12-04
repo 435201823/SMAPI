@@ -4,6 +4,8 @@
     <Description>A library which encapsulates mod-handling logic for mod managers and tools. Not intended for use by mods.</Description>
     <TargetFrameworks>net6.0; netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <PublishTrimmed Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">true</PublishTrimmed>
   </PropertyGroup>
 
   <Import Project="..\..\build\common.targets" />

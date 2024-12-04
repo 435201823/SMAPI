@@ -4,6 +4,7 @@ using Netcode;
 using StardewModdingAPI.Framework.ModLoading.Framework;
 using StardewValley;
 using StardewValley.Audio;
+using StardewValley.Buildings;
 using StardewValley.Extensions;
 using StardewValley.Objects;
 using xTile.Dimensions;
@@ -26,6 +27,12 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
         public NetCollection<NPC> getCharacters()
         {
             return base.characters;
+        }
+
+        /// <remarks>Changed in Stardew Valley 1.6.9.</remarks>
+        public Building GetContainingBuilding()
+        {
+            return base.ParentBuilding;
         }
 
         public virtual int getExtraMillisecondsPerInGameMinuteForThisLocation()

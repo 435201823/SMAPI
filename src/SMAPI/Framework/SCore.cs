@@ -666,14 +666,15 @@ namespace StardewModdingAPI.Framework
                 if (Game1.currentLoader != null)
                 {
                     this.Monitor.LogTra("console.score.game-loader-synchronizing", null, Monitor.ContextLogLevel);
-                    Game1.game1.UpdateTitleScreen(Game1.currentGameTime); // run game logic to change music on load, etc
-                    // ReSharper disable once ConstantConditionalAccessQualifier -- may become null within the loop
-                    while (Game1.currentLoader?.MoveNext() == true)
+
+                    while (true)
                     {
+                        Game1.game1.UpdateTitleScreenDuringLoadingMode();
                         SCore.ProcessTicksElapsed++;
 
                         // raise load stage changed
-                        switch (Game1.currentLoader.Current)
+                        int? step = Game1.currentLoader?.Current;
+                        switch (step)
                         {
                             case 20 when (!saveParsed && SaveGame.loaded != null):
                                 saveParsed = true;
@@ -693,9 +694,11 @@ namespace StardewModdingAPI.Framework
                                     this.OnLoadStageChanged(LoadStage.Preloaded);
                                 break;
                         }
+
+                        if (step is null)
+                            break; // done
                     }
 
-                    Game1.currentLoader = null;
                     this.Monitor.LogTra("console.score.game-loader-done", null, Monitor.ContextLogLevel);
                 }
 
