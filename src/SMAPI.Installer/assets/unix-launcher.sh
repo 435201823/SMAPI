@@ -75,7 +75,7 @@ if [ "$(uname)" == "Darwin" ]; then
                 open -W /tmp/open-smapi-terminal.command
             fi
             # Remove the temporary script after a delay
-            (sleep 1; rm /tmp/open-smapi-terminal.command)
+            (sleep 10; rm /tmp/open-smapi-terminal.command)
             exit 0
         fi
     fi
