@@ -11,6 +11,14 @@ namespace StardewModdingAPI
         /*********
         ** Public methods
         *********/
+        /// <summary>Get whether a file within the mod folder exists.</summary>
+        /// <typeparam name="T">The expected asset type.</typeparam>
+        /// <param name="relativePath">The local path to a content file relative to the mod folder.</param>
+        /// <exception cref="ArgumentException">The <paramref name="relativePath"/> is empty or contains invalid characters.</exception>
+        /// <exception cref="ContentLoadException">The content asset couldn't be loaded (e.g. because it doesn't exist).</exception>
+        bool DoesAssetExist<T>(string relativePath)
+            where T : notnull;
+
         /// <summary>Load content from the mod folder and return it. When loading a <c>.png</c> file, this must be called outside the game's draw loop.</summary>
         /// <typeparam name="T">The expected data type. The main supported types are <see cref="Map"/>, <see cref="Texture2D"/>, <see cref="IRawTextureData"/>, and data structures; other types may be supported by the game's content pipeline.</typeparam>
         /// <param name="relativePath">The local path to a content file relative to the mod folder.</param>

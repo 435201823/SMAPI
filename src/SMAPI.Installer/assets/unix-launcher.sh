@@ -101,9 +101,16 @@ if [ "$(uname)" == "Darwin" ]; then
 
 # Linux
 else
-    # choose binary file to launch
-    LAUNCH_FILE="./StardewModdingAPI"
-    export LAUNCH_FILE
+    # check if gamemoderun exists, if that is not the case start SMAPI normally
+    if command -v gamemoderun &> /dev/null
+    then
+        # Run SMAPI with using gamemoderun, which automatically boosts the system for the game
+        LAUNCH_FILE="gamemoderun ./StardewModdingAPI"
+        export LAUNCH_FILE
+    else
+        LAUNCH_FILE="./StardewModdingAPI"
+        export LAUNCH_FILE
+    fi
 
     # run in terminal
     if [ "$USE_CURRENT_SHELL" == "false" ]; then

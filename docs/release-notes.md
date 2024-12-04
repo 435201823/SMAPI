@@ -3,22 +3,29 @@
 # Release notes
 ## Upcoming release
 * For players:
-  * Updated for Stardew Valley 1.6.9. **This drops compatibility with Stardew Valley 1.6.4–1.6.8.**
-  * SMAPI now auto-detects missing or modified content files and logs a warning.
-  * Removed confusing "Found X mods with warnings:" prefix before listing categories.
+  * Updated for Stardew Valley 1.6.9.
+  * SMAPI now auto-detects missing or modified content files, and logs a warning if found.
+  * SMAPI now uses iTerm2 on macOS if it's installed (thanks to yinxiangshi!).
+  * SMAPI now enables GameMode on Linux if it's installed (thanks to noah1510!).
+  * SMAPI now anonymizes paths containing your home path (thanks to AnotherPillow!).
+  * Removed confusing "Found X mods with warnings:" log message.
+  * The installer on Linux now tries to open a terminal if needed (thanks to HoodedDeath!).
   * Fixed installer not detecting Linux Flatpak install paths.
   * Fixed content issues for non-English players in recent builds (e.g. content packs not detecting the current festival correctly).
-  * Fixed console commands like `list_items` or `player_add`...
-    * not handling dried items, pickled forage, smoked fish, and specific bait correctly.
-    * listing some flooring & wallpaper items twice.
-  * Fixed dependencies on transparently obsolete mods not ignored in some cases.
+  * Fixed dependencies on obsolete redundant mods not ignored in some cases.
+  * Fixed issues in Console Commands:
+    * Fixed `list_items` & `player_add` not handling dried items, pickled forage, smoked fish, and specific bait correctly.
+    * Fixed `list_items` & `player_add` listing some flooring & wallpaper items twice.
+    * Fixed `show_data_files` & `show_game_files` no longer working correctly (thanks to jakerosado!).
   * Updated mod compatibility list.
 
 * For mod authors:
-  * Updated dependencies, including...
-    * [FluentHttpClient](https://github.com/Pathoschild/FluentHttpClient#readme) 4.3.0 → 4.4.0 (see [changes](https://github.com/Pathoschild/FluentHttpClient/blob/develop/RELEASE-NOTES.md#440));
-    * [Pintail](https://github.com/Nanoray-pl/Pintail) 2.3.0 → 2.4.2 (see [changes](https://github.com/Nanoray-pl/Pintail/blob/master/docs/release-notes.md#242)).
-  * Fixed `content.Load` ignoring language override in recent SMAPI builds.
+  * Added support for [private assembly references](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Manifest#Private_assemblies) (thanks to Shockah!).
+  * Added `DoesAssetExist` methods to `helper.GameContent` and `helper.ModContent` (thanks to KhloeLeclair!).
+  * Added scroll wheel suppression via `helper.Input.SuppressScrollWheel()` (thanks to MercuriusXeno!).
+  * Added `PathUtilities.AnonymizePathForDisplay` to anonymize home paths (thanks to AnotherPillow!).
+  * Updated dependencies, including [FluentHttpClient](https://github.com/Pathoschild/FluentHttpClient#readme) 4.3.0 → 4.4.0 (see [changes](https://github.com/Pathoschild/FluentHttpClient/blob/develop/RELEASE-NOTES.md#440)) and [Pintail](https://github.com/Nanoray-pl/Pintail) 2.3.0 → 2.4.2 (see [changes](https://github.com/Nanoray-pl/Pintail/blob/master/docs/release-notes.md#242)).
+  * Fixed `content.Load` ignoring language override in recent versions.
   * Fixed player sprites and building paint masks not always propagated on change.
 
 * For the update check server:
@@ -54,7 +61,7 @@ Released 21 April 2024 for Stardew Valley 1.6.4 or later.
 Released 18 April 2024 for Stardew Valley 1.6.4 or later.
 
 * For players:
-  * Updated for Stardew Valley 1.6.4. **This drops compatibility with Stardew Valley 1.6.0–1.6.3.**
+  * Updated for Stardew Valley 1.6.4.
   * The installer now lists detected game folders with an incompatible version to simplify troubleshooting.
   * When the installer asks for a game folder path, entering an incorrect path to a file inside it will now still select the folder.
   * Fixed installer not detecting 1.6 compatibility branch.

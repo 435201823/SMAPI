@@ -45,6 +45,14 @@ namespace StardewModdingAPI.Utilities
             return ToolkitPathUtilities.NormalizePath(path);
         }
 
+        /// <summary>Get a path with the home directory path replaced with <c>~</c> (like <c>C:\Users\Admin\Game</c> to <c>~\Game</c>), if applicable.</summary>
+        /// <param name="path">The path to anonymize.</param>
+        [Pure]
+        public static string AnonymizePathForDisplay(string path)
+        {
+            return ToolkitPathUtilities.AnonymizePathForDisplay(path);
+        }
+
         /// <summary>Get whether a path is relative and doesn't try to climb out of its containing folder (e.g. doesn't contain <c>../</c>).</summary>
         /// <param name="path">The path to check.</param>
         [Pure]

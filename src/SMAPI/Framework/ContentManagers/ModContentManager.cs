@@ -79,6 +79,7 @@ namespace StardewModdingAPI.Framework.ContentManagers
             if (base.DoesAssetExist<T>(assetName))
                 return true;
 
+            assetName = this.ResolveAssetName(assetName);
             FileInfo file = this.GetModFile<T>(assetName.Name);
             return file.Exists;
         }
@@ -94,17 +95,8 @@ namespace StardewModdingAPI.Framework.ContentManagers
             // for more background info.
             //
 
-            // resolve managed asset key
-            {
-                if (this.Coordinator.TryParseManagedAssetKey(assetName.Name, out string? contentManagerID, out IAssetName? relativePath))
-                {
-                    if (contentManagerID != this.Name)
-                        this.ThrowLoadError(assetName, ContentLoadErrorType.AccessDenied, "can't load a different mod's managed asset key through this mod content manager.");
-                    assetName = relativePath;
-                }
-            }
-
             // get local asset
+            assetName = this.ResolveAssetName(assetName);
             T asset;
             try
             {
@@ -159,6 +151,22 @@ namespace StardewModdingAPI.Framework.ContentManagers
         /*********
         ** Private methods
         *********/
+        /// <summary>Get the relative mod file path from an asset name.</summary>
+        /// <param name="assetName">The asset name to parse.</param>
+        /// <exception cref="SContentLoadException">The <paramref name="assetName"/> matches a different mod's content manager.</exception>
+        private IAssetName ResolveAssetName(IAssetName assetName)
+        {
+            if (this.Coordinator.TryParseManagedAssetKey(assetName.Name, out string? contentManagerId, out IAssetName? relativePath))
+            {
+                if (contentManagerId != this.Name)
+                    this.ThrowLoadError(assetName, ContentLoadErrorType.AccessDenied, "can't load a different mod's managed asset key through this mod content manager.");
+
+                assetName = relativePath;
+            }
+
+            return assetName;
+        }
+
         /// <summary>Load an unpacked font file (<c>.fnt</c>).</summary>
         /// <typeparam name="T">The type of asset to load.</typeparam>
         /// <param name="assetName">The asset name relative to the loader root directory.</param>

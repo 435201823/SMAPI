@@ -224,9 +224,9 @@ namespace StardewModdingAPI.Framework.Logging
             this.Monitor.LogTra("console.log-manager.platform", new { SmapiVersion = Constants.ApiVersion, GameVersion = Game1.GetVersionString(), OsVersion = EnvironmentUtility.GetFriendlyPlatformName(Constants.Platform) }, LogLevel.Info);
 
             // log basic info
-            this.Monitor.LogTra("console.log-manager.mods-go-here", new { modsPath }, LogLevel.Info);
+            this.Monitor.LogTra("console.log-manager.mods-go-here", new { modsPath = PathUtilities.AnonymizePathForDisplay(modsPath) }, LogLevel.Info);
             if (modsPath != Constants.DefaultModsPath)
-                this.Monitor.LogTra("console.log-manager.using-custom-mod-path-argument", new { Constants.GamePath });
+                this.Monitor.LogTra("console.log-manager.using-custom-mod-path-argument", new { GamePath = PathUtilities.AnonymizePathForDisplay(Constants.GamePath) });
             this.Monitor.Log($"Log started at {DateTime.UtcNow:s} UTC");
 
             // log custom settings

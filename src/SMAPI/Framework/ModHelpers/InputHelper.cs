@@ -1,6 +1,8 @@
 using System;
+using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI.Framework.Input;
 using StardewModdingAPI.Utilities;
+using StardewValley;
 
 namespace StardewModdingAPI.Framework.ModHelpers
 {
@@ -50,10 +52,19 @@ namespace StardewModdingAPI.Framework.ModHelpers
             this.CurrentInputState().OverrideButton(button, setDown: false);
         }
 
-        /// <summary>Set whether to suppress scroll wheel updates.</summary>
-        public void SuppressScrollWheel(bool isSuppressed)
-        {
-            this.CurrentInputState().SuppressScrollWheel(isSuppressed);
+        /// <inheritdoc />
+        public void SuppressScrollWheel()
+        {            
+            Game1.oldMouseState = new MouseState(
+                x: Game1.oldMouseState.X,
+                y: Game1.oldMouseState.Y,
+                scrollWheel: this.CurrentInputState().MouseState.ScrollWheelValue,
+                leftButton: Game1.oldMouseState.LeftButton,
+                middleButton: Game1.oldMouseState.MiddleButton,
+                rightButton: Game1.oldMouseState.RightButton,
+                xButton1: Game1.oldMouseState.XButton1,
+                xButton2: Game1.oldMouseState.XButton2
+            );
         }
 
         /// <inheritdoc />
