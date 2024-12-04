@@ -291,6 +291,9 @@ namespace StardewModdingAPI.Metadata
                     // implicit NetField conversions removed
                     .MapMethod("Netcode.NetFieldBase`2::op_Implicit", typeof(NetFieldBaseFacade<,>), "op_Implicit")
                     .MapMethod("System.Int64 Netcode.NetLong::op_Implicit(Netcode.NetLong)", typeof(NetLongFacade), nameof(NetLongFacade.op_Implicit))
+                    .MapMethod("System.Boolean Netcode.NetBool::op_Implicit(Netcode.NetBool)", typeof(ImplicitConversionOperatorsFacade), nameof(ImplicitConversionOperatorsFacade.NetBool_ToBool))
+                    .MapMethod("System.Int32 Netcode.NetInt::op_Implicit(Netcode.NetInt)", typeof(ImplicitConversionOperatorsFacade), nameof(ImplicitConversionOperatorsFacade.NetInt_ToInt))
+                    .MapMethod("System.String Netcode.NetString::op_Implicit(Netcode.NetString)", typeof(ImplicitConversionOperatorsFacade), nameof(ImplicitConversionOperatorsFacade.NetString_ToString))
                     .MapMethod("System.Int32 StardewValley.Network.NetDirection::op_Implicit(StardewValley.Network.NetDirection)", typeof(ImplicitConversionOperatorsFacade), nameof(ImplicitConversionOperatorsFacade.NetDirection_ToInt))
                     .MapMethod("!0 StardewValley.Network.NetPausableField`3<Microsoft.Xna.Framework.Vector2,Netcode.NetVector2,Netcode.NetVector2>::op_Implicit(StardewValley.Network.NetPausableField`3<!0,!1,!2>)", typeof(NetPausableFieldFacade<Vector2, NetVector2, NetVector2>), nameof(NetPausableFieldFacade<Vector2, NetVector2, NetVector2>.op_Implicit));
 

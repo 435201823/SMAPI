@@ -68,7 +68,7 @@ namespace StardewModdingAPI
         public static ISemanticVersion MinimumGameVersion { get; } = new GameVersion("1.6.9");
 
         /// <summary>The minimum supported Stardew Valley build number, or <c>null</c> for any build of <see cref="MinimumGameVersion"/>.</summary>
-        public static int? MinimumGameBuild { get; } = 24277;
+        public static int? MinimumGameBuild { get; } = 24292;
 
         /// <summary>The maximum supported version of Stardew Valley, if any.</summary>
         public static ISemanticVersion? MaximumGameVersion { get; } = null;
