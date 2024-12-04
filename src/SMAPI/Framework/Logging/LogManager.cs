@@ -421,7 +421,7 @@ namespace StardewModdingAPI.Framework.Logging
                 );
 
                 // direct console access
-                this.LogModWarningGroup(modsWithWarnings, ModWarning.UsesUnvalidatedUpdateTick, LogLevel.Trace,
+                this.LogModWarningGroup(modsWithWarnings, ModWarning.AccessesConsole, LogLevel.Trace,
                     I18nUtilities.Get("console.log-manager.direct-console-access"),
                     I18nUtilities.Get("console.log-manager.direct-console-access-warn"),
                     I18nUtilities.Get("console.log-manager.direct-console-access-warn2")

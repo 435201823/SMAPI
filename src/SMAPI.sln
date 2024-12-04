@@ -40,6 +40,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{EB35A917-6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "technical", "technical", "{5947303D-3512-413A-9009-7AC43F5D3513}"
 	ProjectSection(SolutionItems) = preProject
+		..\docs\technical\mod-package-release-notes.md = ..\docs\technical\mod-package-release-notes.md
 		..\docs\technical\mod-package.md = ..\docs\technical\mod-package.md
 		..\docs\technical\smapi.md = ..\docs\technical\smapi.md
 		..\docs\technical\web.md = ..\docs\technical\web.md

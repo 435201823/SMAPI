@@ -328,6 +328,19 @@ namespace StardewModdingAPI.Metadata
                     }
                     return true;
 
+                case "data/chairtiles": // GameLocation.loadMap
+                    if (!ignoreWorld)
+                    {
+                        Utility.ForEachLocation(location =>
+                        {
+                            if (Context.IsMainPlayer || location.IsTemporary)
+                                this.Reflection.GetField<bool>(location, "__mapSeatsDirty").SetValue(true);
+
+                            return true;
+                        });
+                    }
+                    return true;
+
                 case "data/characters": // Game1.LoadContent
                     Game1.characterData = DataLoader.Characters(content);
                     if (!ignoreWorld)

@@ -16,6 +16,7 @@ using StardewValley.BellsAndWhistles;
 using StardewValley.Buildings;
 using StardewValley.Enchantments;
 using StardewValley.GameData;
+using StardewValley.GameData.FishPonds;
 using StardewValley.GameData.FloorsAndPaths;
 using StardewValley.GameData.Movies;
 using StardewValley.GameData.SpecialOrders;
@@ -212,6 +213,7 @@ namespace StardewModdingAPI.Metadata
                     .MapFacade<FarmerRenderer, FarmerRendererFacade>()
                     .MapFacade<Fence, FenceFacade>()
                     .MapFacade<FishingRod, FishingRodFacade>()
+                    .MapFacade<FishPondReward, FishPondRewardFacade>()
                     .MapFacade<FishTankFurniture, FishTankFurnitureFacade>()
                     .MapFacade<Forest, ForestFacade>()
                     .MapFacade<Furniture, FurnitureFacade>()
