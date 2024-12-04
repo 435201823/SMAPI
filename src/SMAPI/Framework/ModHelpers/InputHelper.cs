@@ -50,6 +50,12 @@ namespace StardewModdingAPI.Framework.ModHelpers
             this.CurrentInputState().OverrideButton(button, setDown: false);
         }
 
+        /// <summary>Sets the scroll wheel to its original value each tick to prevent changes.</summary>
+        public void SuppressScrollWheel(bool isSuppressed)
+        {
+            this.CurrentInputState().OverrideScrollWheel(isSuppressed);
+        }
+
         /// <inheritdoc />
         public void SuppressActiveKeybinds(KeybindList keybindList)
         {

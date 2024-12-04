@@ -48,6 +48,9 @@ namespace StardewModdingAPI.Framework.Input
         /// <summary>The cursor position on the screen adjusted for the zoom level.</summary>
         public ICursorPosition CursorPosition => this.CursorPositionImpl;
 
+        /// <summary>Whether the scroll wheel should have its old value updated during updates to suppress changes.</summary>
+        public bool IsScrollWheelSuppressed { get; private set; }
+
 
         /*********
         ** Public methods
@@ -102,7 +105,8 @@ namespace StardewModdingAPI.Framework.Input
                 this.HasNewOverrides = false;
                 this.ControllerState = controller.GetState();
                 this.KeyboardState = keyboard.GetState();
-                this.MouseState = mouse.GetState();
+                this.MouseState = mouse.GetState();                
+                this.SuppressScrollWheelChanges(this.MouseState.ScrollWheelValue);
                 this.ButtonStates = activeButtons;
                 if (cursorAbsolutePos != this.CursorPositionImpl.AbsolutePixels || playerTilePos != this.LastPlayerTile)
                 {
@@ -113,6 +117,24 @@ namespace StardewModdingAPI.Framework.Input
             catch (InvalidOperationException)
             {
                 // GetState() may crash for some players if window doesn't have focus but game1.IsActive == true
+            }
+        }
+
+        /// <summary>Suppresses scroll wheel changes by updating the old mouse state in the game loop.</summary>
+        private void SuppressScrollWheelChanges(int currentScrollWheelValue)
+        {
+            if (this.IsScrollWheelSuppressed)
+            {
+                Game1.oldMouseState = new MouseState(
+                    x: Game1.oldMouseState.X,
+                    y: Game1.oldMouseState.Y,
+                    scrollWheel: currentScrollWheelValue,
+                    leftButton: Game1.oldMouseState.LeftButton,
+                    middleButton: Game1.oldMouseState.MiddleButton,
+                    rightButton: Game1.oldMouseState.RightButton,
+                    xButton1: Game1.oldMouseState.XButton1,
+                    xButton2: Game1.oldMouseState.XButton2
+                );
             }
         }
 
@@ -145,6 +167,11 @@ namespace StardewModdingAPI.Framework.Input
 
             if (changed)
                 this.HasNewOverrides = true;
+        }
+
+        internal void OverrideScrollWheel(bool isSuppressed)
+        {
+            this.IsScrollWheelSuppressed = isSuppressed;
         }
 
         /// <summary>Get whether a mod has indicated the key was already handled, so the game shouldn't handle it.</summary>
