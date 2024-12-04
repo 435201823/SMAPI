@@ -80,6 +80,7 @@
     "console.mod-resolver.circular-dependencies": "its dependencies have a circular reference: {{Modscircular}} => {{RequiredModName}}).",
     "console.mod-resolver.miss-dependencies": "it needs the '{{DisplayName}}' mod, which couldn't be loaded.",
     "console.assembly-loader.loading-file-name": "      Loading {{FileName}}...",
+    "console.assembly-loader.loading-file-name-assembly": "      Loading {{FileName}} assembly '{{AssemblyFileName}}'...",
     "console.assembly-loader.failed-load-pdb": "      Failed loading PDB for '{{FileName}}'. Technical details:\n{{ex}}",
     "console.score.running-windows-but-unix-platform": "Oops! You're running Windows, but this version of SMAPI is for Linux or macOS. Please reinstall SMAPI to fix this.",
     "console.score.running-error-platform-but-windows-version": "Oops! You're running {{Platform}}, but this version of SMAPI is for Windows. Please reinstall SMAPI to fix this.",

@@ -23,22 +23,8 @@ namespace StardewModdingAPI.Toolkit.Serialization.Models
         /// <param name="minimumVersion">The minimum required version (if any).</param>
         public ManifestContentPackFor(string uniqueId, ISemanticVersion? minimumVersion)
         {
-            this.UniqueID = this.NormalizeWhitespace(uniqueId);
+            this.UniqueID = Manifest.NormalizeWhitespace(uniqueId);
             this.MinimumVersion = minimumVersion;
-        }
-
-
-        /*********
-        ** Private methods
-        *********/
-        /// <summary>Normalize whitespace in a raw string.</summary>
-        /// <param name="input">The input to strip.</param>
-#if NET6_0_OR_GREATER
-        [return: NotNullIfNotNull("input")]
-#endif
-        private string? NormalizeWhitespace(string? input)
-        {
-            return input?.Trim();
         }
     }
 }

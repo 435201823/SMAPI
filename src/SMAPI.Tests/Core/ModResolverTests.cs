@@ -526,6 +526,7 @@ namespace SMAPI.Tests.Core
                 minimumApiVersion: minimumApiVersion != null ? new SemanticVersion(minimumApiVersion) : null,
                 minimumGameVersion: minimumGameVersion != null ? new SemanticVersion(minimumGameVersion) : null,
                 dependencies: dependencies ?? Array.Empty<IManifestDependency>(),
+                privateAssemblies: Array.Empty<IManifestPrivateAssembly>(),
                 updateKeys: Array.Empty<string>()
             );
         }

@@ -43,23 +43,9 @@ namespace StardewModdingAPI.Toolkit.Serialization.Models
         [JsonConstructor]
         public ManifestDependency(string uniqueID, ISemanticVersion? minimumVersion, bool required = true)
         {
-            this.UniqueID = this.NormalizeWhitespace(uniqueID);
+            this.UniqueID = Manifest.NormalizeWhitespace(uniqueID);
             this.MinimumVersion = minimumVersion;
             this.IsRequired = required;
-        }
-
-
-        /*********
-        ** Private methods
-        *********/
-        /// <summary>Normalize whitespace in a raw string.</summary>
-        /// <param name="input">The input to strip.</param>
-#if NET6_0_OR_GREATER
-        [return: NotNullIfNotNull("input")]
-#endif
-        private string? NormalizeWhitespace(string? input)
-        {
-            return input?.Trim();
         }
     }
 }

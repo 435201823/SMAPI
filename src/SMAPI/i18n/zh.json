@@ -80,6 +80,7 @@
     "console.mod-resolver.circular-dependencies": "它的依赖关系存在循环引用：{{Modscircular}} => {{RequiredModName}})。",
     "console.mod-resolver.miss-dependencies": "它需要的模组“{{DisplayName}}”不能加载。",
     "console.assembly-loader.loading-file-name": "      正在加载{{FileName}}...",
+    "console.assembly-loader.loading-file-name-assembly": "      正在加载 {{FileName}} 程序集 '{{AssemblyFileName}}'...",
     "console.assembly-loader.failed-load-pdb": "      加载'{{FileName}}'的 PDB 文件失败。技术细节：\n{{ex}}",
     "console.score.running-windows-but-unix-platform": "糟糕！您正在运行 Windows，但此版本的 SMAPI 适用于 Linux 或 macOS。请重新安装 SMAPI 以解决此问题。",
     "console.score.running-error-platform-but-windows-version": "糟糕！您正在运行{{Platform}}，但此版本的 SMAPI 适用于 Windows。请重新安装 SMAPI 以解决此问题。",

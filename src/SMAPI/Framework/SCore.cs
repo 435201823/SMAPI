@@ -1813,12 +1813,13 @@ namespace StardewModdingAPI.Framework
             {
                 // init
                 HashSet<string> suppressUpdateChecks = this.Settings.SuppressUpdateChecks;
+                List<ModAssemblyLoadContext> modAssemblyLoadContexts = new();
                 IInterfaceProxyFactory proxyFactory = new InterfaceProxyFactory();
 
                 // load mods
                 foreach (IModMetadata mod in mods)
                 {
-                    if (!this.TryLoadMod(mod, mods, modAssemblyLoader, proxyFactory, jsonHelper, contentCore, modDatabase, suppressUpdateChecks, out ModFailReason? failReason, out string? errorPhrase, out string? errorDetails))
+                    if (!this.TryLoadMod(mod, mods, modAssemblyLoadContexts, modAssemblyLoader, proxyFactory, jsonHelper, contentCore, modDatabase, suppressUpdateChecks, out ModFailReason? failReason, out string? errorPhrase, out string? errorDetails))
                     {
                         mod.SetStatus(ModMetadataStatus.Failed, failReason.Value, errorPhrase, errorDetails);
                         skippedMods.Add(mod);
@@ -1895,6 +1896,7 @@ namespace StardewModdingAPI.Framework
         /// <summary>Load a given mod.</summary>
         /// <param name="mod">The mod to load.</param>
         /// <param name="mods">The mods being loaded.</param>
+        /// <param name="modAssemblyLoadContexts">A mutable list of mods' assembly load contexts, <i>excluding</i> the one for the mod currently being loaded. This method is responsible for adding one to the list for the current mod.</param>
         /// <param name="assemblyLoader">Preprocesses and loads mod assemblies.</param>
         /// <param name="proxyFactory">Generates proxy classes to access mod APIs through an arbitrary interface.</param>
         /// <param name="jsonHelper">The JSON helper with which to read mods' JSON files.</param>
@@ -1905,7 +1907,7 @@ namespace StardewModdingAPI.Framework
         /// <param name="errorReasonPhrase">The user-facing reason phrase explaining why the mod couldn't be loaded (if applicable).</param>
         /// <param name="errorDetails">More detailed info about the error intended for developers (if any).</param>
         /// <returns>Returns whether the mod was successfully loaded.</returns>
-        private bool TryLoadMod(IModMetadata mod, IModMetadata[] mods, AssemblyLoader assemblyLoader, IInterfaceProxyFactory proxyFactory, JsonHelper jsonHelper, ContentCoordinator contentCore, ModDatabase modDatabase, HashSet<string> suppressUpdateChecks, [NotNullWhen(false)] out ModFailReason? failReason, out string? errorReasonPhrase, out string? errorDetails)
+        private bool TryLoadMod(IModMetadata mod, IModMetadata[] mods, List<ModAssemblyLoadContext> modAssemblyLoadContexts, AssemblyLoader assemblyLoader, IInterfaceProxyFactory proxyFactory, JsonHelper jsonHelper, ContentCoordinator contentCore, ModDatabase modDatabase, HashSet<string> suppressUpdateChecks, [NotNullWhen(false)] out ModFailReason? failReason, out string? errorReasonPhrase, out string? errorDetails)
         {
             errorDetails = null;
 
@@ -1959,6 +1961,9 @@ namespace StardewModdingAPI.Framework
             // load as content pack
             if (mod.IsContentPack)
             {
+                if (manifest.PrivateAssemblies.Length != 0)
+                    this.Monitor.Log($"      Content pack specifies private assemblies, which is only valid for SMAPI mods.", LogLevel.Warn);
+
                 IMonitor monitor = this.LogManager.GetMonitor(manifest.UniqueID, mod.DisplayName);
                 IFileLookup fileLookup = this.GetFileLookup(mod.DirectoryPath);
                 GameContentHelper gameContentHelper = new(this.ContentCore, mod, mod.DisplayName, monitor, this.Reflection);
@@ -1980,10 +1985,12 @@ namespace StardewModdingAPI.Framework
                 FileInfo assemblyFile = this.GetFileLookup(mod.DirectoryPath).GetFile(manifest.EntryDll!);
 
                 // load mod
+                ModAssemblyLoadContext modAssemblyLoadContext = new(mod, modAssemblyLoadContexts);
                 Assembly modAssembly;
                 try
                 {
-                    modAssembly = assemblyLoader.Load(mod, assemblyFile, assumeCompatible: mod.DataRecord?.Status == ModStatus.AssumeCompatible);
+                    modAssembly = assemblyLoader.Load(mod, assemblyFile, assumeCompatible: mod.DataRecord?.Status == ModStatus.AssumeCompatible, modAssemblyLoadContext);
+                    modAssemblyLoadContexts.Add(modAssemblyLoadContext);
                     this.ModRegistry.TrackAssemblies(mod, modAssembly);
                 }
                 catch (IncompatibleInstructionException) // details already in trace logs
