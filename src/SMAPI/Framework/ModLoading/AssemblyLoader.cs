@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Loader;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using StardewModdingAPI.Framework.Exceptions;
@@ -120,8 +119,10 @@ namespace StardewModdingAPI.Framework.ModLoading
                     let name = assembly.GetName().Name
                     where
                         name != null
-                        && !assemblyLoadContext.PrivateAssemblyNames.Contains(name)
-                        && (AssemblyLoadContext.GetLoadContext(assembly) as ModAssemblyLoadContext)?.PrivateAssemblyNames.Contains(name) is not true
+                        && (
+                            !assemblyLoadContext.IsPrivateAssembly(name)
+                            && assemblyLoadContext.IsLoadedPublicAssembly(name)
+                        )
                     select name
                 );
                 assemblies = this.GetReferencedLocalAssemblies(assemblyFile, visitedAssemblyNames, this.AssemblyDefinitionResolver).ToArray();
@@ -173,7 +174,7 @@ namespace StardewModdingAPI.Framework.ModLoading
                 }
 
                 // load assembly
-                bool loadAsPrivate = assemblyLoadContext.PrivateAssemblyNames.Contains(assembly.Definition.Name.Name);
+                bool loadAsPrivate = assemblyLoadContext.IsPrivateAssembly(assembly.Definition.Name.Name);
                 if (changed)
                 {
                     if (!oneAssembly)
@@ -186,12 +187,14 @@ namespace StardewModdingAPI.Framework.ModLoading
                     outAssemblyStream.Position = 0;
                     outSymbolStream.Position = 0;
                     lastAssembly = assemblyLoadContext.LoadFromStream(outAssemblyStream, outSymbolStream);
+                    assemblyLoadContext.OnLoadedAssembly(lastAssembly);
                 }
                 else
                 {
                     if (!oneAssembly)
                         this.Monitor.LogTra("console.assembly-loader.loading-file-name-assembly", new { FileName = assembly.File.Name , AssemblyFileName = assembly.File.Name });
                     lastAssembly = assemblyLoadContext.LoadFromAssemblyPath(assembly.File.FullName);
+                    assemblyLoadContext.OnLoadedAssembly(lastAssembly);
                 }
 
                 // track loaded assembly for definition resolution
