@@ -169,6 +169,8 @@ namespace StardewModdingAPI.Framework.Input
                 this.HasNewOverrides = true;
         }
 
+        /// <summary>Set whether to suppress scroll wheel changes</summary>
+        /// <param name="isSuppressed">Whether to suppress scroll wheel changes</param>
         internal void OverrideScrollWheel(bool isSuppressed)
         {
             this.IsScrollWheelSuppressed = isSuppressed;
