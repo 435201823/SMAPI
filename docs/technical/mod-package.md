@@ -7,6 +7,9 @@ for SMAPI mods and related tools. The package is fully compatible with Linux, ma
 * [Use](#use)
 * [Features](#features)
 * [Configure](#configure)
+  * [How to set options](#how-to-set-options)
+  * [Available properties](#available-properties)
+* [Bundle content packs](#Bundle-content-packs)
 * [Code warnings](#code-warnings)
 * [FAQs](#faqs)
   * [How do I set the game path?](#custom-game-path)
@@ -294,6 +297,31 @@ For example, this excludes all `.txt` and `.pdf` files, as well as the `assets/p
 </table>
 </li>
 </ul>
+
+## Bundle content packs
+You can bundle any number of [content packs](https://stardewvalleywiki.com/Modding:Content_pack_frameworks)
+with your main C# mod. They'll be grouped with the main mod into a parent folder automatically,
+which will be copied to the `Mods` folder and included in the release zip.
+
+To do that, add an `ItemGroup` with a `ContentPacks` line for each content pack you want to include:
+
+```xml
+<ItemGroup>
+    <ContentPacks Include="content packs/[CP] SomeContentPack" Version="$(Version)" />
+    <ContentPacks Include="content packs/[CP] AnotherContentPack" Version="$(Version)" />
+</ItemGroup>
+```
+
+You can use these properties for each line:
+
+property                | effect
+----------------------- | ------
+`Include`               | _(Required)_ The path to the content pack folder. This can be an absolute path, or relative to the current project.
+`Version`               | _(Required)_ The expected version of the content pack. This should usually be the same version as your main mod, to keep update alerts in sync. The package will validate that the included content pack's manifest version matches.
+`FolderName`            | _(Optional)_ The content pack folder name to create. Defaults to the folder name from `Include`.
+`ValidateManifest`      | _(Optional)_ Whether to validate that the included mod has a valid `manifest.json` file and version. Default `true`.
+`IgnoreModFilePaths`    | _(Optional)_ A list of file paths to ignore (relative to the content pack's directory); see `IgnoreModFilePaths` in the main settings. Default none.
+`IgnoreModFilePatterns` | _(Optional)_ A list of file regex patterns to ignore (relative to the content pack's directory); see `IgnoreModFilePatterns` in the main settings. Default none.
 
 ## Code warnings
 ### Overview
