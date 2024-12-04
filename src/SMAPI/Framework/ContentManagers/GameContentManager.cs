@@ -341,13 +341,6 @@ namespace StardewModdingAPI.Framework.ContentManagers
 
                         loadedMap.AddTileSheet(new TileSheet(vanillaSheet.Id, loadedMap, vanillaSheet.ImageSource, vanillaSheet.SheetSize, vanillaSheet.TileSize));
                     }
-
-                    // handle mismatch
-                    if (loadedMap.TileSheets.Count <= vanillaSheet.Index || loadedMap.TileSheets[vanillaSheet.Index].Id != vanillaSheet.Id)
-                    {
-                        mod.LogAsMod($"SMAPI blocked a '{info.Name}' map load: {this.GetOnBehalfOfLabel(loader.OnBehalfOf, parenthetical: false) ?? "mod"} reordered the original tilesheets, which often causes crashes.\nTechnical details for mod author: Expected order: {string.Join(", ", vanillaTilesheetRefs.Select(p => p.Id))}. See https://stardewvalleywiki.com/Modding:Maps#Tilesheet_order for help.", LogLevel.Error);
-                        return false;
-                    }
                 }
             }
 

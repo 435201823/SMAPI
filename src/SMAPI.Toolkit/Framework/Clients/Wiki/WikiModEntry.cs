@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using StardewModdingAPI.Toolkit.Framework.UpdateData;
 
 namespace StardewModdingAPI.Toolkit.Framework.Clients.Wiki
 {
@@ -116,6 +118,45 @@ namespace StardewModdingAPI.Toolkit.Framework.Clients.Wiki
             this.DevNote = devNote;
             this.Overrides = overrides;
             this.Anchor = anchor;
+        }
+
+        /// <summary>Get the web URLs for the mod pages, if any.</summary>
+        public IEnumerable<KeyValuePair<ModSiteKey, string>> GetModPageUrls()
+        {
+            bool anyFound = false;
+
+            // normal mod pages
+            if (this.NexusID.HasValue)
+            {
+                anyFound = true;
+                yield return new KeyValuePair<ModSiteKey, string>(ModSiteKey.Nexus, $"https://www.nexusmods.com/stardewvalley/mods/{this.NexusID}");
+            }
+            if (this.ModDropID.HasValue)
+            {
+                anyFound = true;
+                yield return new KeyValuePair<ModSiteKey, string>(ModSiteKey.ModDrop, $"https://www.moddrop.com/stardew-valley/mod/{this.ModDropID}");
+            }
+            if (!string.IsNullOrWhiteSpace(this.CurseForgeKey))
+            {
+                anyFound = true;
+                yield return new KeyValuePair<ModSiteKey, string>(ModSiteKey.CurseForge, $"https://www.curseforge.com/stardewvalley/mods/{this.CurseForgeKey}");
+            }
+            if (this.ChucklefishID.HasValue)
+            {
+                anyFound = true;
+                yield return new KeyValuePair<ModSiteKey, string>(ModSiteKey.Chucklefish, $"https://community.playstarbound.com/resources/{this.ChucklefishID}");
+            }
+
+            // custom URL
+            if (!anyFound && !string.IsNullOrWhiteSpace(this.CustomUrl))
+            {
+                anyFound = true;
+                yield return new KeyValuePair<ModSiteKey, string>(ModSiteKey.Unknown, this.CustomUrl);
+            }
+
+            // fallback
+            if (!anyFound && !string.IsNullOrWhiteSpace(this.GitHubRepo))
+                yield return new KeyValuePair<ModSiteKey, string>(ModSiteKey.GitHub, $"https://github.com/{this.GitHubRepo}/releases");
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using StardewModdingAPI.Toolkit.Framework.Clients.Wiki;
+using StardewModdingAPI.Toolkit.Framework.UpdateData;
 
 namespace StardewModdingAPI.Web.ViewModels
 {
@@ -128,38 +129,16 @@ namespace StardewModdingAPI.Web.ViewModels
         /// <param name="entry">The mod metadata.</param>
         private IEnumerable<ModLinkModel> GetModPageUrls(WikiModEntry entry)
         {
-            bool anyFound = false;
+            foreach ((ModSiteKey modSite, string url) in entry.GetModPageUrls())
+            {
+                string linkText = modSite switch
+                {
+                    ModSiteKey.Unknown => "custom",
+                    _ => modSite.ToString()
+                };
 
-            // normal mod pages
-            if (entry.NexusID.HasValue)
-            {
-                anyFound = true;
-                yield return new ModLinkModel($"https://www.nexusmods.com/stardewvalley/mods/{entry.NexusID}", "Nexus");
+                yield return new ModLinkModel(url, linkText);
             }
-            if (entry.ModDropID.HasValue)
-            {
-                anyFound = true;
-                yield return new ModLinkModel($"https://www.moddrop.com/stardew-valley/mod/{entry.ModDropID}", "ModDrop");
-            }
-            if (!string.IsNullOrWhiteSpace(entry.CurseForgeKey))
-            {
-                anyFound = true;
-                yield return new ModLinkModel($"https://www.curseforge.com/stardewvalley/mods/{entry.CurseForgeKey}", "CurseForge");
-            }
-            if (entry.ChucklefishID.HasValue)
-            {
-                anyFound = true;
-                yield return new ModLinkModel($"https://community.playstarbound.com/resources/{entry.ChucklefishID}", "Chucklefish");
-            }
-
-            // fallback
-            if (!anyFound && !string.IsNullOrWhiteSpace(entry.CustomUrl))
-            {
-                anyFound = true;
-                yield return new ModLinkModel(entry.CustomUrl, "custom");
-            }
-            if (!anyFound && !string.IsNullOrWhiteSpace(entry.GitHubRepo))
-                yield return new ModLinkModel($"https://github.com/{entry.GitHubRepo}/releases", "GitHub");
         }
     }
 }

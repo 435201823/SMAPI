@@ -403,7 +403,7 @@ namespace StardewModdingAPI.Framework
             }
 
             // init TMX support
-            xTile.Format.FormatManager.Instance.RegisterMapFormat(new TMXTile.TMXFormat(Game1.tileSize / Game1.pixelZoom, Game1.tileSize / Game1.pixelZoom, Game1.pixelZoom, Game1.pixelZoom));
+            xTile.Format.FormatManager.Instance.RegisterMapFormat(new TMXTile.TMXFormat(Game1.smallestTileSize, Game1.smallestTileSize));
 
             // load mod data
             ModToolkit toolkit = new();
