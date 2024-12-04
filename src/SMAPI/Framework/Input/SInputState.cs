@@ -29,6 +29,9 @@ namespace StardewModdingAPI.Framework.Input
         /// <summary>Whether there are new overrides in <see cref="CustomPressedKeys"/> or <see cref="CustomReleasedKeys"/> that haven't been applied to the previous state.</summary>
         private bool HasNewOverrides;
 
+        /// <summary>Whether the scroll wheel should have its old value updated during updates to suppress changes.</summary>
+        private bool IsScrollWheelSuppressed;
+
 
         /*********
         ** Accessors
@@ -47,9 +50,6 @@ namespace StardewModdingAPI.Framework.Input
 
         /// <summary>The cursor position on the screen adjusted for the zoom level.</summary>
         public ICursorPosition CursorPosition => this.CursorPositionImpl;
-
-        /// <summary>Whether the scroll wheel should have its old value updated during updates to suppress changes.</summary>
-        private bool IsScrollWheelSuppressed { get; set; }
 
 
         /*********
