@@ -136,7 +136,7 @@
     "console.score.failed-loading-mod-api-for-mod": "Failed loading mod-provided API for {{ModDisplayName}}. Integrations with other mods may not work. Error: {{LogSummary}}",
     "console.score.mods-loaded-and-ready": "Mods loaded and ready!",
     "console.score.load-mod-is-content-pack": "   {{ModDisplayName}} (from {{relativePath}}, ID: {{ModUniqueID}}) [content pack]...",
-    "console.score.load-mod-entry-not-null": "   {{ModDisplayName}} (from {{relativePath}}{{DirectorySeparatorChar}}{{ModEntryDll}}, ID: {{ModUniqueID}})...",
+    "console.score.load-mod-entry-not-null": "   {{ModDisplayName}} (from {{relativePath}}{{DirectorySeparatorChar}}{{ModEntryDll}}, ID: {{ModUniqueID}}), assembly version: {{versionStr}})...",
     "console.score.load-mod-entry-null": "   {{ModDisplayName}} (from {{relativePath}}, ID: {{ModUniqueID}})...",
     "console.score.load-mod-fail": "      Failed: {{ErrorDetail}}",
     "console.score.need-dependency-mod": "it needs the '{{dependencyName}}' mod, which couldn't be loaded.",
