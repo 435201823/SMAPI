@@ -2251,6 +2251,44 @@ namespace StardewModdingAPI.Framework
                         errors.Add($"{file.Name} file couldn't be parsed: {ex.GetLogSummary()}");
                     }
                 }
+
+                foreach (DirectoryInfo localeDir in translationsDir.EnumerateDirectories())
+                {
+                    string locale = Path.GetFileName(localeDir.Name.ToLower().Trim());
+                    if (translations.ContainsKey(locale))
+                    {
+                        errors.Add($"duplicate translation files found (i18n/{locale}.json and i18n/{locale}/*); only the ones in i18n/{locale}/ will be used");
+                        translations.Remove(locale);
+                    }
+
+                    Dictionary<string, string> allData = new();
+
+                    foreach (FileInfo file in localeDir.EnumerateFiles("*.json"))
+                    {
+                        try
+                        {
+                            if (!jsonHelper.ReadJsonFileIfExists(file.FullName, out IDictionary<string, string>? data))
+                            {
+                                errors.Add($"{file.Name} file couldn't be read");
+                                continue;
+                            }
+
+                            foreach (var entry in data)
+                            {
+                                if (!allData.ContainsKey(entry.Key))
+                                    allData.Add(entry.Key, entry.Value);
+                                else
+                                    errors.Add($"duplicate translation key {entry.Key} found; ignoring the one in {file.Name}");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            errors.Add($"{file.Name} file couldn't be parsed: {ex.GetLogSummary()}");
+                        }
+                    }
+
+                    translations[locale] = allData;
+                }
             }
 
             // validate translations
