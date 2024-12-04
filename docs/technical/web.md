@@ -189,7 +189,7 @@ may be useful to external tools.
 
 Example request:
 ```js
-POST https://smapi.io/api/v3.0/mods
+POST https://smapi.io/api/v4.0.0/mods
 {
    "mods": [
       {
@@ -199,8 +199,8 @@ POST https://smapi.io/api/v3.0/mods
          "isBroken": false
       }
    ],
-   "apiVersion": "3.0.0",
-   "gameVersion": "1.4.0",
+   "apiVersion": "4.0.0",
+   "gameVersion": "1.6.9",
    "platform": "Windows",
    "includeExtendedMetadata": true
 }
@@ -329,7 +329,7 @@ deployed or restarted.
 
 Example request:
 ```js
-GET https://smapi.io/api/v3.0/mods/metrics
+GET https://smapi.io/api/v4.0.0/mods/metrics
 ```
 
 ## Short URLs

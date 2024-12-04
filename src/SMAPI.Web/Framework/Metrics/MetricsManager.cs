@@ -47,6 +47,8 @@ namespace StardewModdingAPI.Web.Framework.Metrics
             var totals = new MetricsModel();
             var bySite = new Dictionary<ModSiteKey, MetricsModel>();
             var byDate = new Dictionary<string, ApiMetricsModel>();
+            var byApiVersion = new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase);
+            var byGameVersion = new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase);
             foreach ((string hourlyKey, ApiMetricsModel hourly) in MetricsManager.Metrics)
             {
                 // totals
@@ -68,6 +70,12 @@ namespace StardewModdingAPI.Web.Framework.Metrics
                 if (!byDate.TryGetValue(dailyKey, out ApiMetricsModel? daily))
                     byDate[dailyKey] = daily = new ApiMetricsModel();
 
+                // by version
+                foreach ((string apiVersion, long count) in hourly.ByApiVersion)
+                    byApiVersion[apiVersion] = byApiVersion.GetValueOrDefault(apiVersion) + count;
+                foreach ((string gameVersion, long count) in hourly.ByGameVersion)
+                    byGameVersion[gameVersion] = byGameVersion.GetValueOrDefault(gameVersion) + count;
+
                 daily.AggregateFrom(hourly);
             }
 
@@ -80,6 +88,8 @@ namespace StardewModdingAPI.Web.Framework.Metrics
                 TotalCacheHits: totals.CacheHits,
                 TotalSuccessCacheMisses: totals.SuccessCacheMisses,
                 TotalErrorCacheMisses: totals.ErrorCacheMisses,
+                ByApiVersion: byApiVersion,
+                ByGameVersion: byGameVersion,
                 BySite: bySite,
                 ByDate: byDate
             );

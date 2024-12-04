@@ -83,7 +83,7 @@ namespace StardewModdingAPI.Web.Controllers
         public async Task<IEnumerable<ModEntryModel>> PostAsync([FromBody] ModSearchModel? model, [FromRoute] string version)
         {
             ApiMetricsModel metrics = MetricsManager.GetMetricsForNow();
-            metrics.TrackRequest();
+            metrics.TrackRequest(model?.ApiVersion, model?.GameVersion);
 
             if (model?.Mods == null)
                 return Array.Empty<ModEntryModel>();

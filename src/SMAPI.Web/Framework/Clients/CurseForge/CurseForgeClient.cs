@@ -181,13 +181,29 @@ namespace StardewModdingAPI.Web.Framework.Clients.CurseForge
         /// <param name="fileName">The file's internal name.</param>
         private string? GetRawVersion(string? displayName, string? fileName)
         {
+            // get raw version
             Match match = this.VersionInNamePattern.Match(displayName ?? "");
             if (!match.Success)
                 match = this.VersionInNamePattern.Match(fileName ?? "");
+            if (!match.Success)
+                return null;
 
-            return match.Success
-                ? match.Groups[1].Value
-                : null;
+            // fix auto-synced prerelease versions having a double version in the name (like "2.4.0-alpha.20240818-2-4-0-alpha-20240818")
+            string version = match.Groups[1].Value;
+            if (version.Length > 2 && version.Length % 2 == 1)
+            {
+                int splitIndex = version.Length / 2;
+                if (version[splitIndex] == '-')
+                {
+                    string left = version[..splitIndex];
+                    string right = version[(splitIndex + 1)..];
+
+                    if (left.Replace('.', '-') == right)
+                        version = left;
+                }
+            }
+
+            return version;
         }
 
         /// <summary>Get the full mod page URL for a given ID.</summary>
