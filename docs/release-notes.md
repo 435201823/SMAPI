@@ -28,6 +28,7 @@
   * Added scroll wheel suppression via `helper.Input.SuppressScrollWheel()` (thanks to MercuriusXeno!).
   * Added `PathUtilities.AnonymizePathForDisplay` to anonymize home paths (thanks to AnotherPillow!).
   * Added asset propagation for `Data/ChairTiles`.
+  * Added parameter docs to event interfaces. This lets you fully document your event handlers like `/// <inheritdoc cref="IGameLoopEvents.SaveLoaded" />`.
   * Updated dependencies, including [FluentHttpClient](https://github.com/Pathoschild/FluentHttpClient#readme) 4.3.0 → 4.4.0 (see [changes](https://github.com/Pathoschild/FluentHttpClient/blob/develop/RELEASE-NOTES.md#440)) and [Pintail](https://github.com/Nanoray-pl/Pintail) 2.3.0 → 2.4.2 (see [changes](https://github.com/Nanoray-pl/Pintail/blob/master/docs/release-notes.md#242)).
   * The SMAPI log now includes the assembly version of each loaded mod (thanks to spacechase0!).
   * Fixed `content.Load` ignoring language override in recent versions.
