@@ -1,7 +1,9 @@
 &larr; [mod build config](./mod-build-config.md)
 
 ## Release notes
-## Upcoming release
+## 4.3.0
+Released 06 October 2024 for SMAPI 3.13.0 or later.
+
 * You can now [bundle content packs with your mod](mod-package.md#bundle-content-packs) (thanks to abhiaagarwal!).
 
 ### 4.2.0

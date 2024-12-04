@@ -9,7 +9,7 @@ for SMAPI mods and related tools. The package is fully compatible with Linux, ma
 * [Configure](#configure)
   * [How to set options](#how-to-set-options)
   * [Available properties](#available-properties)
-* [Bundle content packs](#Bundle-content-packs)
+* [Bundle content packs](#bundle-content-packs)
 * [Code warnings](#code-warnings)
 * [FAQs](#faqs)
   * [How do I set the game path?](#custom-game-path)
@@ -107,98 +107,34 @@ There are two places you can put them:
 `GameModsPath`.
 
 ### Available properties
-These are the options you can set:
+These are the options you can set.
 
-<ul>
-<li>Game properties:
-<table>
-<tr>
-  <th>property</th>
-  <th>effect</th>
-</tr>
-<tr>
-<td><code>GamePath</code></td>
-<td>
+#### Common properties
+property       | effect
+-------------- | ------
+`GamePath`     | The absolute path to the Stardew Valley folder. This is auto-detected, so you usually don't need to change it.
+`GameModsPath` | The absolute path to the folder containing the game's installed mods (defaults to `$(GamePath)/Mods`), used when deploying the mod files.
 
-The absolute path to the Stardew Valley folder. This is auto-detected, so you usually don't need to
-change it.
+#### Mod build properties
+property          | effect
+----------------- | ------
+`EnableHarmony`   | Whether to add a reference to [Harmony](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Harmony) (default `false`). This is only needed if you use Harmony.
+`EnableModDeploy` | Whether to copy the mod files into your game's `Mods` folder (default `true`).
+`EnableModZip`    | Whether to create a release-ready `.zip` file in the mod project's `bin` folder (default `true`).
+`ModFolderName`   | The mod name for its folder under `Mods` and its release zip (defaults to the project name).
+`ModZipPath`      | The folder path where the release zip is created (defaults to the project's `bin` folder).
 
-</td>
-</tr>
-<tr>
-<td><code>GameModsPath</code></td>
-<td>
+#### Specialized properties
+These properties should usually be left as-is.
 
-The absolute path to the folder containing the game's installed mods (defaults to
-`$(GamePath)/Mods`), used when deploying the mod files.
+property                | effect
+----------------------- | ------
+`EnableGameDebugging`   | Whether to configure the project so you can launch or debug the game through the _Debug_ menu in Visual Studio (default `true`). There's usually no reason to change this, unless it's a unit test project.
+`IgnoreModFilePaths`    | A comma-delimited list of literal file paths to ignore, relative to the mod's `bin` folder. Paths are case-sensitive, but path delimiters are normalized automatically. For example, this ignores a set of tilesheets: `<IgnoreModFilePaths>assets/paths.png, assets/springobjects.png</IgnoreModFilePaths>`.
+`IgnoreModFilePatterns` | A comma-delimited list of regex patterns matching files to ignore when deploying or zipping the mod files (default empty). For crossplatform compatibility, you should replace path delimiters with `[/\\]`. For example, this excludes all `.txt` and `.pdf` files, as well as the `assets/paths.png` file: `<IgnoreModFilePatterns>\.txt$, \.pdf$, assets[/\\]paths.png</IgnoreModFilePatterns>`.
 
-</td>
-</tr>
-<tr>
-</table>
-</li>
-
-<li>Mod build properties:
-<table>
-<tr>
-  <th>property</th>
-  <th>effect</th>
-</tr>
-<tr>
-<td><code>EnableHarmony</code></td>
-<td>
-
-Whether to add a reference to [Harmony](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Harmony)
-(default `false`). This is only needed if you use Harmony.
-
-</td>
-</tr>
-<tr>
-<td><code>EnableModDeploy</code></td>
-<td>
-
-Whether to copy the mod files into your game's `Mods` folder (default `true`).
-
-</td>
-</tr>
-<tr>
-<td><code>EnableModZip</code></td>
-<td>
-
-Whether to create a release-ready `.zip` file in the mod project's `bin` folder (default `true`).
-
-</td>
-</tr>
-<tr>
-<td><code>ModFolderName</code></td>
-<td>
-
-The mod name for its folder under `Mods` and its release zip (defaults to the project name).
-
-</td>
-</tr>
-<tr>
-<td><code>ModZipPath</code></td>
-<td>
-
-The folder path where the release zip is created (defaults to the project's `bin` folder).
-
-</td>
-</tr>
-</table>
-</li>
-
-<li>Specialized properties:
-<table>
-<tr>
-  <th>property</th>
-  <th>effect</th>
-</tr>
-<tr>
-<td><code>BundleExtraAssemblies</code></td>
-<td>
-
-**Most mods should not change this option.**
+#### `BundleExtraAssemblies`
+_(Specialized)_ **Most mods should not change this option.**
 
 By default (when this is _not_ enabled), only the mod files [normally considered part of the
 mod](#Features) will be added to the release `.zip` and copied into the `Mods` folder (i.e.
@@ -208,95 +144,18 @@ but any other DLLs won't be deployed.
 Enabling this option will add _all_ dependencies to the build output, then deploy _some_ of them
 depending on the comma-separated value(s) you set:
 
-<table>
-<tr>
-  <th>option</th>
-  <th>result</th>
-</tr>
-<tr>
-<td><code>ThirdParty</code></td>
-<td>
-
-Assembly files which don't match any other category.
-
-</td>
-</tr>
-<tr>
-<td><code>System</code></td>
-<td>
-
-Assembly files whose names start with `Microsoft.*` or `System.*`.
-
-</td>
-</tr>
-<tr>
-<td><code>Game</code></td>
-<td>
-
-Assembly files which are part of MonoGame, SMAPI, or Stardew Valley.
-
-</td>
-</tr>
-<tr>
-<td><code>All</code></td>
-<td>
-
-Equivalent to `System, Game, ThirdParty`.
-
-</td>
-</tr>
-</table>
+option       | result
+------------ | ------
+`ThirdParty` | Assembly files which don't match any other category.
+`System`     | Assembly files whose names start with `Microsoft.*` or `System.*`.
+`Game`       | Assembly files which are part of MonoGame, SMAPI, or Stardew Valley.
+`All`        | Equivalent to `System, Game, ThirdParty`.
 
 Most mods should omit the option. Some mods may need `ThirdParty` if they bundle third-party DLLs
 with their mod. The other options are mainly useful for unit tests.
 
 When enabling this option, you should **manually review which files get deployed** and use the
 `IgnoreModFilePaths` or `IgnoreModFilePatterns` options to exclude files as needed.
-
-</td>
-</tr>
-<tr>
-<td><code>EnableGameDebugging</code></td>
-<td>
-
-Whether to configure the project so you can launch or debug the game through the _Debug_ menu in
-Visual Studio (default `true`). There's usually no reason to change this, unless it's a unit test
-project.
-
-</td>
-</tr>
-<tr>
-<td><code>IgnoreModFilePaths</code></td>
-<td>
-
-A comma-delimited list of literal file paths to ignore, relative to the mod's `bin` folder. Paths
-are case-sensitive, but path delimiters are normalized automatically. For example, this ignores a
-set of tilesheets:
-
-```xml
-<IgnoreModFilePaths>assets/paths.png, assets/springobjects.png</IgnoreModFilePaths>
-```
-
-</td>
-</tr>
-<tr>
-<td><code>IgnoreModFilePatterns</code></td>
-<td>
-
-A comma-delimited list of regex patterns matching files to ignore when deploying or zipping the mod
-files (default empty). For crossplatform compatibility, you should replace path delimiters with `[/\\]`.
-
-For example, this excludes all `.txt` and `.pdf` files, as well as the `assets/paths.png` file:
-
-```xml
-<IgnoreModFilePatterns>\.txt$, \.pdf$, assets[/\\]paths.png</IgnoreModFilePatterns>
-```
-
-</td>
-</tr>
-</table>
-</li>
-</ul>
 
 ## Bundle content packs
 You can bundle any number of [content packs](https://stardewvalleywiki.com/Modding:Content_pack_frameworks)
