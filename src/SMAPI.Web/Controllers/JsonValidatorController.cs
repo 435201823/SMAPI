@@ -293,7 +293,7 @@ namespace StardewModdingAPI.Web.Controllers
                 // match error by type and message
                 foreach ((string target, string? errorMessage) in errors)
                 {
-                    if (!target.Contains(":"))
+                    if (!target.Contains(':'))
                         continue;
 
                     string[] parts = target.Split(':', 2);

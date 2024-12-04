@@ -117,7 +117,7 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
             Game1.drawObjectQuestionDialogue(dialogue, choices?.ToArray());
         }
 
-        public new static NPC? getCharacterFromName(string name, bool mustBeVillager = true)
+        public static NPC? getCharacterFromName(string name, bool mustBeVillager = true)
         {
             return Game1.getCharacterFromName(name, mustBeVillager);
         }

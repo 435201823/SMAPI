@@ -40,7 +40,7 @@ namespace StardewModdingAPI.Events
         /// <param name="step">The current step in the render cycle.</param>
         internal static RenderingStepEventArgs Instance(RenderSteps step)
         {
-            if (!RenderingStepEventArgs.Instances.TryGetValue(step, out RenderingStepEventArgs instance))
+            if (!RenderingStepEventArgs.Instances.TryGetValue(step, out RenderingStepEventArgs? instance))
                 RenderingStepEventArgs.Instances[step] = instance = new(step);
 
             return instance;

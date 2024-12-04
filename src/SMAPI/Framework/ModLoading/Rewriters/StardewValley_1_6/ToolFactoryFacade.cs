@@ -28,20 +28,23 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
         /*********
         ** Public methods
         *********/
-        public static Tool getToolFromDescription(byte index, int upgradeLevel)
+        public static Tool? getToolFromDescription(byte index, int upgradeLevel)
         {
-            Tool? t = null;
-            switch (index)
+            Tool? t = index switch
             {
-                case axe: t = new Axe(); break;
-                case hoe: t = new Hoe(); break;
-                case fishingRod: t = new FishingRod(); break;
-                case pickAxe: t = new Pickaxe(); break;
-                case wateringCan: t = new WateringCan(); break;
-                case meleeWeapon: t = new MeleeWeapon("0"); break;
-                case slingshot: t = new Slingshot(); break;
-            }
-            t.UpgradeLevel = upgradeLevel;
+                ToolFactoryFacade.axe => new Axe(),
+                ToolFactoryFacade.hoe => new Hoe(),
+                ToolFactoryFacade.fishingRod => new FishingRod(),
+                ToolFactoryFacade.pickAxe => new Pickaxe(),
+                ToolFactoryFacade.wateringCan => new WateringCan(),
+                ToolFactoryFacade.meleeWeapon => new MeleeWeapon("0"),
+                ToolFactoryFacade.slingshot => new Slingshot(),
+                _ => null
+            };
+
+            if (t != null)
+                t.UpgradeLevel = upgradeLevel;
+
             return t;
         }
 

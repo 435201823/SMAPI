@@ -21,7 +21,7 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
         {
             var petBowl = Game1.player?.getPet()?.GetPetBowl();
             if (petBowl is not null)
-                return new Point(petBowl.tileX - 1, petBowl.tileY + 1);
+                return new Point(petBowl.tileX.Value - 1, petBowl.tileY.Value + 1);
 
             var petBowlPosition = base.GetStarterPetBowlLocation();
             return new Point((int)petBowlPosition.X - 1, (int)petBowlPosition.Y + 1);

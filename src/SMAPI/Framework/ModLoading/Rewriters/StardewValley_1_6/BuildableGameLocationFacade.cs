@@ -48,7 +48,7 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
         {
             foreach (Building b in base.buildings)
             {
-                if (b.daysOfConstructionLeft > 0 || b.daysUntilUpgrade > 0)
+                if (b.daysOfConstructionLeft.Value > 0 || b.daysUntilUpgrade.Value > 0)
                     return b;
             }
 

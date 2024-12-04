@@ -40,7 +40,7 @@ namespace StardewModdingAPI.Framework.Content
         }
 
         /// <inheritdoc />
-        /// <remarks>Derived from <see cref="GameLocation.ApplyMapOverride(Map,string,Rectangle?,Rectangle?)"/> with a few changes:
+        /// <remarks>Derived from <see cref="GameLocation.ApplyMapOverride(string, Rectangle?, Rectangle?)"/> with a few changes:
         /// - can be applied directly to the maps when loading, before the location is created;
         /// - added support for patch modes (overlay, replace by layer, or fully replace);
         /// - added disambiguation if source has a modified version of the same tilesheet, instead of copying tiles into the target tilesheet;

@@ -29,10 +29,10 @@ namespace StardewModdingAPI.Framework
         private readonly Action<LoadStage> OnStageChanged;
 
         /// <summary>A callback to invoke when the game starts a render step in the draw loop.</summary>
-        private readonly Action<RenderSteps, SpriteBatch, RenderTarget2D> OnRenderingStep;
+        private readonly Action<RenderSteps, SpriteBatch, RenderTarget2D?> OnRenderingStep;
 
         /// <summary>A callback to invoke when the game finishes a render step in the draw loop.</summary>
-        private readonly Action<RenderSteps, SpriteBatch, RenderTarget2D> OnRenderedStep;
+        private readonly Action<RenderSteps, SpriteBatch, RenderTarget2D?> OnRenderedStep;
 
 
         /*********
@@ -45,7 +45,7 @@ namespace StardewModdingAPI.Framework
         /// <param name="onRenderingStep">A callback to invoke when the game starts a render step in the draw loop.</param>
         /// <param name="onRenderedStep">A callback to invoke when the game finishes a render step in the draw loop.</param>
         /// <param name="monitor">Writes messages to the console.</param>
-        public SModHooks(ModHooks parent, Action beforeNewDayAfterFade, Action<LoadStage> onStageChanged, Action<RenderSteps, SpriteBatch, RenderTarget2D> onRenderingStep, Action<RenderSteps, SpriteBatch, RenderTarget2D> onRenderedStep, IMonitor monitor)
+        public SModHooks(ModHooks parent, Action beforeNewDayAfterFade, Action<LoadStage> onStageChanged, Action<RenderSteps, SpriteBatch, RenderTarget2D?> onRenderingStep, Action<RenderSteps, SpriteBatch, RenderTarget2D?> onRenderedStep, IMonitor monitor)
             : base(parent)
         {
             this.Monitor = monitor;
@@ -93,7 +93,7 @@ namespace StardewModdingAPI.Framework
         }
 
         /// <inheritdoc />
-        public override bool OnRendering(RenderSteps step, SpriteBatch sb, GameTime time, RenderTarget2D target_screen)
+        public override bool OnRendering(RenderSteps step, SpriteBatch sb, GameTime time, RenderTarget2D? target_screen)
         {
             this.OnRenderingStep(step, sb, target_screen);
 
@@ -101,7 +101,7 @@ namespace StardewModdingAPI.Framework
         }
 
         /// <inheritdoc />
-        public override void OnRendered(RenderSteps step, SpriteBatch sb, GameTime time, RenderTarget2D target_screen)
+        public override void OnRendered(RenderSteps step, SpriteBatch sb, GameTime time, RenderTarget2D? target_screen)
         {
             this.OnRenderedStep(step, sb, target_screen);
         }

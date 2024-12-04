@@ -85,7 +85,7 @@ namespace StardewModdingAPI.Mods.ConsoleCommands.Framework.Commands.World
                         foreach (var pair in location.terrainFeatures.Pairs.ToArray())
                         {
                             TerrainFeature feature = pair.Value;
-                            if (feature is HoeDirt dirt && dirt.crop?.dead == true)
+                            if (feature is HoeDirt dirt && dirt.crop?.dead.Value is true)
                             {
                                 dirt.crop = null;
                                 removed++;

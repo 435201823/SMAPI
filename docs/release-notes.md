@@ -37,7 +37,7 @@
   * Fixed the wrong game folder path shown if the `Mods` folder path was customized.
 
 * For the JSON validator:
-  * Updated for Content Patcher 2.1.0 &ndash; 2.3.0.
+  * Updated for Content Patcher 2.1.0 &ndash; 2.3.0, and fixed validation for `Priority` fields.
   * Fixed incorrect errors shown for..
     * some valid `Entries`, `Fields`, `MapProperties`, `MapTiles`, and `When` field values;
     * `CustomLocations` entries which use the new [unique string ID](https://stardewvalleywiki.com/Modding:Common_data_field_types#Unique_string_ID) format;

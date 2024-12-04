@@ -84,7 +84,7 @@ namespace StardewModdingAPI.Web.Controllers
         /// <summary>Get a sorted, parsed list of SMAPI downloads for the latest releases.</summary>
         private async Task<ReleaseVersion[]> GetReleaseVersionsAsync()
         {
-            return await this.Cache.GetOrCreateAsync("available-versions", async entry =>
+            ReleaseVersion[]? versions = await this.Cache.GetOrCreateAsync("available-versions", async entry =>
             {
                 entry.AbsoluteExpiration = DateTimeOffset.UtcNow.Add(this.CacheTime);
 
@@ -107,6 +107,8 @@ namespace StardewModdingAPI.Web.Controllers
                     .OrderBy(p => p.Version)
                     .ToArray();
             });
+
+            return versions!; // GetOrCreateAsync doesn't return null unless we provide null in the callback
         }
 
         /// <summary>Get a parsed list of SMAPI downloads for a release.</summary>

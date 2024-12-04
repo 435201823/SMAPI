@@ -112,7 +112,7 @@ namespace StardewModdingAPI.Web.Framework.Clients.ModDrop
                     continue;
 
                 downloads.Add(
-                    new GenericModDownload(file.Name, file.Description, version.ToString())
+                    new GenericModDownload(file.Name ?? file.Id.ToString(), file.Description, version.ToString())
                 );
             }
 
@@ -166,14 +166,14 @@ namespace StardewModdingAPI.Web.Framework.Clients.ModDrop
         /// <param name="fileVersion">The file version provided by ModDrop.</param>
         /// <param name="version">The parsed version number, if valid.</param>
         /// <returns>Returns whether a version number was successfully parsed.</returns>
-        private bool TryParseVersionFromFileName(string fileName, string fileVersion, [NotNullWhen(true)] out ISemanticVersion? version)
+        private bool TryParseVersionFromFileName(string? fileName, string? fileVersion, [NotNullWhen(true)] out ISemanticVersion? version)
         {
             // ModDrop drops the version prerelease tag if it's not in their whitelist of allowed suffixes. For
             // example, "1.0.0-alpha" is fine but "1.0.0-sdvalpha" will have version field "1.0.0".
             //
             // If the version is non-prerelease but the file's display name contains a prerelease version, parse it
             // out of the name instead.
-            if (fileName.Contains(fileVersion + "-") && SemanticVersion.TryParse(fileVersion, out ISemanticVersion? parsedVersion) && !parsedVersion.IsPrerelease())
+            if (fileName != null && fileName.Contains(fileVersion + "-") && SemanticVersion.TryParse(fileVersion, out ISemanticVersion? parsedVersion) && !parsedVersion.IsPrerelease())
             {
                 string[] parts = fileName.Split(' ');
 

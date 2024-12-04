@@ -412,6 +412,13 @@
                         },
                         "then": {
                             "required": [ "FromFile", "Target" ],
+
+                            "properties": {
+                                "Priority": {
+                                    "$ref": "#/definitions/LoadPriority"
+                                }
+                            },
+
                             "propertyNames": {
                                 "enum": [
                                     "Action",
@@ -419,7 +426,9 @@
                                     "LogName",
                                     "Target",
                                     "Update",
-                                    "When"
+                                    "When",
+
+                                    "Priority"
                                 ]
                             }
                         }
@@ -438,6 +447,10 @@
                                     "type": "string",
                                     "enum": [ "Replace", "Overlay" ],
                                     "default": "Replace"
+                                },
+
+                                "Priority": {
+                                    "$ref": "#/definitions/EditPriority"
                                 }
                             },
                             "required": [ "FromFile", "Target" ],
@@ -452,6 +465,7 @@
 
                                     "FromArea",
                                     "PatchMode",
+                                    "Priority",
                                     "ToArea"
                                 ]
                             }
@@ -464,6 +478,12 @@
                             }
                         },
                         "then": {
+                            "properties": {
+                                "Priority": {
+                                    "$ref": "#/definitions/EditPriority"
+                                }
+                            },
+
                             "propertyNames": {
                                 "enum": [
                                     "Action",
@@ -476,6 +496,7 @@
                                     "Entries",
                                     "Fields",
                                     "MoveEntries",
+                                    "Priority",
                                     "TextOperations"
                                 ]
                             }
@@ -504,6 +525,10 @@
                                     "type": "string",
                                     "enum": [ "Overlay", "Replace", "ReplaceByLayer" ],
                                     "default": "ReplaceByLayer"
+                                },
+
+                                "Priority": {
+                                    "$ref": "#/definitions/EditPriority"
                                 }
                             },
                             "propertyNames": {
@@ -520,6 +545,7 @@
                                     "MapProperties",
                                     "MapTiles",
                                     "PatchMode",
+                                    "Priority",
                                     "TextOperations",
                                     "ToArea"
                                 ]
@@ -545,7 +571,11 @@
                             }
                         }
                     }
-                ]
+                ],
+
+                "@errorMessages": {
+                    "allOf": "$transparent"
+                }
             }
         },
         "$schema": {
@@ -613,6 +643,44 @@
 
             "required": [ "X", "Y", "Width", "Height" ],
             "additionalProperties": false
+        },
+
+        "EditPriority": {
+            "title": "Edit priority",
+            "description": "When multiple patches or mods edit the same asset, the order in which they should be applied. Defaults to 'Default'. The patches for an asset are applied in this order: (1) by earliest to latest priority; (2) then by mod load order, e.g. based on dependencies; (3) then by the order of patches in content.json.",
+            "type": "string",
+
+            "oneOf": [
+                {
+                    "enum": [ "Early", "Default", "Late" ]
+                },
+                {
+                    "pattern": "^\\s*(Early|Default|Late)\\s*(?:[\\+\\-]\\s*\\d+)\\s*$"
+                }
+            ],
+
+            "@errorMessages": {
+                "oneOf": "The edit priority must be 'Early', 'Default', 'Late', or a numeric offset like 'Early + 5'."
+            }
+        },
+
+        "LoadPriority": {
+            "title": "Load priority",
+            "description": "When multiple patches or mods load the same asset, the priority which decides which one is applied. Defaults to 'Exclusive'. If set to Low/Medium/High, the highest-priority patch is applied (or the first one by load order + patch order is multiple patches have the highest priority). If set to Exclusive, it's applied if only one patch has that priority, else no exclusive patches are applied. Avoid using Exclusive when possible, since it significantly reduces mod compatibility.",
+            "type": "string",
+
+            "oneOf": [
+                {
+                    "enum": [ "Low", "Medium", "High", "Exclusive" ]
+                },
+                {
+                    "pattern": "^\\s*(Low|Medium|High)\\s*(?:[\\+\\-]\\s*\\d+)\\s*$"
+                }
+            ],
+
+            "@errorMessages": {
+                "oneOf": "The load priority must be 'Low', 'Medium', 'High', 'Exclusive', or a non-exclusive numeric offset like 'Low + 5'."
+            }
         }
     },
 

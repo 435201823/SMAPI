@@ -35,7 +35,7 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_6
                 return base.inBloom();
 
             // else mimic old behavior with 1.6 features
-            if (base.size == Bush.greenTeaBush)
+            if (base.size.Value == Bush.greenTeaBush)
             {
                 return
                     base.getAge() >= Bush.daysToMatureGreenTeaBush

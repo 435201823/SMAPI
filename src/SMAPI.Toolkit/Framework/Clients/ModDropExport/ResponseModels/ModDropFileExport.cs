@@ -12,14 +12,14 @@ namespace StardewModdingAPI.Toolkit.Framework.Clients.ModDropExport.ResponseMode
 
         /// <summary>The file title.</summary>
         [JsonProperty("title")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>The file description.</summary>
         [JsonProperty("desc")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>The file version.</summary>
-        public string Version { get; set; }
+        public string? Version { get; set; }
 
         /// <summary>Whether the file is deleted.</summary>
         public bool IsDeleted { get; set; }

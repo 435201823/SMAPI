@@ -566,7 +566,7 @@ namespace StardewModdingAPI.Metadata
         {
             // get NPCs
             string name = Path.GetFileName(assetName.BaseName);
-            NPC[] villagers = this.GetCharacters().Where(npc => npc.Name == name && npc.isVillager()).ToArray();
+            NPC[] villagers = this.GetCharacters().Where(npc => npc.Name == name && npc.IsVillager).ToArray();
             if (!villagers.Any())
                 return false;
 
@@ -594,7 +594,7 @@ namespace StardewModdingAPI.Metadata
         {
             foreach (NPC npc in this.GetCharacters())
             {
-                if (npc.isVillager())
+                if (npc.IsVillager)
                     npc.reloadData();
             }
         }
@@ -606,7 +606,7 @@ namespace StardewModdingAPI.Metadata
         {
             // get NPCs
             string name = Path.GetFileName(assetName.BaseName);
-            NPC[] villagers = this.GetCharacters().Where(npc => npc.Name == name && npc.isVillager()).ToArray();
+            NPC[] villagers = this.GetCharacters().Where(npc => npc.Name == name && npc.IsVillager).ToArray();
             if (!villagers.Any())
                 return false;
 

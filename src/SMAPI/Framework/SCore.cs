@@ -441,7 +441,7 @@ namespace StardewModdingAPI.Framework
                 // apply load order customizations
                 if (this.Settings.ModsToLoadEarly.Any() || this.Settings.ModsToLoadLate.Any())
                 {
-                    HashSet<string> installedIds = new HashSet<string>(mods.Select(p => p.Manifest?.UniqueID).Where(p => p is not null), StringComparer.OrdinalIgnoreCase);
+                    HashSet<string> installedIds = new HashSet<string>(mods.Select(p => p.Manifest?.UniqueID).Where(p => p is not null)!, StringComparer.OrdinalIgnoreCase);
 
                     string[] missingEarlyMods = this.Settings.ModsToLoadEarly.Where(id => !installedIds.Contains(id)).OrderBy(p => p, StringComparer.OrdinalIgnoreCase).ToArray();
                     string[] missingLateMods = this.Settings.ModsToLoadLate.Where(id => !installedIds.Contains(id)).OrderBy(p => p, StringComparer.OrdinalIgnoreCase).ToArray();
@@ -1199,7 +1199,7 @@ namespace StardewModdingAPI.Framework
         /// <param name="step">The render step being started.</param>
         /// <param name="spriteBatch">The sprite batch being drawn (which might not always be open yet).</param>
         /// <param name="renderTarget">The render target being drawn.</param>
-        private void OnRenderingStep(RenderSteps step, SpriteBatch spriteBatch, RenderTarget2D renderTarget)
+        private void OnRenderingStep(RenderSteps step, SpriteBatch spriteBatch, RenderTarget2D? renderTarget)
         {
             EventManager events = this.EventManager;
 
@@ -1235,7 +1235,7 @@ namespace StardewModdingAPI.Framework
         /// <param name="step">The render step being started.</param>
         /// <param name="spriteBatch">The sprite batch being drawn (which might not always be open yet).</param>
         /// <param name="renderTarget">The render target being drawn.</param>
-        private void OnRenderedStep(RenderSteps step, SpriteBatch spriteBatch, RenderTarget2D renderTarget)
+        private void OnRenderedStep(RenderSteps step, SpriteBatch spriteBatch, RenderTarget2D? renderTarget)
         {
             var events = this.EventManager;
 
@@ -1271,7 +1271,7 @@ namespace StardewModdingAPI.Framework
         /// <param name="event">The event to raise.</param>
         /// <param name="spriteBatch">The sprite batch being drawn to the screen.</param>
         /// <param name="renderTarget">The render target being drawn to the screen.</param>
-        private void RaiseRenderEvent<TEventArgs>(ManagedEvent<TEventArgs> @event, SpriteBatch spriteBatch, RenderTarget2D renderTarget)
+        private void RaiseRenderEvent<TEventArgs>(ManagedEvent<TEventArgs> @event, SpriteBatch spriteBatch, RenderTarget2D? renderTarget)
             where TEventArgs : EventArgs, new()
         {
             this.RaiseRenderEvent(@event, spriteBatch, renderTarget, Singleton<TEventArgs>.Instance);
@@ -1283,7 +1283,7 @@ namespace StardewModdingAPI.Framework
         /// <param name="spriteBatch">The sprite batch being drawn to the screen.</param>
         /// <param name="renderTarget">The render target being drawn to the screen.</param>
         /// <param name="eventArgs">The event arguments to pass to the event.</param>
-        private void RaiseRenderEvent<TEventArgs>(ManagedEvent<TEventArgs> @event, SpriteBatch spriteBatch, RenderTarget2D renderTarget, TEventArgs eventArgs)
+        private void RaiseRenderEvent<TEventArgs>(ManagedEvent<TEventArgs> @event, SpriteBatch spriteBatch, RenderTarget2D? renderTarget, TEventArgs eventArgs)
             where TEventArgs : EventArgs
         {
             if (!@event.HasListeners)
