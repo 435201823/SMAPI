@@ -10,9 +10,12 @@ namespace StardewModdingAPI.Toolkit.Framework.Clients.ModDropExport.ResponseMode
         /// <summary>The file identifier.</summary>
         public uint Id { get; set; }
 
-        /// <summary>The file title.</summary>
+        /// <summary>The file's display title.</summary>
         [JsonProperty("title")]
         public string? Name { get; set; }
+
+        /// <summary>The file's actual filename.</summary>
+        public string? FileName { get; set; }
 
         /// <summary>The file description.</summary>
         [JsonProperty("desc")]
@@ -32,6 +35,12 @@ namespace StardewModdingAPI.Toolkit.Framework.Clients.ModDropExport.ResponseMode
 
         /// <summary>Whether this is an archived file.</summary>
         public bool IsOld { get; set; }
+
+        /// <summary>Whether this is a pre-release version (e.g. beta).</summary>
+        public bool IsPreRelease { get; set; }
+
+        /// <summary>Whether this is an alternative download.</summary>
+        public bool IsAlternative { get; set; }
 
         /// <summary>When the file was uploaded, as a Unix millisecond timestamp since epoch.</summary>
         public long DateCreated { get; set; }

@@ -25,7 +25,9 @@ namespace StardewModdingAPI.Toolkit
         private readonly Dictionary<ModSiteKey, string> VendorModUrls = new()
         {
             [ModSiteKey.Chucklefish] = "https://community.playstarbound.com/resources/{0}",
+            [ModSiteKey.CurseForge] = "https://www.curseforge.com/projects/{0}",
             [ModSiteKey.GitHub] = "https://github.com/{0}/releases",
+            [ModSiteKey.ModDrop] = "https://www.moddrop.com/stardew-valley/mods/{0}",
             [ModSiteKey.Nexus] = "https://www.nexusmods.com/stardewvalley/mods/{0}"
         };
 
